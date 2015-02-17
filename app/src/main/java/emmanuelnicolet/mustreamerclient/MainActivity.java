@@ -15,7 +15,11 @@ public class MainActivity extends ActionBarActivity
 {
 	public final static String SEARCH_STRING = "emmanuelnicolet.mustreamerclient.SEARCH_STRING";
 	public final static String METASRV_ENDPOINT_STR = "MetaServer:default -h onchevps.ddns.net -p 10000";
-	public static  Communicator ic = null;
+    public final static String MEDIA_ENDPOINT_STR = "emmanuelnicolet.musicstreamerclient.MEDIA_ENDPOINT_STR";
+    public final static String MEDIA_SONG_PATH = "emmanuelnicolet.musicstreamerclient.MEDIA_SONG_PATH";
+
+
+    public static  Communicator ic = null;
 
 
 	@Override

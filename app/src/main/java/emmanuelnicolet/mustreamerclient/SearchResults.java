@@ -4,8 +4,8 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
@@ -13,12 +13,14 @@ import java.util.HashMap;
 import java.util.List;
 
 import Player.MediaInfo;
+import Player.IMetaServerPrx;
+import Player.IMetaServerPrxHelper;
 
 
 public class SearchResults extends ListActivity
 {
 	private String searchText;
-	private List<String> endpointsStrs = new ArrayList<String>();
+	private List<MediaInfo> mediainfos = new ArrayList<MediaInfo>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -31,6 +33,19 @@ public class SearchResults extends ListActivity
 		new FetchResults().execute(new String[] {MainActivity.METASRV_ENDPOINT_STR, searchText});
 	}
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id)
+    {
+        Intent intent = new Intent(this, Player.class);
+        MediaInfo m = mediainfos.get(position);
+        System.out.println("ONCHE " + m.endpointStr);
+        System.out.println("ONCHE " + m.media.path);
+
+        intent.putExtra(MainActivity.MEDIA_ENDPOINT_STR, m.endpointStr);
+        intent.putExtra(MainActivity.MEDIA_SONG_PATH, m.media.path);
+        startActivity(intent);
+    }
+
 
 	private class FetchResults extends AsyncTask<String, Void, MediaInfo[]>
 	{
@@ -41,7 +56,7 @@ public class SearchResults extends ListActivity
 
 			try {
 				Ice.ObjectPrx base = ic.stringToProxy(strs[0]);
-				Player.IMetaServerPrx srv = Player.IMetaServerPrxHelper.checkedCast(base);
+				IMetaServerPrx srv = IMetaServerPrxHelper.checkedCast(base);
 				if (srv == null)
 					throw new Error("Invalid proxy");
 
@@ -71,7 +86,7 @@ public class SearchResults extends ListActivity
 					e.put(c2, m.media.artist);
 					data.add(e);
 
-					endpointsStrs.add(m.endpointStr);
+					mediainfos.add(m);
 				}
 
 				SimpleAdapter adapter = new SimpleAdapter(SearchResults.this, data,
