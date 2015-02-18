@@ -26,8 +26,10 @@ public class Player extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_player);
 
-        if (mediainfo == null) {
+
+		if (mediainfo == null) {
             mediainfo = new MediaInfo();
             mediainfo.media = new Song();
         }
@@ -65,11 +67,10 @@ public class Player extends ActionBarActivity
 
     public void play(View v)
     {
-        if (playing)
+        if (token == null || playing)
             return;
 
         Ice.Communicator ic = MainActivity.ic;
-        StreamToken t = null;
 
         try {
             Ice.ObjectPrx base = ic.stringToProxy(MainActivity.METASRV_ENDPOINT_STR);
@@ -88,7 +89,8 @@ public class Player extends ActionBarActivity
             playing = true;
 
             try {
-                mediaPlayer.setDataSource("http://onchevps.ddns.net:8090/" + url);
+                //mediaPlayer.setDataSource("http://onchevps.ddns.net:8090/" + url);
+				mediaPlayer.setDataSource(url);
                 mediaPlayer.prepare(); // might take long! (for buffering, etc)
                 mediaPlayer.start();
             }
@@ -131,7 +133,6 @@ public class Player extends ActionBarActivity
         {
             token = t;
             System.out.println("ONCHE " + t.streamingURL);
-            setContentView(R.layout.activity_player);
         }
     }
 }
