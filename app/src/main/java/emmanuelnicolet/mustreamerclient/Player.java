@@ -104,6 +104,14 @@ public class Player extends ActionBarActivity
         }
     }
 
+	public void pause(View v)
+	{
+	}
+
+	public void stop(View v)
+	{
+	}
+
     private class setupStream extends AsyncTask<Void, Void, StreamToken>
     {
         protected StreamToken doInBackground(Void... voids)

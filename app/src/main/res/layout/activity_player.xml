@@ -11,7 +11,27 @@
         android:layout_height="wrap_content"
         android:text="Play"
         android:id="@+id/play"
+        android:onClick="play"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="play" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pause"
+        android:id="@+id/pause"
+        android:onClick="pause"
+        android:layout_alignTop="@+id/play"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop"
+        android:id="@+id/stop"
+        android:onClick="stop"
+        android:layout_alignTop="@+id/pause"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 </RelativeLayout>
