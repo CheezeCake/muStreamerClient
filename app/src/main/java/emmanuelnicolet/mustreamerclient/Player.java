@@ -89,7 +89,6 @@ public class Player extends ActionBarActivity
             playing = true;
 
             try {
-                //mediaPlayer.setDataSource("http://onchevps.ddns.net:8090/" + url);
 				mediaPlayer.setDataSource(url);
                 mediaPlayer.prepare(); // might take long! (for buffering, etc)
                 mediaPlayer.start();
