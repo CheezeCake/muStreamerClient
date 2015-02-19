@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import Player.StreamToken;
 import Player.IMetaServerPrx;
@@ -21,6 +22,7 @@ public class Player extends ActionBarActivity
     private MediaInfo mediainfo = null;
     private StreamToken token = null;
     private boolean playing = false;
+    public MediaPlayer mediaPlayer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -67,49 +69,68 @@ public class Player extends ActionBarActivity
 
     public void play(View v)
     {
-        if (token == null || playing)
+        System.out.println("PLAY");
+
+        if (token == null)
             return;
 
-        Ice.Communicator ic = MainActivity.ic;
+        Button pa = (Button)findViewById(R.id.pause);
 
-        try {
-            Ice.ObjectPrx base = ic.stringToProxy(MainActivity.METASRV_ENDPOINT_STR);
-            IMetaServerPrx srv = IMetaServerPrxHelper.checkedCast(base);
-            if (srv == null)
-                throw new Error("Invalid proxy");
-
-            srv.play(token);
-
-
-
-
-            String url = token.streamingURL;
-            MediaPlayer mediaPlayer = new MediaPlayer();
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            playing = true;
+        if (!playing) {
+            Ice.Communicator ic = MainActivity.ic;
 
             try {
-				mediaPlayer.setDataSource(url);
-                mediaPlayer.prepare(); // might take long! (for buffering, etc)
-                mediaPlayer.start();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
+                Ice.ObjectPrx base = ic.stringToProxy(MainActivity.METASRV_ENDPOINT_STR);
+                IMetaServerPrx srv = IMetaServerPrxHelper.checkedCast(base);
+                if (srv == null)
+                    throw new Error("Invalid proxy");
 
-        } catch (Ice.LocalException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+                srv.play(token);
+
+
+                String url = token.streamingURL;
+                mediaPlayer = new MediaPlayer();
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                playing = true;
+
+                try {
+                    mediaPlayer.setDataSource(url);
+                    mediaPlayer.prepare(); // might take long! (for buffering, etc)
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    return;
+                }
+
+            } catch (Ice.LocalException e) {
+                e.printStackTrace();
+                return;
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                return;
+            }
         }
+
+        mediaPlayer.start();
+        v.setEnabled(false);
+        pa.setEnabled(true);
     }
 
 	public void pause(View v)
 	{
+        System.out.println("PAUSE");
+        if (playing) {
+            Button pl = (Button) findViewById(R.id.play);
+
+            v.setEnabled(false);
+            pl.setEnabled(true);
+            mediaPlayer.pause();
+        }
 	}
 
 	public void stop(View v)
 	{
+        System.out.println("STOP");
 	}
 
     private class setupStream extends AsyncTask<Void, Void, StreamToken>
