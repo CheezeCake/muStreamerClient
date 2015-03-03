@@ -19,7 +19,7 @@ public class MainActivity extends ActionBarActivity
     public final static String MEDIA_SONG_PATH = "emmanuelnicolet.musicstreamerclient.MEDIA_SONG_PATH";
 
 
-    public static  Communicator ic = null;
+    public static Communicator ic = null;
 
 
 	@Override
