@@ -46,6 +46,12 @@ public class Player extends ActionBarActivity
             new setupStream().execute();
     }
 
+    @Override
+    public void onDestroy()
+    {
+        stopStream();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -133,6 +139,12 @@ public class Player extends ActionBarActivity
 	public void stop(View v)
 	{
         System.out.println("STOP");
+        stopStream();
+        finish();
+	}
+
+    public void stopStream()
+    {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             try {
@@ -143,8 +155,7 @@ public class Player extends ActionBarActivity
             }
         }
 
-        finish();
-	}
+    }
 
     private class setupStream extends AsyncTask<Void, Void, StreamToken>
     {

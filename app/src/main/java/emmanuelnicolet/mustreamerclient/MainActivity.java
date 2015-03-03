@@ -1,12 +1,18 @@
 package emmanuelnicolet.mustreamerclient;
 
 import android.content.Intent;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+
+import java.io.IOException;
 
 import Ice.Communicator;
 
@@ -18,9 +24,9 @@ public class MainActivity extends ActionBarActivity
     public final static String MEDIA_ENDPOINT_STR = "emmanuelnicolet.musicstreamerclient.MEDIA_ENDPOINT_STR";
     public final static String MEDIA_SONG_PATH = "emmanuelnicolet.musicstreamerclient.MEDIA_SONG_PATH";
 
-
     public static Communicator ic = null;
 
+    private AudioRecord recorder = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -78,4 +84,32 @@ public class MainActivity extends ActionBarActivity
 		intent.putExtra(SEARCH_STRING, text);
 		startActivity(intent);
 	}
+
+    public void onTalkClick(View v)
+    {
+        if (recorder != null) {
+            System.out.println("STOP RECORDING");
+            recorder.stop();
+
+            recorder.release();
+            recorder = null;
+        }
+        else {
+            new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("START RECORDING");
+                    int N = AudioRecord.getMinBufferSize(8000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
+
+                    recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
+                            8000,
+                            AudioFormat.CHANNEL_IN_MONO,
+                            AudioFormat.ENCODING_PCM_16BIT,
+                            N * 10);
+
+                    recorder.startRecording();
+                }
+            }.run();
+        }
+    }
 }

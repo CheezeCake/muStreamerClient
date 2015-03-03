@@ -65,7 +65,7 @@ public class SearchResults extends ListActivity
 			} catch (Ice.LocalException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
-				System.err.println(e.getMessage());
+				System.err.println(e);
 			}
 
 			return medias;
