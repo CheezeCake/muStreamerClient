@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import Ice.LocalException;
 import Player.StreamToken;
 import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
@@ -22,7 +23,8 @@ public class Player extends ActionBarActivity
     private MediaInfo mediainfo = null;
     private StreamToken token = null;
     private boolean playing = false;
-    public MediaPlayer mediaPlayer = null;
+    private MediaPlayer mediaPlayer = null;
+    private IMetaServerPrx srv = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -131,6 +133,17 @@ public class Player extends ActionBarActivity
 	public void stop(View v)
 	{
         System.out.println("STOP");
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            try {
+                srv.stop(token);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        finish();
 	}
 
     private class setupStream extends AsyncTask<Void, Void, StreamToken>
@@ -142,7 +155,7 @@ public class Player extends ActionBarActivity
 
             try {
                 Ice.ObjectPrx base = ic.stringToProxy(MainActivity.METASRV_ENDPOINT_STR);
-                IMetaServerPrx srv = IMetaServerPrxHelper.checkedCast(base);
+                srv = IMetaServerPrxHelper.checkedCast(base);
                 if (srv == null)
                     throw new Error("Invalid proxy");
 
