@@ -26,12 +26,19 @@ public class Player extends ActionBarActivity
     private MediaPlayer mediaPlayer = null;
     private IMetaServerPrx srv = null;
 
+	Button pauseButton;
+	Button playButton;
+	Button stopButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_player);
 
+		pauseButton = (Button)findViewById(R.id.pause);
+		playButton = (Button)findViewById(R.id.play);
+		stopButton = (Button)findViewById(R.id.stop);
 
 		if (mediainfo == null) {
             mediainfo = new MediaInfo();
@@ -42,15 +49,23 @@ public class Player extends ActionBarActivity
         mediainfo.endpointStr = intent.getStringExtra(MainActivity.MEDIA_ENDPOINT_STR);
         mediainfo.media.path = intent.getStringExtra(MainActivity.MEDIA_SONG_PATH);
 
-        if (token == null)
-            new setupStream().execute();
+        if (token == null) {
+			new Runnable() {
+				@Override
+				public void run()
+				{
+					setupStream();
+				}
+			}.run();
+		}
     }
 
     @Override
     public void onDestroy()
     {
 		super.onDestroy();
-        stopStream();
+		System.out.println("STOP");
+		stopStream();
     }
 
 
@@ -80,67 +95,78 @@ public class Player extends ActionBarActivity
     {
         System.out.println("PLAY");
 
-        if (token == null)
+        if (srv == null || token == null)
             return;
 
-        Button pa = (Button)findViewById(R.id.pause);
-
         if (!playing) {
-            Ice.Communicator ic = MainActivity.ic;
+			playing = true;
+			playButton.setEnabled(false);
 
-            try {
-                Ice.ObjectPrx base = ic.stringToProxy(MainActivity.METASRV_ENDPOINT_STR);
-                IMetaServerPrx srv = IMetaServerPrxHelper.checkedCast(base);
-                if (srv == null)
-                    throw new Error("Invalid proxy");
+			new Thread(new Runnable() {
+				@Override
+				public void run()
+				{
+					boolean playEnabled = false;
+					boolean pauseEnabled = false;
 
-                srv.play(token);
+					try {
+						srv.play(token);
 
+						String url = token.streamingURL;
+						mediaPlayer = new MediaPlayer();
+						mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
-                String url = token.streamingURL;
-                mediaPlayer = new MediaPlayer();
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                playing = true;
+						try {
+							mediaPlayer.setDataSource(url);
+							mediaPlayer.prepare(); // might take long! (for buffering, etc)
 
-                try {
-                    mediaPlayer.setDataSource(url);
-                    mediaPlayer.prepare(); // might take long! (for buffering, etc)
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                    return;
-                }
+							mediaPlayer.start();
+							pauseEnabled = true;
+						} catch (Exception e) {
+							e.printStackTrace();
+							playEnabled = true;
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+						playing = false;
+						playEnabled = true;
+					}
 
-            } catch (Ice.LocalException e) {
-                e.printStackTrace();
-                return;
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-                return;
-            }
+					setPlayPause(playEnabled, pauseEnabled);
+				}
+			}).start();
         }
-
-        mediaPlayer.start();
-        v.setEnabled(false);
-        pa.setEnabled(true);
+		else {
+			mediaPlayer.start();
+			playButton.setEnabled(false);
+			pauseButton.setEnabled(true);
+		}
     }
+
+	private void setPlayPause(final boolean pl, final boolean pa)
+	{
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run()
+			{
+				playButton.setEnabled(pl);
+				pauseButton.setEnabled(pa);
+			}
+		});
+	}
 
 	public void pause(View v)
 	{
         System.out.println("PAUSE");
         if (playing) {
-            Button pl = (Button) findViewById(R.id.play);
-
             v.setEnabled(false);
-            pl.setEnabled(true);
+            playButton.setEnabled(true);
             mediaPlayer.pause();
         }
 	}
 
 	public void stop(View v)
 	{
-        System.out.println("STOP");
-        stopStream();
         finish();
 	}
 
@@ -155,37 +181,27 @@ public class Player extends ActionBarActivity
                 e.printStackTrace();
             }
         }
-
     }
 
-    private class setupStream extends AsyncTask<Void, Void, StreamToken>
-    {
-        protected StreamToken doInBackground(Void... voids)
-        {
-            Ice.Communicator ic = MainActivity.ic;
-            StreamToken t = null;
+	private void setupStream()
+	{
+		Ice.Communicator ic = MainActivity.ic;
 
-            try {
-                Ice.ObjectPrx base = ic.stringToProxy(MainActivity.METASRV_ENDPOINT_STR);
-                srv = IMetaServerPrxHelper.checkedCast(base);
-                if (srv == null)
-                    throw new Error("Invalid proxy");
+		try {
+			Ice.ObjectPrx base = ic.stringToProxy(MainActivity.METASRV_ENDPOINT_STR);
+			srv = IMetaServerPrxHelper.checkedCast(base);
+			if (srv == null)
+				throw new Error("Invalid proxy");
 
-                t = srv.setupStreaming(mediainfo);
+			token = srv.setupStreaming(mediainfo);
+			System.out.println("STREAM URL: " + token.streamingURL);
+		} catch (Ice.LocalException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 
-            } catch (Ice.LocalException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-            }
-
-            return t;
-        }
-
-        protected void onPostExecute(StreamToken t)
-        {
-            token = t;
-            System.out.println("ONCHE " + t.streamingURL);
-        }
-    }
+		playButton.setEnabled(true);
+		stopButton.setEnabled(true);
+	}
 }

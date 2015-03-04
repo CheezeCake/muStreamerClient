@@ -26,12 +26,13 @@ class AudioRecorder
 				REC_ENC, BUFFER_SIZE);
 		recorder.startRecording();
 		isRecording = true;
-		new Runnable() {
+		new Thread(new Runnable() {
 			@Override
-			public void run() {
+			public void run()
+			{
 				saveAudioData();
 			}
-		}.run();
+		}).start();
 	}
 
 	public void stopRecording()
