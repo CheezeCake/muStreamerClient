@@ -26,7 +26,7 @@ public class MainActivity extends ActionBarActivity
 
     public static Communicator ic = null;
 
-    private AudioRecord recorder = null;
+    private AudioRecorder recorder = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -87,29 +87,15 @@ public class MainActivity extends ActionBarActivity
 
     public void onTalkClick(View v)
     {
-        if (recorder != null) {
-            System.out.println("STOP RECORDING");
-            recorder.stop();
-
-            recorder.release();
-            recorder = null;
+        if (recorder == null) {
+			System.out.println("START RECORDING");
+			recorder = new AudioRecorder();
+			recorder.startRecording();
         }
         else {
-            new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("START RECORDING");
-                    int N = AudioRecord.getMinBufferSize(8000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
-
-                    recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
-                            8000,
-                            AudioFormat.CHANNEL_IN_MONO,
-                            AudioFormat.ENCODING_PCM_16BIT,
-                            N * 10);
-
-                    recorder.startRecording();
-                }
-            }.run();
+			System.out.println("STOP RECORDING");
+			recorder.stopRecording();
+			recorder = null;
         }
     }
 }

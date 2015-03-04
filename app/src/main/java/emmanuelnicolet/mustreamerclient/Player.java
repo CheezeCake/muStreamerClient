@@ -49,6 +49,7 @@ public class Player extends ActionBarActivity
     @Override
     public void onDestroy()
     {
+		super.onDestroy();
         stopStream();
     }
 
