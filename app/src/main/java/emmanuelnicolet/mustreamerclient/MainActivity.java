@@ -89,27 +89,9 @@ public class MainActivity extends ActionBarActivity
     {
         if (recorder != null) {
             System.out.println("STOP RECORDING");
-            recorder.stop();
-
-            recorder.release();
-            recorder = null;
         }
         else {
-            new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("START RECORDING");
-                    int N = AudioRecord.getMinBufferSize(8000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
-
-                    recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
-                            8000,
-                            AudioFormat.CHANNEL_IN_MONO,
-                            AudioFormat.ENCODING_PCM_16BIT,
-                            N * 10);
-
-                    recorder.startRecording();
-                }
-            }.run();
+            System.out.println("START RECORDING");
         }
     }
 }
