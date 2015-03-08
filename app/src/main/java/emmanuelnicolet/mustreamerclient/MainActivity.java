@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 
 public class MainActivity extends ActionBarActivity
 {
 	public final static String SEARCH_STRING = "emmanuelnicolet.mustreamerclient.SEARCH_STRING";
+	public final static String SEARCH_TYPE = "emmanuelnicolet.mustreamerclient.SEARCH_TYPE";
+
 	public final static String METASRV_ENDPOINT_STR = "MetaServer:default -h onche.ovh -p 10000";
     public final static String MEDIA_ENDPOINT_STR = "emmanuelnicolet.musicstreamerclient.MEDIA_ENDPOINT_STR";
     public final static String MEDIA_SONG_PATH = "emmanuelnicolet.musicstreamerclient.MEDIA_SONG_PATH";
@@ -64,19 +67,42 @@ public class MainActivity extends ActionBarActivity
 		}
 	}
 
-	public void onSearchClick(View v)
+	public void search(View v)
 	{
+		CheckBox artist = (CheckBox)findViewById(R.id.artist);
+		boolean byArtist = artist.isChecked();
+		CheckBox title = (CheckBox)findViewById(R.id.title);
+		boolean byTitle = title.isChecked();
 		EditText searchText = (EditText)findViewById(R.id.searchText);
 		String text = searchText.getText().toString();
-		if (text.isEmpty())
-			return;
 
-		Intent intent = new Intent(this, SearchResults.class);
-		intent.putExtra(SEARCH_STRING, text);
+		if (!text.isEmpty() && (byArtist || byTitle)) {
+			String searchType;
+
+			if (byArtist) {
+				if (byTitle)
+					searchType = "everything";
+				else
+					searchType = "artist";
+			}
+			else {
+				searchType = "title";
+			}
+
+			Intent intent = new Intent(this, SearchResults.class);
+			intent.putExtra(SEARCH_STRING, text);
+			intent.putExtra(SEARCH_TYPE, searchType);
+			startActivity(intent);
+		}
+	}
+
+	public void listSongs(View v)
+	{
+		Intent intent = new Intent(this, ListSongsResults.class);
 		startActivity(intent);
 	}
 
-    public void onTalkClick(View v)
+    public void talk(View v)
     {
         if (recorder != null) {
             System.out.println("STOP RECORDING");

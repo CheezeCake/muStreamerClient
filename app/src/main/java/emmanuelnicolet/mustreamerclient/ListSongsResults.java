@@ -1,26 +1,16 @@
 package emmanuelnicolet.mustreamerclient;
 
-import android.app.ListActivity;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import Player.MediaInfo;
 import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
 
-
-public class SearchResults extends AbstractResultActivity
+public class ListSongsResults extends AbstractResultActivity
 {
-	private String searchText;
-	private String searchType;
 	private List<MediaInfo> mediainfos = new ArrayList<MediaInfo>();
 
 	@Override
@@ -28,11 +18,7 @@ public class SearchResults extends AbstractResultActivity
 	{
 		super.onCreate(savedInstanceState);
 
-		Intent intent = getIntent();
-		searchText = intent.getStringExtra(MainActivity.SEARCH_STRING);
-		searchType = intent.getStringExtra(MainActivity.SEARCH_TYPE);
-
-		new FetchResults().execute(new String[] {MainActivity.METASRV_ENDPOINT_STR, searchText});
+		new FetchResults().execute(new String[] {MainActivity.METASRV_ENDPOINT_STR});
 	}
 
 	private class FetchResults extends AbstractFetchResults
@@ -48,12 +34,7 @@ public class SearchResults extends AbstractResultActivity
 				if (srv == null)
 					throw new Error("Invalid proxy");
 
-				if (searchType.equals("everything"))
-					medias = srv.find(strs[1]);
-				else if (searchType.equals("artist"))
-					medias = srv.findByArtist(strs[1]);
-				else
-					medias = srv.findByTitle(strs[1]);
+				medias = srv.listSongs();
 
 			} catch (Ice.LocalException e) {
 				e.printStackTrace();
@@ -65,3 +46,4 @@ public class SearchResults extends AbstractResultActivity
 		}
 	}
 }
+
