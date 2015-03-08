@@ -24,8 +24,6 @@ public class MainActivity extends ActionBarActivity
     public final static String MEDIA_ENDPOINT_STR = "emmanuelnicolet.musicstreamerclient.MEDIA_ENDPOINT_STR";
     public final static String MEDIA_SONG_PATH = "emmanuelnicolet.musicstreamerclient.MEDIA_SONG_PATH";
 
-    public static Communicator ic = null;
-
     private AudioRecord recorder = null;
 
 	@Override
@@ -33,8 +31,8 @@ public class MainActivity extends ActionBarActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		if (ic == null)
-			ic = Ice.Util.initialize(new String[] {""});
+		if (IceData.iceCommunicator == null)
+			IceData.iceCommunicator = Ice.Util.initialize(new String[] {""});
 	}
 
 	@Override
@@ -64,11 +62,11 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	public void onDestroy()
 	{
-		if (ic != null) {
+		if (IceData.iceCommunicator != null) {
 			try {
-				ic.destroy();
+				IceData.iceCommunicator.destroy();
 			} catch (Exception e) {
-				System.err.println(e.getMessage());
+				System.err.println(e);
 			}
 		}
 	}

@@ -51,7 +51,7 @@ public class SearchResults extends ListActivity
 	{
 		protected MediaInfo[] doInBackground(String... strs)
 		{
-			Ice.Communicator ic = MainActivity.ic;
+			Ice.Communicator ic = IceData.iceCommunicator;
 			MediaInfo[] medias = null;
 
 			try {

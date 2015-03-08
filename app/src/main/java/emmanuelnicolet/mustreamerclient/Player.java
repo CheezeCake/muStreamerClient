@@ -185,7 +185,7 @@ public class Player extends ActionBarActivity
 
 	private void setupStream()
 	{
-		Ice.Communicator ic = MainActivity.ic;
+		Ice.Communicator ic = IceData.iceCommunicator;
 
 		try {
 			Ice.ObjectPrx base = ic.stringToProxy(MainActivity.METASRV_ENDPOINT_STR);
