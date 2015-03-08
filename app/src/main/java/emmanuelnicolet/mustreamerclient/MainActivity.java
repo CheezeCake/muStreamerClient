@@ -96,8 +96,7 @@ public class MainActivity extends ActionBarActivity
 			tv.setText(metaServerPort);
 
 			builder.setView(v)
-					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-					{
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id)
 						{
@@ -110,8 +109,7 @@ public class MainActivity extends ActionBarActivity
 						}
 
 					})
-					.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-					{
+					.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick (DialogInterface dialog, int id)
 							{
