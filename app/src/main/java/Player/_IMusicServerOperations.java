@@ -30,6 +30,12 @@ public interface _IMusicServerOperations
 
     Song[] find(String s, Ice.Current __current);
 
+    Song[] findByArtist(String s, Ice.Current __current);
+
+    Song[] findByTitle(String s, Ice.Current __current);
+
+    Song[] listSongs(Ice.Current __current);
+
     StreamToken setupStreaming(String path, String clientIP, String clientPort, Ice.Current __current);
 
     void play(StreamToken token, Ice.Current __current);

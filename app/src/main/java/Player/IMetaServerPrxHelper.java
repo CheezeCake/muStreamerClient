@@ -261,6 +261,406 @@ public final class IMetaServerPrxHelper extends Ice.ObjectPrxHelperBase implemen
         }
     }
 
+    private static final String __findByArtist_name = "findByArtist";
+
+    public MediaInfo[] findByArtist(String s)
+    {
+        return findByArtist(s, null, false);
+    }
+
+    public MediaInfo[] findByArtist(String s, java.util.Map<String, String> __ctx)
+    {
+        return findByArtist(s, __ctx, true);
+    }
+
+    private MediaInfo[] findByArtist(String s, java.util.Map<String, String> __ctx, boolean __explicitCtx)
+    {
+        if(__explicitCtx && __ctx == null)
+        {
+            __ctx = _emptyContext;
+        }
+        final Ice.Instrumentation.InvocationObserver __observer = IceInternal.ObserverHelper.get(this, "findByArtist", __ctx);
+        int __cnt = 0;
+        try
+        {
+            while(true)
+            {
+                Ice._ObjectDel __delBase = null;
+                try
+                {
+                    __checkTwowayOnly("findByArtist");
+                    __delBase = __getDelegate(false);
+                    _IMetaServerDel __del = (_IMetaServerDel)__delBase;
+                    return __del.findByArtist(s, __ctx, __observer);
+                }
+                catch(IceInternal.LocalExceptionWrapper __ex)
+                {
+                    __handleExceptionWrapper(__delBase, __ex, __observer);
+                }
+                catch(Ice.LocalException __ex)
+                {
+                    __cnt = __handleException(__delBase, __ex, null, __cnt, __observer);
+                }
+            }
+        }
+        finally
+        {
+            if(__observer != null)
+            {
+                __observer.detach();
+            }
+        }
+    }
+
+    public Ice.AsyncResult begin_findByArtist(String s)
+    {
+        return begin_findByArtist(s, null, false, null);
+    }
+
+    public Ice.AsyncResult begin_findByArtist(String s, java.util.Map<String, String> __ctx)
+    {
+        return begin_findByArtist(s, __ctx, true, null);
+    }
+
+    public Ice.AsyncResult begin_findByArtist(String s, Ice.Callback __cb)
+    {
+        return begin_findByArtist(s, null, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_findByArtist(String s, java.util.Map<String, String> __ctx, Ice.Callback __cb)
+    {
+        return begin_findByArtist(s, __ctx, true, __cb);
+    }
+
+    public Ice.AsyncResult begin_findByArtist(String s, Callback_IMetaServer_findByArtist __cb)
+    {
+        return begin_findByArtist(s, null, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_findByArtist(String s, java.util.Map<String, String> __ctx, Callback_IMetaServer_findByArtist __cb)
+    {
+        return begin_findByArtist(s, __ctx, true, __cb);
+    }
+
+    private Ice.AsyncResult begin_findByArtist(String s, java.util.Map<String, String> __ctx, boolean __explicitCtx, IceInternal.CallbackBase __cb)
+    {
+        __checkAsyncTwowayOnly(__findByArtist_name);
+        IceInternal.OutgoingAsync __result = new IceInternal.OutgoingAsync(this, __findByArtist_name, __cb);
+        try
+        {
+            __result.__prepare(__findByArtist_name, Ice.OperationMode.Normal, __ctx, __explicitCtx);
+            IceInternal.BasicStream __os = __result.__startWriteParams(Ice.FormatType.DefaultFormat);
+            __os.writeString(s);
+            __result.__endWriteParams();
+            __result.__send(true);
+        }
+        catch(Ice.LocalException __ex)
+        {
+            __result.__exceptionAsync(__ex);
+        }
+        return __result;
+    }
+
+    public MediaInfo[] end_findByArtist(Ice.AsyncResult __result)
+    {
+        Ice.AsyncResult.__check(__result, this, __findByArtist_name);
+        boolean __ok = __result.__wait();
+        try
+        {
+            if(!__ok)
+            {
+                try
+                {
+                    __result.__throwUserException();
+                }
+                catch(Ice.UserException __ex)
+                {
+                    throw new Ice.UnknownUserException(__ex.ice_name(), __ex);
+                }
+            }
+            IceInternal.BasicStream __is = __result.__startReadParams();
+            MediaInfo[] __ret;
+            __ret = MediaInfoSeqHelper.read(__is);
+            __result.__endReadParams();
+            return __ret;
+        }
+        catch(Ice.LocalException ex)
+        {
+            Ice.Instrumentation.InvocationObserver __obsv = __result.__getObserver();
+            if(__obsv != null)
+            {
+                __obsv.failed(ex.ice_name());
+            }
+            throw ex;
+        }
+    }
+
+    private static final String __findByTitle_name = "findByTitle";
+
+    public MediaInfo[] findByTitle(String s)
+    {
+        return findByTitle(s, null, false);
+    }
+
+    public MediaInfo[] findByTitle(String s, java.util.Map<String, String> __ctx)
+    {
+        return findByTitle(s, __ctx, true);
+    }
+
+    private MediaInfo[] findByTitle(String s, java.util.Map<String, String> __ctx, boolean __explicitCtx)
+    {
+        if(__explicitCtx && __ctx == null)
+        {
+            __ctx = _emptyContext;
+        }
+        final Ice.Instrumentation.InvocationObserver __observer = IceInternal.ObserverHelper.get(this, "findByTitle", __ctx);
+        int __cnt = 0;
+        try
+        {
+            while(true)
+            {
+                Ice._ObjectDel __delBase = null;
+                try
+                {
+                    __checkTwowayOnly("findByTitle");
+                    __delBase = __getDelegate(false);
+                    _IMetaServerDel __del = (_IMetaServerDel)__delBase;
+                    return __del.findByTitle(s, __ctx, __observer);
+                }
+                catch(IceInternal.LocalExceptionWrapper __ex)
+                {
+                    __handleExceptionWrapper(__delBase, __ex, __observer);
+                }
+                catch(Ice.LocalException __ex)
+                {
+                    __cnt = __handleException(__delBase, __ex, null, __cnt, __observer);
+                }
+            }
+        }
+        finally
+        {
+            if(__observer != null)
+            {
+                __observer.detach();
+            }
+        }
+    }
+
+    public Ice.AsyncResult begin_findByTitle(String s)
+    {
+        return begin_findByTitle(s, null, false, null);
+    }
+
+    public Ice.AsyncResult begin_findByTitle(String s, java.util.Map<String, String> __ctx)
+    {
+        return begin_findByTitle(s, __ctx, true, null);
+    }
+
+    public Ice.AsyncResult begin_findByTitle(String s, Ice.Callback __cb)
+    {
+        return begin_findByTitle(s, null, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_findByTitle(String s, java.util.Map<String, String> __ctx, Ice.Callback __cb)
+    {
+        return begin_findByTitle(s, __ctx, true, __cb);
+    }
+
+    public Ice.AsyncResult begin_findByTitle(String s, Callback_IMetaServer_findByTitle __cb)
+    {
+        return begin_findByTitle(s, null, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_findByTitle(String s, java.util.Map<String, String> __ctx, Callback_IMetaServer_findByTitle __cb)
+    {
+        return begin_findByTitle(s, __ctx, true, __cb);
+    }
+
+    private Ice.AsyncResult begin_findByTitle(String s, java.util.Map<String, String> __ctx, boolean __explicitCtx, IceInternal.CallbackBase __cb)
+    {
+        __checkAsyncTwowayOnly(__findByTitle_name);
+        IceInternal.OutgoingAsync __result = new IceInternal.OutgoingAsync(this, __findByTitle_name, __cb);
+        try
+        {
+            __result.__prepare(__findByTitle_name, Ice.OperationMode.Normal, __ctx, __explicitCtx);
+            IceInternal.BasicStream __os = __result.__startWriteParams(Ice.FormatType.DefaultFormat);
+            __os.writeString(s);
+            __result.__endWriteParams();
+            __result.__send(true);
+        }
+        catch(Ice.LocalException __ex)
+        {
+            __result.__exceptionAsync(__ex);
+        }
+        return __result;
+    }
+
+    public MediaInfo[] end_findByTitle(Ice.AsyncResult __result)
+    {
+        Ice.AsyncResult.__check(__result, this, __findByTitle_name);
+        boolean __ok = __result.__wait();
+        try
+        {
+            if(!__ok)
+            {
+                try
+                {
+                    __result.__throwUserException();
+                }
+                catch(Ice.UserException __ex)
+                {
+                    throw new Ice.UnknownUserException(__ex.ice_name(), __ex);
+                }
+            }
+            IceInternal.BasicStream __is = __result.__startReadParams();
+            MediaInfo[] __ret;
+            __ret = MediaInfoSeqHelper.read(__is);
+            __result.__endReadParams();
+            return __ret;
+        }
+        catch(Ice.LocalException ex)
+        {
+            Ice.Instrumentation.InvocationObserver __obsv = __result.__getObserver();
+            if(__obsv != null)
+            {
+                __obsv.failed(ex.ice_name());
+            }
+            throw ex;
+        }
+    }
+
+    private static final String __listSongs_name = "listSongs";
+
+    public MediaInfo[] listSongs()
+    {
+        return listSongs(null, false);
+    }
+
+    public MediaInfo[] listSongs(java.util.Map<String, String> __ctx)
+    {
+        return listSongs(__ctx, true);
+    }
+
+    private MediaInfo[] listSongs(java.util.Map<String, String> __ctx, boolean __explicitCtx)
+    {
+        if(__explicitCtx && __ctx == null)
+        {
+            __ctx = _emptyContext;
+        }
+        final Ice.Instrumentation.InvocationObserver __observer = IceInternal.ObserverHelper.get(this, "listSongs", __ctx);
+        int __cnt = 0;
+        try
+        {
+            while(true)
+            {
+                Ice._ObjectDel __delBase = null;
+                try
+                {
+                    __checkTwowayOnly("listSongs");
+                    __delBase = __getDelegate(false);
+                    _IMetaServerDel __del = (_IMetaServerDel)__delBase;
+                    return __del.listSongs(__ctx, __observer);
+                }
+                catch(IceInternal.LocalExceptionWrapper __ex)
+                {
+                    __handleExceptionWrapper(__delBase, __ex, __observer);
+                }
+                catch(Ice.LocalException __ex)
+                {
+                    __cnt = __handleException(__delBase, __ex, null, __cnt, __observer);
+                }
+            }
+        }
+        finally
+        {
+            if(__observer != null)
+            {
+                __observer.detach();
+            }
+        }
+    }
+
+    public Ice.AsyncResult begin_listSongs()
+    {
+        return begin_listSongs(null, false, null);
+    }
+
+    public Ice.AsyncResult begin_listSongs(java.util.Map<String, String> __ctx)
+    {
+        return begin_listSongs(__ctx, true, null);
+    }
+
+    public Ice.AsyncResult begin_listSongs(Ice.Callback __cb)
+    {
+        return begin_listSongs(null, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_listSongs(java.util.Map<String, String> __ctx, Ice.Callback __cb)
+    {
+        return begin_listSongs(__ctx, true, __cb);
+    }
+
+    public Ice.AsyncResult begin_listSongs(Callback_IMetaServer_listSongs __cb)
+    {
+        return begin_listSongs(null, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_listSongs(java.util.Map<String, String> __ctx, Callback_IMetaServer_listSongs __cb)
+    {
+        return begin_listSongs(__ctx, true, __cb);
+    }
+
+    private Ice.AsyncResult begin_listSongs(java.util.Map<String, String> __ctx, boolean __explicitCtx, IceInternal.CallbackBase __cb)
+    {
+        __checkAsyncTwowayOnly(__listSongs_name);
+        IceInternal.OutgoingAsync __result = new IceInternal.OutgoingAsync(this, __listSongs_name, __cb);
+        try
+        {
+            __result.__prepare(__listSongs_name, Ice.OperationMode.Normal, __ctx, __explicitCtx);
+            __result.__writeEmptyParams();
+            __result.__send(true);
+        }
+        catch(Ice.LocalException __ex)
+        {
+            __result.__exceptionAsync(__ex);
+        }
+        return __result;
+    }
+
+    public MediaInfo[] end_listSongs(Ice.AsyncResult __result)
+    {
+        Ice.AsyncResult.__check(__result, this, __listSongs_name);
+        boolean __ok = __result.__wait();
+        try
+        {
+            if(!__ok)
+            {
+                try
+                {
+                    __result.__throwUserException();
+                }
+                catch(Ice.UserException __ex)
+                {
+                    throw new Ice.UnknownUserException(__ex.ice_name(), __ex);
+                }
+            }
+            IceInternal.BasicStream __is = __result.__startReadParams();
+            MediaInfo[] __ret;
+            __ret = MediaInfoSeqHelper.read(__is);
+            __result.__endReadParams();
+            return __ret;
+        }
+        catch(Ice.LocalException ex)
+        {
+            Ice.Instrumentation.InvocationObserver __obsv = __result.__getObserver();
+            if(__obsv != null)
+            {
+                __obsv.failed(ex.ice_name());
+            }
+            throw ex;
+        }
+    }
+
     private static final String __play_name = "play";
 
     public void play(StreamToken token)

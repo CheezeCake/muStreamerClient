@@ -80,6 +80,21 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
         return find(s, null);
     }
 
+    public final MediaInfo[] findByArtist(String s)
+    {
+        return findByArtist(s, null);
+    }
+
+    public final MediaInfo[] findByTitle(String s)
+    {
+        return findByTitle(s, null);
+    }
+
+    public final MediaInfo[] listSongs()
+    {
+        return listSongs(null);
+    }
+
     public final void play(StreamToken token)
     {
         play(token, null);
@@ -142,6 +157,45 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
         return Ice.DispatchStatus.DispatchOK;
     }
 
+    public static Ice.DispatchStatus ___findByArtist(IMetaServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
+    {
+        __checkMode(Ice.OperationMode.Normal, __current.mode);
+        IceInternal.BasicStream __is = __inS.startReadParams();
+        String s;
+        s = __is.readString();
+        __inS.endReadParams();
+        MediaInfo[] __ret = __obj.findByArtist(s, __current);
+        IceInternal.BasicStream __os = __inS.__startWriteParams(Ice.FormatType.DefaultFormat);
+        MediaInfoSeqHelper.write(__os, __ret);
+        __inS.__endWriteParams(true);
+        return Ice.DispatchStatus.DispatchOK;
+    }
+
+    public static Ice.DispatchStatus ___findByTitle(IMetaServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
+    {
+        __checkMode(Ice.OperationMode.Normal, __current.mode);
+        IceInternal.BasicStream __is = __inS.startReadParams();
+        String s;
+        s = __is.readString();
+        __inS.endReadParams();
+        MediaInfo[] __ret = __obj.findByTitle(s, __current);
+        IceInternal.BasicStream __os = __inS.__startWriteParams(Ice.FormatType.DefaultFormat);
+        MediaInfoSeqHelper.write(__os, __ret);
+        __inS.__endWriteParams(true);
+        return Ice.DispatchStatus.DispatchOK;
+    }
+
+    public static Ice.DispatchStatus ___listSongs(IMetaServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
+    {
+        __checkMode(Ice.OperationMode.Normal, __current.mode);
+        __inS.readEmptyParams();
+        MediaInfo[] __ret = __obj.listSongs(__current);
+        IceInternal.BasicStream __os = __inS.__startWriteParams(Ice.FormatType.DefaultFormat);
+        MediaInfoSeqHelper.write(__os, __ret);
+        __inS.__endWriteParams(true);
+        return Ice.DispatchStatus.DispatchOK;
+    }
+
     public static Ice.DispatchStatus ___setupStreaming(IMetaServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
     {
         __checkMode(Ice.OperationMode.Normal, __current.mode);
@@ -187,10 +241,13 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
     {
         "add",
         "find",
+        "findByArtist",
+        "findByTitle",
         "ice_id",
         "ice_ids",
         "ice_isA",
         "ice_ping",
+        "listSongs",
         "play",
         "remove",
         "setupStreaming",
@@ -217,33 +274,45 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
             }
             case 2:
             {
-                return ___ice_id(this, in, __current);
+                return ___findByArtist(this, in, __current);
             }
             case 3:
             {
-                return ___ice_ids(this, in, __current);
+                return ___findByTitle(this, in, __current);
             }
             case 4:
             {
-                return ___ice_isA(this, in, __current);
+                return ___ice_id(this, in, __current);
             }
             case 5:
             {
-                return ___ice_ping(this, in, __current);
+                return ___ice_ids(this, in, __current);
             }
             case 6:
             {
-                return ___play(this, in, __current);
+                return ___ice_isA(this, in, __current);
             }
             case 7:
             {
-                return ___remove(this, in, __current);
+                return ___ice_ping(this, in, __current);
             }
             case 8:
             {
-                return ___setupStreaming(this, in, __current);
+                return ___listSongs(this, in, __current);
             }
             case 9:
+            {
+                return ___play(this, in, __current);
+            }
+            case 10:
+            {
+                return ___remove(this, in, __current);
+            }
+            case 11:
+            {
+                return ___setupStreaming(this, in, __current);
+            }
+            case 12:
             {
                 return ___stop(this, in, __current);
             }

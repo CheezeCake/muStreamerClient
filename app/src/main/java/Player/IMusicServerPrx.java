@@ -82,6 +82,60 @@ public interface IMusicServerPrx extends Ice.ObjectPrx
 
     public Song[] end_find(Ice.AsyncResult __result);
 
+    public Song[] findByArtist(String s);
+
+    public Song[] findByArtist(String s, java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_findByArtist(String s);
+
+    public Ice.AsyncResult begin_findByArtist(String s, java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_findByArtist(String s, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_findByArtist(String s, java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_findByArtist(String s, Callback_IMusicServer_findByArtist __cb);
+
+    public Ice.AsyncResult begin_findByArtist(String s, java.util.Map<String, String> __ctx, Callback_IMusicServer_findByArtist __cb);
+
+    public Song[] end_findByArtist(Ice.AsyncResult __result);
+
+    public Song[] findByTitle(String s);
+
+    public Song[] findByTitle(String s, java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_findByTitle(String s);
+
+    public Ice.AsyncResult begin_findByTitle(String s, java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_findByTitle(String s, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_findByTitle(String s, java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_findByTitle(String s, Callback_IMusicServer_findByTitle __cb);
+
+    public Ice.AsyncResult begin_findByTitle(String s, java.util.Map<String, String> __ctx, Callback_IMusicServer_findByTitle __cb);
+
+    public Song[] end_findByTitle(Ice.AsyncResult __result);
+
+    public Song[] listSongs();
+
+    public Song[] listSongs(java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_listSongs();
+
+    public Ice.AsyncResult begin_listSongs(java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_listSongs(Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_listSongs(java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_listSongs(Callback_IMusicServer_listSongs __cb);
+
+    public Ice.AsyncResult begin_listSongs(java.util.Map<String, String> __ctx, Callback_IMusicServer_listSongs __cb);
+
+    public Song[] end_listSongs(Ice.AsyncResult __result);
+
     public StreamToken setupStreaming(String path, String clientIP, String clientPort);
 
     public StreamToken setupStreaming(String path, String clientIP, String clientPort, java.util.Map<String, String> __ctx);

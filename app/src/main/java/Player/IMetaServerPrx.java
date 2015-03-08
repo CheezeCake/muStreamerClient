@@ -76,6 +76,60 @@ public interface IMetaServerPrx extends Ice.ObjectPrx
 
     public MediaInfo[] end_find(Ice.AsyncResult __result);
 
+    public MediaInfo[] findByArtist(String s);
+
+    public MediaInfo[] findByArtist(String s, java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_findByArtist(String s);
+
+    public Ice.AsyncResult begin_findByArtist(String s, java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_findByArtist(String s, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_findByArtist(String s, java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_findByArtist(String s, Callback_IMetaServer_findByArtist __cb);
+
+    public Ice.AsyncResult begin_findByArtist(String s, java.util.Map<String, String> __ctx, Callback_IMetaServer_findByArtist __cb);
+
+    public MediaInfo[] end_findByArtist(Ice.AsyncResult __result);
+
+    public MediaInfo[] findByTitle(String s);
+
+    public MediaInfo[] findByTitle(String s, java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_findByTitle(String s);
+
+    public Ice.AsyncResult begin_findByTitle(String s, java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_findByTitle(String s, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_findByTitle(String s, java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_findByTitle(String s, Callback_IMetaServer_findByTitle __cb);
+
+    public Ice.AsyncResult begin_findByTitle(String s, java.util.Map<String, String> __ctx, Callback_IMetaServer_findByTitle __cb);
+
+    public MediaInfo[] end_findByTitle(Ice.AsyncResult __result);
+
+    public MediaInfo[] listSongs();
+
+    public MediaInfo[] listSongs(java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_listSongs();
+
+    public Ice.AsyncResult begin_listSongs(java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_listSongs(Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_listSongs(java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_listSongs(Callback_IMetaServer_listSongs __cb);
+
+    public Ice.AsyncResult begin_listSongs(java.util.Map<String, String> __ctx, Callback_IMetaServer_listSongs __cb);
+
+    public MediaInfo[] end_listSongs(Ice.AsyncResult __result);
+
     public StreamToken setupStreaming(MediaInfo media);
 
     public StreamToken setupStreaming(MediaInfo media, java.util.Map<String, String> __ctx);

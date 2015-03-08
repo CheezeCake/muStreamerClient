@@ -28,6 +28,12 @@ public interface _IMetaServerOperationsNC
 
     MediaInfo[] find(String s);
 
+    MediaInfo[] findByArtist(String s);
+
+    MediaInfo[] findByTitle(String s);
+
+    MediaInfo[] listSongs();
+
     StreamToken setupStreaming(MediaInfo media);
 
     void play(StreamToken token);

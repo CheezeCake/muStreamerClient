@@ -28,6 +28,12 @@ public interface _IMetaServerOperations
 
     MediaInfo[] find(String s, Ice.Current __current);
 
+    MediaInfo[] findByArtist(String s, Ice.Current __current);
+
+    MediaInfo[] findByTitle(String s, Ice.Current __current);
+
+    MediaInfo[] listSongs(Ice.Current __current);
+
     StreamToken setupStreaming(MediaInfo media, Ice.Current __current);
 
     void play(StreamToken token, Ice.Current __current);

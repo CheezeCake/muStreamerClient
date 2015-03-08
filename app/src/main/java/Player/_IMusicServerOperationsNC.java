@@ -30,6 +30,12 @@ public interface _IMusicServerOperationsNC
 
     Song[] find(String s);
 
+    Song[] findByArtist(String s);
+
+    Song[] findByTitle(String s);
+
+    Song[] listSongs();
+
     StreamToken setupStreaming(String path, String clientIP, String clientPort);
 
     void play(StreamToken token);
