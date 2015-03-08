@@ -1,20 +1,13 @@
 package emmanuelnicolet.mustreamerclient;
 
 import android.content.Intent;
-import android.media.AudioFormat;
 import android.media.AudioRecord;
-import android.media.MediaRecorder;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-
-import java.io.IOException;
-
-import Ice.Communicator;
 
 
 public class MainActivity extends ActionBarActivity

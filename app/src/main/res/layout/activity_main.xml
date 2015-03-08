@@ -13,10 +13,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/searchText"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_toLeftOf="@+id/searchButton"
-        android:layout_toStartOf="@+id/searchButton"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -34,7 +33,44 @@
         android:layout_height="wrap_content"
         android:text="Talk"
         android:id="@+id/talk"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="58dp"
+        android:layout_below="@+id/list_songs"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:onClick="onTalkClick"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="List songs"
+        android:id="@+id/list_songs"
+        android:layout_marginTop="95dp"
+        android:layout_below="@+id/searchText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/talk"
+        android:layout_alignEnd="@+id/talk"
+        android:onClick="listSongs"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Artist"
+        android:id="@+id/artist"
+        android:layout_below="@+id/searchText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:checked="false"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:id="@+id/title"
+        android:checked="false"
+        android:layout_below="@+id/searchText"
+        android:layout_centerHorizontal="true"/>
+
 </RelativeLayout>
