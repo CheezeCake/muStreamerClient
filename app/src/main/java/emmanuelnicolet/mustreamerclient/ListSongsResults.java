@@ -18,7 +18,7 @@ public class ListSongsResults extends AbstractResultActivity
 	{
 		super.onCreate(savedInstanceState);
 
-		new FetchResults().execute(new String[] {MainActivity.METASRV_ENDPOINT_STR});
+		new FetchResults().execute(new String[] { MainActivity.getMetaServerEndpointStr() });
 	}
 
 	private class FetchResults extends AbstractFetchResults

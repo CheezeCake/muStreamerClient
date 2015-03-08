@@ -1,14 +1,19 @@
 package emmanuelnicolet.mustreamerclient;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioRecord;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity
@@ -16,9 +21,17 @@ public class MainActivity extends ActionBarActivity
 	public final static String SEARCH_STRING = "emmanuelnicolet.mustreamerclient.SEARCH_STRING";
 	public final static String SEARCH_TYPE = "emmanuelnicolet.mustreamerclient.SEARCH_TYPE";
 
-	public final static String METASRV_ENDPOINT_STR = "MetaServer:default -h onche.ovh -p 10000";
     public final static String MEDIA_ENDPOINT_STR = "emmanuelnicolet.musicstreamerclient.MEDIA_ENDPOINT_STR";
     public final static String MEDIA_SONG_PATH = "emmanuelnicolet.musicstreamerclient.MEDIA_SONG_PATH";
+
+	private final static String PREFERENCES_NAME = "emmanuelnicolet.musicstreamer.PREFERENCES_NAME";
+	private final static String PREFERENCES_METASERVER_HOSTNAME =
+			"emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_HOSTNAME";
+	private String metaServerHostname = null;
+	private final static String PREFERENCES_METASERVER_PORT =
+			"emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_PORT";
+	private String metaServerPort = null;
+	private static String metaServerEndpointStr = null;
 
     private AudioRecord recorder = null;
 
@@ -29,6 +42,30 @@ public class MainActivity extends ActionBarActivity
 		setContentView(R.layout.activity_main);
 		if (IceData.iceCommunicator == null)
 			IceData.iceCommunicator = Ice.Util.initialize(new String[] {""});
+
+		loadPreferences();
+	}
+
+	public static String getMetaServerEndpointStr()
+	{
+		return metaServerEndpointStr;
+	}
+
+	private void loadPreferences()
+	{
+		SharedPreferences settings = getSharedPreferences(PREFERENCES_NAME, 0);
+		metaServerHostname = settings.getString(PREFERENCES_METASERVER_HOSTNAME, "onche.ovh");
+		metaServerPort = settings.getString(PREFERENCES_METASERVER_PORT, "10000");
+		metaServerEndpointStr = "MetaServer:default -h " + metaServerHostname + " -p " + metaServerPort;
+	}
+
+	public void setPreferences(String hostname, String port)
+	{
+		SharedPreferences settings = getSharedPreferences(PREFERENCES_NAME, 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString(PREFERENCES_METASERVER_HOSTNAME, hostname);
+		editor.putString(PREFERENCES_METASERVER_PORT, port);
+		editor.commit();
 	}
 
 	@Override
@@ -49,6 +86,38 @@ public class MainActivity extends ActionBarActivity
 
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.action_settings) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			LayoutInflater inflater = getLayoutInflater();
+			final View v = inflater.inflate(R.layout.settings_dialog, null);
+
+			TextView tv = (TextView) v.findViewById(R.id.hostname);
+			tv.setText(metaServerHostname);
+			tv = (TextView) v.findViewById(R.id.port);
+			tv.setText(metaServerPort);
+
+			builder.setView(v)
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int id)
+						{
+							TextView tv = (TextView) v.findViewById(R.id.hostname);
+							String hn = tv.getText().toString();
+							tv = (TextView) v.findViewById(R.id.port);
+							String p = tv.getText().toString();
+
+							setPreferences(hn, p);
+						}
+
+					})
+					.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+					{
+							@Override
+							public void onClick (DialogInterface dialog, int id)
+							{
+							}
+					}).show();
+
 			return true;
 		}
 
