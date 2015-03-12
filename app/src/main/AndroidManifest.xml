@@ -32,6 +32,10 @@
             android:name=".Player"
             android:label="@string/title_activity_player" >
         </activity>
+        <activity
+            android:name=".DeleteListActivity"
+            android:label="@string/title_activity_delete_list" >
+        </activity>
     </application>
 
 </manifest>

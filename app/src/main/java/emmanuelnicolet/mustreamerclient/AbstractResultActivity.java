@@ -16,22 +16,7 @@ import Player.MediaInfo;
 
 public abstract class AbstractResultActivity extends ListActivity
 {
-	private String searchText;
-	private List<MediaInfo> mediainfos = new ArrayList<MediaInfo>();
-
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id)
-	{
-		Intent intent = new Intent(this, Player.class);
-		MediaInfo m = mediainfos.get(position);
-		System.out.println("ONCHE " + m.endpointStr);
-		System.out.println("ONCHE " + m.media.path);
-
-		intent.putExtra(MainActivity.MEDIA_ENDPOINT_STR, m.endpointStr);
-		intent.putExtra(MainActivity.MEDIA_SONG_PATH, m.media.path);
-		startActivity(intent);
-	}
-
+	protected List<MediaInfo> mediainfos = new ArrayList<MediaInfo>();
 
 	protected abstract class AbstractFetchResults extends AsyncTask<String, Void, MediaInfo[]>
 	{

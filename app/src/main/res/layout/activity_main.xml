@@ -33,13 +33,13 @@
         android:layout_height="wrap_content"
         android:text="Talk"
         android:id="@+id/talk"
-        android:layout_marginTop="58dp"
+        android:layout_marginTop="141dp"
+        android:onClick="talk"
         android:layout_below="@+id/list_songs"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="talk"/>
+        android:layout_alignRight="@+id/searchButton"
+        android:layout_alignEnd="@+id/searchButton"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -72,5 +72,17 @@
         android:checked="false"
         android:layout_below="@+id/searchText"
         android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete Song"
+        android:id="@+id/delete"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/talk"
+        android:layout_alignEnd="@+id/talk"
+        android:onClick="delete"/>
 
 </RelativeLayout>

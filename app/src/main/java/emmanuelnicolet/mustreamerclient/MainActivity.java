@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioRecord;
+import android.sax.StartElementListener;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -109,12 +110,7 @@ public class MainActivity extends ActionBarActivity
 						}
 
 					})
-					.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick (DialogInterface dialog, int id)
-							{
-							}
-					}).show();
+					.setNegativeButton(R.string.cancel, null).show();
 
 			return true;
 		}
@@ -166,6 +162,12 @@ public class MainActivity extends ActionBarActivity
 	public void listSongs(View v)
 	{
 		Intent intent = new Intent(this, ListSongsResults.class);
+		startActivity(intent);
+	}
+
+	public void delete(View v)
+	{
+		Intent intent = new Intent(this, DeleteListActivity.class);
 		startActivity(intent);
 	}
 
