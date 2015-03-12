@@ -3,20 +3,15 @@ package emmanuelnicolet.mustreamerclient;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import Ice.LocalException;
 import Player.StreamToken;
 import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
 import Player.MediaInfo;
-import Player.Song;
 
 public class Player extends ActionBarActivity
 {
@@ -40,14 +35,8 @@ public class Player extends ActionBarActivity
 		playButton = (Button)findViewById(R.id.play);
 		stopButton = (Button)findViewById(R.id.stop);
 
-		if (mediainfo == null) {
-            mediainfo = new MediaInfo();
-            mediainfo.media = new Song();
-        }
-
         Intent intent = getIntent();
-        mediainfo.endpointStr = intent.getStringExtra(MainActivity.MEDIA_ENDPOINT_STR);
-        mediainfo.media.path = intent.getStringExtra(MainActivity.MEDIA_SONG_PATH);
+        mediainfo = (MediaInfo)intent.getSerializableExtra(MainActivity.MEDIA);
 
         if (token == null) {
 			new Runnable() {
@@ -95,7 +84,7 @@ public class Player extends ActionBarActivity
 
 						try {
 							mediaPlayer.setDataSource(url);
-							mediaPlayer.prepare(); // might take long! (for buffering, etc)
+							mediaPlayer.prepare();
 
 							mediaPlayer.start();
 							pauseEnabled = true;

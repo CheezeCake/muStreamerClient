@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioRecord;
-import android.sax.StartElementListener;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,8 +21,7 @@ public class MainActivity extends ActionBarActivity
 	public final static String SEARCH_STRING = "emmanuelnicolet.mustreamerclient.SEARCH_STRING";
 	public final static String SEARCH_TYPE = "emmanuelnicolet.mustreamerclient.SEARCH_TYPE";
 
-    public final static String MEDIA_ENDPOINT_STR = "emmanuelnicolet.musicstreamerclient.MEDIA_ENDPOINT_STR";
-    public final static String MEDIA_SONG_PATH = "emmanuelnicolet.musicstreamerclient.MEDIA_SONG_PATH";
+	public final static String MEDIA = "emmanuelnicolet.musicstreamerclient.MEDIA";
 
 	private final static String PREFERENCES_NAME = "emmanuelnicolet.musicstreamer.PREFERENCES_NAME";
 	private final static String PREFERENCES_METASERVER_HOSTNAME =
@@ -72,7 +70,6 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		return true;
 	}
@@ -80,12 +77,8 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 
-		//noinspection SimplifiableIfStatement
 		if (id == R.id.action_settings) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			LayoutInflater inflater = getLayoutInflater();

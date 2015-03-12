@@ -1,16 +1,9 @@
 package emmanuelnicolet.mustreamerclient;
 
-import android.app.ListActivity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import Player.MediaInfo;
 import Player.IMetaServerPrx;
@@ -21,7 +14,6 @@ public class SearchResults extends AbstractResultActivity
 {
 	private String searchText;
 	private String searchType;
-	private List<MediaInfo> mediainfos = new ArrayList<MediaInfo>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -34,6 +26,16 @@ public class SearchResults extends AbstractResultActivity
 
 		new FetchResults().execute(new String[] {
 				MainActivity.getMetaServerEndpointStr(),  searchText });
+	}
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id)
+	{
+		Intent intent = new Intent(this, Player.class);
+		MediaInfo m = mediainfos.get(position);
+
+		intent.putExtra(MainActivity.MEDIA, m);
+		startActivity(intent);
 	}
 
 	private class FetchResults extends AbstractFetchResults

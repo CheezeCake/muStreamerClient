@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import Player.MediaInfo;
 import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
@@ -27,14 +24,10 @@ public class ListSongsResults extends AbstractResultActivity
 	{
 		Intent intent = new Intent(this, Player.class);
 		MediaInfo m = mediainfos.get(position);
-		System.out.println("ONCHE " + m.endpointStr);
-		System.out.println("ONCHE " + m.media.path);
 
-		intent.putExtra(MainActivity.MEDIA_ENDPOINT_STR, m.endpointStr);
-		intent.putExtra(MainActivity.MEDIA_SONG_PATH, m.media.path);
+		intent.putExtra(MainActivity.MEDIA, m);
 		startActivity(intent);
 	}
-
 
 	private class FetchResults extends AbstractFetchResults
 	{
