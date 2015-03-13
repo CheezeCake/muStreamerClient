@@ -15,10 +15,10 @@ import Player.MediaInfo;
 
 public class Player extends ActionBarActivity
 {
-    private MediaInfo mediainfo = null;
+	private static MediaInfo mediainfo = null;
+	private static MediaPlayer mediaPlayer = null;
+
     private StreamToken token = null;
-    private boolean playing = false;
-    private MediaPlayer mediaPlayer = null;
     private IMetaServerPrx srv = null;
 
 	Button pauseButton;
@@ -57,6 +57,28 @@ public class Player extends ActionBarActivity
 		stopStream();
     }
 
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		if (mediaPlayer != null) {
+			try {
+				mediaPlayer.pause();
+			}
+			catch (Exception e)
+			{}
+		}
+	}
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		Button p = (Button)findViewById(R.id.pause);
+		if (mediaPlayer != null && p != null && p.isEnabled())
+			play(findViewById(R.id.play));
+	}
+
     public void play(View v)
     {
         System.out.println("PLAY");
@@ -64,8 +86,7 @@ public class Player extends ActionBarActivity
         if (srv == null || token == null)
             return;
 
-        if (!playing) {
-			playing = true;
+        if (mediaPlayer == null) {
 			playButton.setEnabled(false);
 
 			new Thread(new Runnable() {
@@ -89,12 +110,14 @@ public class Player extends ActionBarActivity
 							mediaPlayer.start();
 							pauseEnabled = true;
 						} catch (Exception e) {
+							mediaPlayer.release();
+							mediaPlayer = null;
 							e.printStackTrace();
 							playEnabled = true;
 						}
 					} catch (Exception e) {
+						mediaPlayer = null;
 						e.printStackTrace();
-						playing = false;
 						playEnabled = true;
 					}
 
@@ -124,7 +147,7 @@ public class Player extends ActionBarActivity
 	public void pause(View v)
 	{
         System.out.println("PAUSE");
-        if (playing) {
+        if (mediaPlayer != null) {
             v.setEnabled(false);
             playButton.setEnabled(true);
             mediaPlayer.pause();
@@ -140,6 +163,11 @@ public class Player extends ActionBarActivity
     {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
+			mediaPlayer.release();
+
+			mediaPlayer = null;
+			mediainfo = null;
+
             try {
                 srv.stop(token);
             }
