@@ -162,8 +162,13 @@ public class Player extends ActionBarActivity
     public void stopStream()
     {
         if (mediaPlayer != null) {
-            mediaPlayer.stop();
-			mediaPlayer.release();
+			try {
+				mediaPlayer.stop();
+				mediaPlayer.release();
+			}
+			catch (Exception e) {
+				System.err.print(e);
+			}
 
 			mediaPlayer = null;
 			mediainfo = null;

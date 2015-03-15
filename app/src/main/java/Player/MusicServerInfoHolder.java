@@ -20,18 +20,18 @@
 
 package Player;
 
-public final class stringMapHolder
+public final class MusicServerInfoHolder
 {
     public
-    stringMapHolder()
+    MusicServerInfoHolder()
     {
     }
 
     public
-    stringMapHolder(java.util.Map<java.lang.String, java.lang.String> value)
+    MusicServerInfoHolder(MusicServerInfo value)
     {
         this.value = value;
     }
 
-    public java.util.Map<java.lang.String, java.lang.String> value;
+    public MusicServerInfo value;
 }

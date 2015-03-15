@@ -22,10 +22,6 @@ package Player;
 
 public interface _IMetaServerOperationsNC
 {
-    void add(String endpointStr, Song s);
-
-    void remove(MediaInfo media);
-
     MediaInfo[] find(String s);
 
     MediaInfo[] findByArtist(String s);
@@ -34,7 +30,7 @@ public interface _IMetaServerOperationsNC
 
     MediaInfo[] listSongs();
 
-    java.util.Map<java.lang.String, java.lang.String> listMusicServers();
+    MusicServerInfo[] listMusicServers();
 
     StreamToken setupStreaming(MediaInfo media);
 

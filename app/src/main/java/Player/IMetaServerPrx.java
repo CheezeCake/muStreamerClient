@@ -22,42 +22,6 @@ package Player;
 
 public interface IMetaServerPrx extends Ice.ObjectPrx
 {
-    public void add(String endpointStr, Song s);
-
-    public void add(String endpointStr, Song s, java.util.Map<String, String> __ctx);
-
-    public Ice.AsyncResult begin_add(String endpointStr, Song s);
-
-    public Ice.AsyncResult begin_add(String endpointStr, Song s, java.util.Map<String, String> __ctx);
-
-    public Ice.AsyncResult begin_add(String endpointStr, Song s, Ice.Callback __cb);
-
-    public Ice.AsyncResult begin_add(String endpointStr, Song s, java.util.Map<String, String> __ctx, Ice.Callback __cb);
-
-    public Ice.AsyncResult begin_add(String endpointStr, Song s, Callback_IMetaServer_add __cb);
-
-    public Ice.AsyncResult begin_add(String endpointStr, Song s, java.util.Map<String, String> __ctx, Callback_IMetaServer_add __cb);
-
-    public void end_add(Ice.AsyncResult __result);
-
-    public void remove(MediaInfo media);
-
-    public void remove(MediaInfo media, java.util.Map<String, String> __ctx);
-
-    public Ice.AsyncResult begin_remove(MediaInfo media);
-
-    public Ice.AsyncResult begin_remove(MediaInfo media, java.util.Map<String, String> __ctx);
-
-    public Ice.AsyncResult begin_remove(MediaInfo media, Ice.Callback __cb);
-
-    public Ice.AsyncResult begin_remove(MediaInfo media, java.util.Map<String, String> __ctx, Ice.Callback __cb);
-
-    public Ice.AsyncResult begin_remove(MediaInfo media, Callback_IMetaServer_remove __cb);
-
-    public Ice.AsyncResult begin_remove(MediaInfo media, java.util.Map<String, String> __ctx, Callback_IMetaServer_remove __cb);
-
-    public void end_remove(Ice.AsyncResult __result);
-
     public MediaInfo[] find(String s);
 
     public MediaInfo[] find(String s, java.util.Map<String, String> __ctx);
@@ -130,9 +94,9 @@ public interface IMetaServerPrx extends Ice.ObjectPrx
 
     public MediaInfo[] end_listSongs(Ice.AsyncResult __result);
 
-    public java.util.Map<java.lang.String, java.lang.String> listMusicServers();
+    public MusicServerInfo[] listMusicServers();
 
-    public java.util.Map<java.lang.String, java.lang.String> listMusicServers(java.util.Map<String, String> __ctx);
+    public MusicServerInfo[] listMusicServers(java.util.Map<String, String> __ctx);
 
     public Ice.AsyncResult begin_listMusicServers();
 
@@ -146,7 +110,7 @@ public interface IMetaServerPrx extends Ice.ObjectPrx
 
     public Ice.AsyncResult begin_listMusicServers(java.util.Map<String, String> __ctx, Callback_IMetaServer_listMusicServers __cb);
 
-    public java.util.Map<java.lang.String, java.lang.String> end_listMusicServers(Ice.AsyncResult __result);
+    public MusicServerInfo[] end_listMusicServers(Ice.AsyncResult __result);
 
     public StreamToken setupStreaming(MediaInfo media);
 

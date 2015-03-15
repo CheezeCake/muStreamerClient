@@ -18,11 +18,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Map;
-import java.util.Set;
 
-import Ice.ObjectPrx;
 import Player.Song;
+import Player.MusicServerInfo;
 import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
 import Player.IMusicServerPrx;
@@ -183,10 +181,11 @@ public class MainActivity extends ActionBarActivity
 			if (srv == null)
 				throw new Error("Invalid proxy");
 
-			final Map<String, String> serversMap = srv.listMusicServers();
-			Set<String> keys = serversMap.keySet();
-			String[] servers = new String[keys.size()];
-			servers = keys.toArray(servers);
+			final MusicServerInfo[] serversInfo = srv.listMusicServers();
+			String[] servers = new String[serversInfo.length];
+			for (int i = 0; i < serversInfo.length; i++)
+				servers[i] = serversInfo[i].hostname + ":" + serversInfo[i].listeningPort;
+
 
 			final Spinner s = (Spinner) v.findViewById(R.id.server_spinner);
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -198,7 +197,7 @@ public class MainActivity extends ActionBarActivity
 						@Override
 						public void onClick(DialogInterface dialog, int id)
 						{
-							final String srvEndpoint = serversMap.get(s.getSelectedItem());
+							final String srvEndpoint = serversInfo[s.getSelectedItemPosition()].endpointStr;
 							final String artist = ((TextView)v.findViewById(R.id.artist)).getText().toString();
 							final String title = ((TextView)v.findViewById(R.id.title)).getText().toString();
 							final String path = ((TextView)v.findViewById(R.id.path)).getText().toString();

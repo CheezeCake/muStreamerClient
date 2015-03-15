@@ -22,12 +22,6 @@ package Player;
 
 public interface _IMetaServerDel extends Ice._ObjectDel
 {
-    void add(String endpointStr, Song s, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
-        throws IceInternal.LocalExceptionWrapper;
-
-    void remove(MediaInfo media, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
-        throws IceInternal.LocalExceptionWrapper;
-
     MediaInfo[] find(String s, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
         throws IceInternal.LocalExceptionWrapper;
 
@@ -40,7 +34,7 @@ public interface _IMetaServerDel extends Ice._ObjectDel
     MediaInfo[] listSongs(java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
         throws IceInternal.LocalExceptionWrapper;
 
-    java.util.Map<java.lang.String, java.lang.String> listMusicServers(java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
+    MusicServerInfo[] listMusicServers(java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
         throws IceInternal.LocalExceptionWrapper;
 
     StreamToken setupStreaming(MediaInfo media, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)

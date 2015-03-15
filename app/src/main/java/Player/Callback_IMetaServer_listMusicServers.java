@@ -22,12 +22,12 @@ package Player;
 
 public abstract class Callback_IMetaServer_listMusicServers extends Ice.TwowayCallback
 {
-    public abstract void response(java.util.Map<java.lang.String, java.lang.String> __ret);
+    public abstract void response(MusicServerInfo[] __ret);
 
     public final void __completed(Ice.AsyncResult __result)
     {
         IMetaServerPrx __proxy = (IMetaServerPrx)__result.getProxy();
-        java.util.Map<java.lang.String, java.lang.String> __ret = null;
+        MusicServerInfo[] __ret = null;
         try
         {
             __ret = __proxy.end_listMusicServers(__result);

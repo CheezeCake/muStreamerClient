@@ -70,11 +70,6 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
         return __ids[1];
     }
 
-    public final void add(String endpointStr, Song s)
-    {
-        add(endpointStr, s, null);
-    }
-
     public final MediaInfo[] find(String s)
     {
         return find(s, null);
@@ -90,7 +85,7 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
         return findByTitle(s, null);
     }
 
-    public final java.util.Map<java.lang.String, java.lang.String> listMusicServers()
+    public final MusicServerInfo[] listMusicServers()
     {
         return listMusicServers(null);
     }
@@ -105,11 +100,6 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
         play(token, null);
     }
 
-    public final void remove(MediaInfo media)
-    {
-        remove(media, null);
-    }
-
     public final StreamToken setupStreaming(MediaInfo media)
     {
         return setupStreaming(media, null);
@@ -118,34 +108,6 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
     public final void stop(StreamToken token)
     {
         stop(token, null);
-    }
-
-    public static Ice.DispatchStatus ___add(IMetaServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
-    {
-        __checkMode(Ice.OperationMode.Normal, __current.mode);
-        IceInternal.BasicStream __is = __inS.startReadParams();
-        String endpointStr;
-        Song s;
-        endpointStr = __is.readString();
-        s = new Song();
-        s.__read(__is);
-        __inS.endReadParams();
-        __obj.add(endpointStr, s, __current);
-        __inS.__writeEmptyParams();
-        return Ice.DispatchStatus.DispatchOK;
-    }
-
-    public static Ice.DispatchStatus ___remove(IMetaServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
-    {
-        __checkMode(Ice.OperationMode.Normal, __current.mode);
-        IceInternal.BasicStream __is = __inS.startReadParams();
-        MediaInfo media;
-        media = new MediaInfo();
-        media.__read(__is);
-        __inS.endReadParams();
-        __obj.remove(media, __current);
-        __inS.__writeEmptyParams();
-        return Ice.DispatchStatus.DispatchOK;
     }
 
     public static Ice.DispatchStatus ___find(IMetaServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
@@ -205,9 +167,9 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
     {
         __checkMode(Ice.OperationMode.Normal, __current.mode);
         __inS.readEmptyParams();
-        java.util.Map<java.lang.String, java.lang.String> __ret = __obj.listMusicServers(__current);
+        MusicServerInfo[] __ret = __obj.listMusicServers(__current);
         IceInternal.BasicStream __os = __inS.__startWriteParams(Ice.FormatType.DefaultFormat);
-        stringMapHelper.write(__os, __ret);
+        MusicServerInfoSeqHelper.write(__os, __ret);
         __inS.__endWriteParams(true);
         return Ice.DispatchStatus.DispatchOK;
     }
@@ -255,7 +217,6 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
 
     private final static String[] __all =
     {
-        "add",
         "find",
         "findByArtist",
         "findByTitle",
@@ -266,7 +227,6 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
         "listMusicServers",
         "listSongs",
         "play",
-        "remove",
         "setupStreaming",
         "stop"
     };
@@ -283,57 +243,49 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
         {
             case 0:
             {
-                return ___add(this, in, __current);
+                return ___find(this, in, __current);
             }
             case 1:
             {
-                return ___find(this, in, __current);
+                return ___findByArtist(this, in, __current);
             }
             case 2:
             {
-                return ___findByArtist(this, in, __current);
+                return ___findByTitle(this, in, __current);
             }
             case 3:
             {
-                return ___findByTitle(this, in, __current);
+                return ___ice_id(this, in, __current);
             }
             case 4:
             {
-                return ___ice_id(this, in, __current);
+                return ___ice_ids(this, in, __current);
             }
             case 5:
             {
-                return ___ice_ids(this, in, __current);
+                return ___ice_isA(this, in, __current);
             }
             case 6:
             {
-                return ___ice_isA(this, in, __current);
+                return ___ice_ping(this, in, __current);
             }
             case 7:
             {
-                return ___ice_ping(this, in, __current);
+                return ___listMusicServers(this, in, __current);
             }
             case 8:
             {
-                return ___listMusicServers(this, in, __current);
+                return ___listSongs(this, in, __current);
             }
             case 9:
             {
-                return ___listSongs(this, in, __current);
+                return ___play(this, in, __current);
             }
             case 10:
             {
-                return ___play(this, in, __current);
-            }
-            case 11:
-            {
-                return ___remove(this, in, __current);
-            }
-            case 12:
-            {
                 return ___setupStreaming(this, in, __current);
             }
-            case 13:
+            case 11:
             {
                 return ___stop(this, in, __current);
             }

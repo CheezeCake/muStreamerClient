@@ -22,111 +22,6 @@ package Player;
 
 public final class IMetaServerPrxHelper extends Ice.ObjectPrxHelperBase implements IMetaServerPrx
 {
-    private static final String __add_name = "add";
-
-    public void add(String endpointStr, Song s)
-    {
-        add(endpointStr, s, null, false);
-    }
-
-    public void add(String endpointStr, Song s, java.util.Map<String, String> __ctx)
-    {
-        add(endpointStr, s, __ctx, true);
-    }
-
-    private void add(String endpointStr, Song s, java.util.Map<String, String> __ctx, boolean __explicitCtx)
-    {
-        if(__explicitCtx && __ctx == null)
-        {
-            __ctx = _emptyContext;
-        }
-        final Ice.Instrumentation.InvocationObserver __observer = IceInternal.ObserverHelper.get(this, "add", __ctx);
-        int __cnt = 0;
-        try
-        {
-            while(true)
-            {
-                Ice._ObjectDel __delBase = null;
-                try
-                {
-                    __delBase = __getDelegate(false);
-                    _IMetaServerDel __del = (_IMetaServerDel)__delBase;
-                    __del.add(endpointStr, s, __ctx, __observer);
-                    return;
-                }
-                catch(IceInternal.LocalExceptionWrapper __ex)
-                {
-                    __handleExceptionWrapper(__delBase, __ex, __observer);
-                }
-                catch(Ice.LocalException __ex)
-                {
-                    __cnt = __handleException(__delBase, __ex, null, __cnt, __observer);
-                }
-            }
-        }
-        finally
-        {
-            if(__observer != null)
-            {
-                __observer.detach();
-            }
-        }
-    }
-
-    public Ice.AsyncResult begin_add(String endpointStr, Song s)
-    {
-        return begin_add(endpointStr, s, null, false, null);
-    }
-
-    public Ice.AsyncResult begin_add(String endpointStr, Song s, java.util.Map<String, String> __ctx)
-    {
-        return begin_add(endpointStr, s, __ctx, true, null);
-    }
-
-    public Ice.AsyncResult begin_add(String endpointStr, Song s, Ice.Callback __cb)
-    {
-        return begin_add(endpointStr, s, null, false, __cb);
-    }
-
-    public Ice.AsyncResult begin_add(String endpointStr, Song s, java.util.Map<String, String> __ctx, Ice.Callback __cb)
-    {
-        return begin_add(endpointStr, s, __ctx, true, __cb);
-    }
-
-    public Ice.AsyncResult begin_add(String endpointStr, Song s, Callback_IMetaServer_add __cb)
-    {
-        return begin_add(endpointStr, s, null, false, __cb);
-    }
-
-    public Ice.AsyncResult begin_add(String endpointStr, Song s, java.util.Map<String, String> __ctx, Callback_IMetaServer_add __cb)
-    {
-        return begin_add(endpointStr, s, __ctx, true, __cb);
-    }
-
-    private Ice.AsyncResult begin_add(String endpointStr, Song s, java.util.Map<String, String> __ctx, boolean __explicitCtx, IceInternal.CallbackBase __cb)
-    {
-        IceInternal.OutgoingAsync __result = new IceInternal.OutgoingAsync(this, __add_name, __cb);
-        try
-        {
-            __result.__prepare(__add_name, Ice.OperationMode.Normal, __ctx, __explicitCtx);
-            IceInternal.BasicStream __os = __result.__startWriteParams(Ice.FormatType.DefaultFormat);
-            __os.writeString(endpointStr);
-            s.__write(__os);
-            __result.__endWriteParams();
-            __result.__send(true);
-        }
-        catch(Ice.LocalException __ex)
-        {
-            __result.__exceptionAsync(__ex);
-        }
-        return __result;
-    }
-
-    public void end_add(Ice.AsyncResult __result)
-    {
-        __end(__result, __add_name);
-    }
-
     private static final String __find_name = "find";
 
     public MediaInfo[] find(String s)
@@ -531,17 +426,17 @@ public final class IMetaServerPrxHelper extends Ice.ObjectPrxHelperBase implemen
 
     private static final String __listMusicServers_name = "listMusicServers";
 
-    public java.util.Map<java.lang.String, java.lang.String> listMusicServers()
+    public MusicServerInfo[] listMusicServers()
     {
         return listMusicServers(null, false);
     }
 
-    public java.util.Map<java.lang.String, java.lang.String> listMusicServers(java.util.Map<String, String> __ctx)
+    public MusicServerInfo[] listMusicServers(java.util.Map<String, String> __ctx)
     {
         return listMusicServers(__ctx, true);
     }
 
-    private java.util.Map<java.lang.String, java.lang.String> listMusicServers(java.util.Map<String, String> __ctx, boolean __explicitCtx)
+    private MusicServerInfo[] listMusicServers(java.util.Map<String, String> __ctx, boolean __explicitCtx)
     {
         if(__explicitCtx && __ctx == null)
         {
@@ -627,7 +522,7 @@ public final class IMetaServerPrxHelper extends Ice.ObjectPrxHelperBase implemen
         return __result;
     }
 
-    public java.util.Map<java.lang.String, java.lang.String> end_listMusicServers(Ice.AsyncResult __result)
+    public MusicServerInfo[] end_listMusicServers(Ice.AsyncResult __result)
     {
         Ice.AsyncResult.__check(__result, this, __listMusicServers_name);
         boolean __ok = __result.__wait();
@@ -645,8 +540,8 @@ public final class IMetaServerPrxHelper extends Ice.ObjectPrxHelperBase implemen
                 }
             }
             IceInternal.BasicStream __is = __result.__startReadParams();
-            java.util.Map<java.lang.String, java.lang.String> __ret;
-            __ret = stringMapHelper.read(__is);
+            MusicServerInfo[] __ret;
+            __ret = MusicServerInfoSeqHelper.read(__is);
             __result.__endReadParams();
             return __ret;
         }
@@ -895,110 +790,6 @@ public final class IMetaServerPrxHelper extends Ice.ObjectPrxHelperBase implemen
     public void end_play(Ice.AsyncResult __result)
     {
         __end(__result, __play_name);
-    }
-
-    private static final String __remove_name = "remove";
-
-    public void remove(MediaInfo media)
-    {
-        remove(media, null, false);
-    }
-
-    public void remove(MediaInfo media, java.util.Map<String, String> __ctx)
-    {
-        remove(media, __ctx, true);
-    }
-
-    private void remove(MediaInfo media, java.util.Map<String, String> __ctx, boolean __explicitCtx)
-    {
-        if(__explicitCtx && __ctx == null)
-        {
-            __ctx = _emptyContext;
-        }
-        final Ice.Instrumentation.InvocationObserver __observer = IceInternal.ObserverHelper.get(this, "remove", __ctx);
-        int __cnt = 0;
-        try
-        {
-            while(true)
-            {
-                Ice._ObjectDel __delBase = null;
-                try
-                {
-                    __delBase = __getDelegate(false);
-                    _IMetaServerDel __del = (_IMetaServerDel)__delBase;
-                    __del.remove(media, __ctx, __observer);
-                    return;
-                }
-                catch(IceInternal.LocalExceptionWrapper __ex)
-                {
-                    __handleExceptionWrapper(__delBase, __ex, __observer);
-                }
-                catch(Ice.LocalException __ex)
-                {
-                    __cnt = __handleException(__delBase, __ex, null, __cnt, __observer);
-                }
-            }
-        }
-        finally
-        {
-            if(__observer != null)
-            {
-                __observer.detach();
-            }
-        }
-    }
-
-    public Ice.AsyncResult begin_remove(MediaInfo media)
-    {
-        return begin_remove(media, null, false, null);
-    }
-
-    public Ice.AsyncResult begin_remove(MediaInfo media, java.util.Map<String, String> __ctx)
-    {
-        return begin_remove(media, __ctx, true, null);
-    }
-
-    public Ice.AsyncResult begin_remove(MediaInfo media, Ice.Callback __cb)
-    {
-        return begin_remove(media, null, false, __cb);
-    }
-
-    public Ice.AsyncResult begin_remove(MediaInfo media, java.util.Map<String, String> __ctx, Ice.Callback __cb)
-    {
-        return begin_remove(media, __ctx, true, __cb);
-    }
-
-    public Ice.AsyncResult begin_remove(MediaInfo media, Callback_IMetaServer_remove __cb)
-    {
-        return begin_remove(media, null, false, __cb);
-    }
-
-    public Ice.AsyncResult begin_remove(MediaInfo media, java.util.Map<String, String> __ctx, Callback_IMetaServer_remove __cb)
-    {
-        return begin_remove(media, __ctx, true, __cb);
-    }
-
-    private Ice.AsyncResult begin_remove(MediaInfo media, java.util.Map<String, String> __ctx, boolean __explicitCtx, IceInternal.CallbackBase __cb)
-    {
-        IceInternal.OutgoingAsync __result = new IceInternal.OutgoingAsync(this, __remove_name, __cb);
-        try
-        {
-            __result.__prepare(__remove_name, Ice.OperationMode.Normal, __ctx, __explicitCtx);
-            IceInternal.BasicStream __os = __result.__startWriteParams(Ice.FormatType.DefaultFormat);
-            media.__write(__os);
-            __result.__endWriteParams();
-            __result.__send(true);
-        }
-        catch(Ice.LocalException __ex)
-        {
-            __result.__exceptionAsync(__ex);
-        }
-        return __result;
-    }
-
-    public void end_remove(Ice.AsyncResult __result)
-    {
-        __end(__result, __remove_name);
     }
 
     private static final String __setupStreaming_name = "setupStreaming";

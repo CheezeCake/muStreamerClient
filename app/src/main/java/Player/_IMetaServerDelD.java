@@ -22,55 +22,6 @@ package Player;
 
 public final class _IMetaServerDelD extends Ice._ObjectDelD implements _IMetaServerDel
 {
-    public void add(final String endpointStr, final Song s, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
-        throws IceInternal.LocalExceptionWrapper
-    {
-        final Ice.Current __current = new Ice.Current();
-        __initCurrent(__current, "add", Ice.OperationMode.Normal, __ctx);
-        IceInternal.Direct __direct = null;
-        try
-        {
-            __direct = new IceInternal.Direct(__current)
-            {
-                public Ice.DispatchStatus run(Ice.Object __obj)
-                {
-                    IMetaServer __servant = null;
-                    if(__obj == null || __obj instanceof IMetaServer)
-                    {
-                        __servant = (IMetaServer)__obj;
-                    }
-                    else
-                    {
-                        throw new Ice.OperationNotExistException(__current.id, __current.facet, __current.operation);
-                    }
-                    __servant.add(endpointStr, s, __current);
-                    return Ice.DispatchStatus.DispatchOK;
-                }
-            };
-            try
-            {
-                Ice.DispatchStatus __status = __direct.getServant().__collocDispatch(__direct);
-                if(__status == Ice.DispatchStatus.DispatchUserException)
-                {
-                    __direct.throwUserException();
-                }
-                assert __status == Ice.DispatchStatus.DispatchOK;
-            }
-            finally
-            {
-                __direct.destroy();
-            }
-        }
-        catch(Ice.SystemException __ex)
-        {
-            throw __ex;
-        }
-        catch(java.lang.Throwable __ex)
-        {
-            IceInternal.LocalExceptionWrapper.throwWrapper(__ex);
-        }
-    }
-
     public MediaInfo[] find(final String s, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
         throws IceInternal.LocalExceptionWrapper
     {
@@ -227,12 +178,12 @@ public final class _IMetaServerDelD extends Ice._ObjectDelD implements _IMetaSer
         return __result.value;
     }
 
-    public java.util.Map<java.lang.String, java.lang.String> listMusicServers(java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
+    public MusicServerInfo[] listMusicServers(java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
         throws IceInternal.LocalExceptionWrapper
     {
         final Ice.Current __current = new Ice.Current();
         __initCurrent(__current, "listMusicServers", Ice.OperationMode.Normal, __ctx);
-        final stringMapHolder __result = new stringMapHolder();
+        final MusicServerInfoSeqHolder __result = new MusicServerInfoSeqHolder();
         IceInternal.Direct __direct = null;
         try
         {
@@ -353,55 +304,6 @@ public final class _IMetaServerDelD extends Ice._ObjectDelD implements _IMetaSer
                         throw new Ice.OperationNotExistException(__current.id, __current.facet, __current.operation);
                     }
                     __servant.play(token, __current);
-                    return Ice.DispatchStatus.DispatchOK;
-                }
-            };
-            try
-            {
-                Ice.DispatchStatus __status = __direct.getServant().__collocDispatch(__direct);
-                if(__status == Ice.DispatchStatus.DispatchUserException)
-                {
-                    __direct.throwUserException();
-                }
-                assert __status == Ice.DispatchStatus.DispatchOK;
-            }
-            finally
-            {
-                __direct.destroy();
-            }
-        }
-        catch(Ice.SystemException __ex)
-        {
-            throw __ex;
-        }
-        catch(java.lang.Throwable __ex)
-        {
-            IceInternal.LocalExceptionWrapper.throwWrapper(__ex);
-        }
-    }
-
-    public void remove(final MediaInfo media, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
-        throws IceInternal.LocalExceptionWrapper
-    {
-        final Ice.Current __current = new Ice.Current();
-        __initCurrent(__current, "remove", Ice.OperationMode.Normal, __ctx);
-        IceInternal.Direct __direct = null;
-        try
-        {
-            __direct = new IceInternal.Direct(__current)
-            {
-                public Ice.DispatchStatus run(Ice.Object __obj)
-                {
-                    IMetaServer __servant = null;
-                    if(__obj == null || __obj instanceof IMetaServer)
-                    {
-                        __servant = (IMetaServer)__obj;
-                    }
-                    else
-                    {
-                        throw new Ice.OperationNotExistException(__current.id, __current.facet, __current.operation);
-                    }
-                    __servant.remove(media, __current);
                     return Ice.DispatchStatus.DispatchOK;
                 }
             };

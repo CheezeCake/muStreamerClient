@@ -20,6 +20,18 @@
 
 package Player;
 
-public abstract class Callback_IMetaServer_remove extends Ice.OnewayCallback
+public final class MusicServerInfoSeqHolder
 {
+    public
+    MusicServerInfoSeqHolder()
+    {
+    }
+
+    public
+    MusicServerInfoSeqHolder(MusicServerInfo[] value)
+    {
+        this.value = value;
+    }
+
+    public MusicServerInfo[] value;
 }

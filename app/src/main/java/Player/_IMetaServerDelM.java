@@ -22,54 +22,6 @@ package Player;
 
 public final class _IMetaServerDelM extends Ice._ObjectDelM implements _IMetaServerDel
 {
-    public void
-    add(String endpointStr, Song s, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
-        throws IceInternal.LocalExceptionWrapper
-    {
-        IceInternal.Outgoing __og = __handler.getOutgoing("add", Ice.OperationMode.Normal, __ctx, __observer);
-        try
-        {
-            try
-            {
-                IceInternal.BasicStream __os = __og.startWriteParams(Ice.FormatType.DefaultFormat);
-                __os.writeString(endpointStr);
-                s.__write(__os);
-                __og.endWriteParams();
-            }
-            catch(Ice.LocalException __ex)
-            {
-                __og.abort(__ex);
-            }
-            boolean __ok = __og.invoke();
-            if(__og.hasResponse())
-            {
-                try
-                {
-                    if(!__ok)
-                    {
-                        try
-                        {
-                            __og.throwUserException();
-                        }
-                        catch(Ice.UserException __ex)
-                        {
-                            throw new Ice.UnknownUserException(__ex.ice_name(), __ex);
-                        }
-                    }
-                    __og.readEmptyParams();
-                }
-                catch(Ice.LocalException __ex)
-                {
-                    throw new IceInternal.LocalExceptionWrapper(__ex, false);
-                }
-            }
-        }
-        finally
-        {
-            __handler.reclaimOutgoing(__og);
-        }
-    }
-
     public MediaInfo[]
     find(String s, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
         throws IceInternal.LocalExceptionWrapper
@@ -214,7 +166,7 @@ public final class _IMetaServerDelM extends Ice._ObjectDelM implements _IMetaSer
         }
     }
 
-    public java.util.Map<java.lang.String, java.lang.String>
+    public MusicServerInfo[]
     listMusicServers(java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
         throws IceInternal.LocalExceptionWrapper
     {
@@ -237,8 +189,8 @@ public final class _IMetaServerDelM extends Ice._ObjectDelM implements _IMetaSer
                     }
                 }
                 IceInternal.BasicStream __is = __og.startReadParams();
-                java.util.Map<java.lang.String, java.lang.String> __ret;
-                __ret = stringMapHelper.read(__is);
+                MusicServerInfo[] __ret;
+                __ret = MusicServerInfoSeqHelper.read(__is);
                 __og.endReadParams();
                 return __ret;
             }
@@ -303,53 +255,6 @@ public final class _IMetaServerDelM extends Ice._ObjectDelM implements _IMetaSer
             {
                 IceInternal.BasicStream __os = __og.startWriteParams(Ice.FormatType.DefaultFormat);
                 token.__write(__os);
-                __og.endWriteParams();
-            }
-            catch(Ice.LocalException __ex)
-            {
-                __og.abort(__ex);
-            }
-            boolean __ok = __og.invoke();
-            if(__og.hasResponse())
-            {
-                try
-                {
-                    if(!__ok)
-                    {
-                        try
-                        {
-                            __og.throwUserException();
-                        }
-                        catch(Ice.UserException __ex)
-                        {
-                            throw new Ice.UnknownUserException(__ex.ice_name(), __ex);
-                        }
-                    }
-                    __og.readEmptyParams();
-                }
-                catch(Ice.LocalException __ex)
-                {
-                    throw new IceInternal.LocalExceptionWrapper(__ex, false);
-                }
-            }
-        }
-        finally
-        {
-            __handler.reclaimOutgoing(__og);
-        }
-    }
-
-    public void
-    remove(MediaInfo media, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
-        throws IceInternal.LocalExceptionWrapper
-    {
-        IceInternal.Outgoing __og = __handler.getOutgoing("remove", Ice.OperationMode.Normal, __ctx, __observer);
-        try
-        {
-            try
-            {
-                IceInternal.BasicStream __os = __og.startWriteParams(Ice.FormatType.DefaultFormat);
-                media.__write(__os);
                 __og.endWriteParams();
             }
             catch(Ice.LocalException __ex)
