@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Player.MediaInfo;
+import Player.IMusicServerPrx;
+import Player.IMusicServerPrxHelper;
 import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
 
@@ -42,12 +44,12 @@ public class DeleteListActivity extends AbstractResultActivity
 						Ice.Communicator ic = IceData.iceCommunicator;
 
 						try {
-							Ice.ObjectPrx base = ic.stringToProxy(MainActivity.getMetaServerEndpointStr());
-							IMetaServerPrx srv = IMetaServerPrxHelper.checkedCast(base);
+							Ice.ObjectPrx base = ic.stringToProxy(m.endpointStr);
+							IMusicServerPrx srv = IMusicServerPrxHelper.checkedCast(base);
 							if (srv == null)
 								throw new Error("Invalid proxy");
 
-							srv.remove(m);
+							srv.remove(m.media.path);
 
 						} catch (Ice.LocalException e) {
 							msg = "Error";

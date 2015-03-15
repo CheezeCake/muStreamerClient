@@ -34,6 +34,8 @@ public interface _IMetaServerOperations
 
     MediaInfo[] listSongs(Ice.Current __current);
 
+    java.util.Map<java.lang.String, java.lang.String> listMusicServers(Ice.Current __current);
+
     StreamToken setupStreaming(MediaInfo media, Ice.Current __current);
 
     void play(StreamToken token, Ice.Current __current);

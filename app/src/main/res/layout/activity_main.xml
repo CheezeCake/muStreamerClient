@@ -33,13 +33,13 @@
         android:layout_height="wrap_content"
         android:text="Talk"
         android:id="@+id/talk"
-        android:layout_marginTop="141dp"
         android:onClick="talk"
-        android:layout_below="@+id/list_songs"
+        android:layout_below="@+id/delete"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/searchButton"
-        android:layout_alignEnd="@+id/searchButton"/>
+        android:layout_marginTop="41dp"
+        android:layout_alignRight="@+id/delete"
+        android:layout_alignEnd="@+id/delete"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -50,9 +50,9 @@
         android:layout_below="@+id/searchText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/talk"
-        android:layout_alignEnd="@+id/talk"
-        android:onClick="listSongs"/>
+        android:onClick="listSongs"
+        android:layout_alignRight="@+id/searchButton"
+        android:layout_alignEnd="@+id/searchButton"/>
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -78,11 +78,23 @@
         android:layout_height="wrap_content"
         android:text="Delete Song"
         android:id="@+id/delete"
-        android:layout_centerVertical="true"
+        android:onClick="delete"
+        android:layout_below="@+id/add"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/talk"
-        android:layout_alignEnd="@+id/talk"
-        android:onClick="delete"/>
+        android:layout_alignRight="@+id/add"
+        android:layout_alignEnd="@+id/add"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add song"
+        android:id="@+id/add"
+        android:onClick="add"
+        android:layout_below="@+id/list_songs"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/list_songs"
+        android:layout_alignEnd="@+id/list_songs"/>
 
 </RelativeLayout>

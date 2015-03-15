@@ -11,9 +11,22 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Map;
+import java.util.Set;
+
+import Ice.ObjectPrx;
+import Player.Song;
+import Player.IMetaServerPrx;
+import Player.IMetaServerPrxHelper;
+import Player.IMusicServerPrx;
+import Player.IMusicServerPrxHelper;
 
 
 public class MainActivity extends ActionBarActivity
@@ -156,6 +169,71 @@ public class MainActivity extends ActionBarActivity
 	{
 		Intent intent = new Intent(this, ListSongsResults.class);
 		startActivity(intent);
+	}
+
+	public void add(View view)
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		LayoutInflater inflater = getLayoutInflater();
+		final View v = inflater.inflate(R.layout.add_song_dialog, null);
+
+		try {
+			Ice.ObjectPrx base = IceData.iceCommunicator.stringToProxy(metaServerEndpointStr);
+			IMetaServerPrx srv = IMetaServerPrxHelper.checkedCast(base);
+			if (srv == null)
+				throw new Error("Invalid proxy");
+
+			final Map<String, String> serversMap = srv.listMusicServers();
+			Set<String> keys = serversMap.keySet();
+			String[] servers = new String[keys.size()];
+			servers = keys.toArray(servers);
+
+			final Spinner s = (Spinner) v.findViewById(R.id.server_spinner);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_spinner_item, servers);
+			s.setAdapter(adapter);
+
+			builder.setView(v)
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id)
+						{
+							final String srvEndpoint = serversMap.get(s.getSelectedItem());
+							final String artist = ((TextView)v.findViewById(R.id.artist)).getText().toString();
+							final String title = ((TextView)v.findViewById(R.id.title)).getText().toString();
+							final String path = ((TextView)v.findViewById(R.id.path)).getText().toString();
+
+							if (!srvEndpoint.isEmpty() && !artist.isEmpty() && !title.isEmpty()
+									&& !path.isEmpty()) {
+								String msg = "Successfully added";
+								try {
+									Ice.ObjectPrx base = IceData.iceCommunicator.stringToProxy(srvEndpoint);
+									IMusicServerPrx srv = IMusicServerPrxHelper.checkedCast(base);
+									if (srv == null)
+										throw new Error("Invalid proxy");
+
+									srv.add(new Song(artist, title, path));
+
+								} catch (Ice.LocalException e) {
+									msg = "Error";
+									e.printStackTrace();
+								} catch (Exception e) {
+									msg = "Error";
+									System.err.println(e);
+								}
+
+								Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+							}
+						}
+					})
+					.setNegativeButton(R.string.cancel, null).show();
+		}
+		catch (Ice.LocalException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			System.err.println(e);
+		}
 	}
 
 	public void delete(View v)

@@ -40,6 +40,9 @@ public interface _IMetaServerDel extends Ice._ObjectDel
     MediaInfo[] listSongs(java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
         throws IceInternal.LocalExceptionWrapper;
 
+    java.util.Map<java.lang.String, java.lang.String> listMusicServers(java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
+        throws IceInternal.LocalExceptionWrapper;
+
     StreamToken setupStreaming(MediaInfo media, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
         throws IceInternal.LocalExceptionWrapper;
 

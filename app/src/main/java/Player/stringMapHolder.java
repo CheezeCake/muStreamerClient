@@ -20,25 +20,18 @@
 
 package Player;
 
-public interface _IMetaServerOperationsNC
+public final class stringMapHolder
 {
-    void add(String endpointStr, Song s);
+    public
+    stringMapHolder()
+    {
+    }
 
-    void remove(MediaInfo media);
+    public
+    stringMapHolder(java.util.Map<java.lang.String, java.lang.String> value)
+    {
+        this.value = value;
+    }
 
-    MediaInfo[] find(String s);
-
-    MediaInfo[] findByArtist(String s);
-
-    MediaInfo[] findByTitle(String s);
-
-    MediaInfo[] listSongs();
-
-    java.util.Map<java.lang.String, java.lang.String> listMusicServers();
-
-    StreamToken setupStreaming(MediaInfo media);
-
-    void play(StreamToken token);
-
-    void stop(StreamToken token);
+    public java.util.Map<java.lang.String, java.lang.String> value;
 }

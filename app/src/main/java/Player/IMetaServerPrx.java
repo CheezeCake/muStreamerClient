@@ -130,6 +130,24 @@ public interface IMetaServerPrx extends Ice.ObjectPrx
 
     public MediaInfo[] end_listSongs(Ice.AsyncResult __result);
 
+    public java.util.Map<java.lang.String, java.lang.String> listMusicServers();
+
+    public java.util.Map<java.lang.String, java.lang.String> listMusicServers(java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_listMusicServers();
+
+    public Ice.AsyncResult begin_listMusicServers(java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_listMusicServers(Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_listMusicServers(java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_listMusicServers(Callback_IMetaServer_listMusicServers __cb);
+
+    public Ice.AsyncResult begin_listMusicServers(java.util.Map<String, String> __ctx, Callback_IMetaServer_listMusicServers __cb);
+
+    public java.util.Map<java.lang.String, java.lang.String> end_listMusicServers(Ice.AsyncResult __result);
+
     public StreamToken setupStreaming(MediaInfo media);
 
     public StreamToken setupStreaming(MediaInfo media, java.util.Map<String, String> __ctx);

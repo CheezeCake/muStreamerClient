@@ -90,6 +90,11 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
         return findByTitle(s, null);
     }
 
+    public final java.util.Map<java.lang.String, java.lang.String> listMusicServers()
+    {
+        return listMusicServers(null);
+    }
+
     public final MediaInfo[] listSongs()
     {
         return listSongs(null);
@@ -196,6 +201,17 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
         return Ice.DispatchStatus.DispatchOK;
     }
 
+    public static Ice.DispatchStatus ___listMusicServers(IMetaServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
+    {
+        __checkMode(Ice.OperationMode.Normal, __current.mode);
+        __inS.readEmptyParams();
+        java.util.Map<java.lang.String, java.lang.String> __ret = __obj.listMusicServers(__current);
+        IceInternal.BasicStream __os = __inS.__startWriteParams(Ice.FormatType.DefaultFormat);
+        stringMapHelper.write(__os, __ret);
+        __inS.__endWriteParams(true);
+        return Ice.DispatchStatus.DispatchOK;
+    }
+
     public static Ice.DispatchStatus ___setupStreaming(IMetaServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
     {
         __checkMode(Ice.OperationMode.Normal, __current.mode);
@@ -247,6 +263,7 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
         "ice_ids",
         "ice_isA",
         "ice_ping",
+        "listMusicServers",
         "listSongs",
         "play",
         "remove",
@@ -298,21 +315,25 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
             }
             case 8:
             {
-                return ___listSongs(this, in, __current);
+                return ___listMusicServers(this, in, __current);
             }
             case 9:
             {
-                return ___play(this, in, __current);
+                return ___listSongs(this, in, __current);
             }
             case 10:
             {
-                return ___remove(this, in, __current);
+                return ___play(this, in, __current);
             }
             case 11:
             {
-                return ___setupStreaming(this, in, __current);
+                return ___remove(this, in, __current);
             }
             case 12:
+            {
+                return ___setupStreaming(this, in, __current);
+            }
+            case 13:
             {
                 return ___stop(this, in, __current);
             }

@@ -214,6 +214,45 @@ public final class _IMetaServerDelM extends Ice._ObjectDelM implements _IMetaSer
         }
     }
 
+    public java.util.Map<java.lang.String, java.lang.String>
+    listMusicServers(java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
+        throws IceInternal.LocalExceptionWrapper
+    {
+        IceInternal.Outgoing __og = __handler.getOutgoing("listMusicServers", Ice.OperationMode.Normal, __ctx, __observer);
+        try
+        {
+            __og.writeEmptyParams();
+            boolean __ok = __og.invoke();
+            try
+            {
+                if(!__ok)
+                {
+                    try
+                    {
+                        __og.throwUserException();
+                    }
+                    catch(Ice.UserException __ex)
+                    {
+                        throw new Ice.UnknownUserException(__ex.ice_name(), __ex);
+                    }
+                }
+                IceInternal.BasicStream __is = __og.startReadParams();
+                java.util.Map<java.lang.String, java.lang.String> __ret;
+                __ret = stringMapHelper.read(__is);
+                __og.endReadParams();
+                return __ret;
+            }
+            catch(Ice.LocalException __ex)
+            {
+                throw new IceInternal.LocalExceptionWrapper(__ex, false);
+            }
+        }
+        finally
+        {
+            __handler.reclaimOutgoing(__og);
+        }
+    }
+
     public MediaInfo[]
     listSongs(java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
         throws IceInternal.LocalExceptionWrapper
