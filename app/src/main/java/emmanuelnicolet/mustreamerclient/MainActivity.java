@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import Player.Error;
 import Player.Song;
 import Player.MusicServerInfo;
 import Player.IMetaServerPrx;
@@ -219,10 +220,15 @@ public class MainActivity extends ActionBarActivity
 
 											srv.add(new Song(artist, title, path));
 
-										} catch (Ice.LocalException e) {
+										}
+										catch (Ice.LocalException e) {
 											msg = "Error";
 											e.printStackTrace();
-										} catch (Exception e) {
+										}
+										catch (Error e) {
+											msg = e.what;
+										}
+										catch (Exception e) {
 											msg = "Error";
 											System.err.println(e);
 										}
