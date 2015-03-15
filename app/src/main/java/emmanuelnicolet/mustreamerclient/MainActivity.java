@@ -198,34 +198,52 @@ public class MainActivity extends ActionBarActivity
 						public void onClick(DialogInterface dialog, int id)
 						{
 							final String srvEndpoint = serversInfo[s.getSelectedItemPosition()].endpointStr;
-							final String artist = ((TextView)v.findViewById(R.id.artist)).getText().toString();
-							final String title = ((TextView)v.findViewById(R.id.title)).getText().toString();
-							final String path = ((TextView)v.findViewById(R.id.path)).getText().toString();
+							final String artist = ((TextView) v.findViewById(R.id.artist)).getText().toString();
+							final String title = ((TextView) v.findViewById(R.id.title)).getText().toString();
+							final String path = ((TextView) v.findViewById(R.id.path)).getText().toString();
 
 							if (!srvEndpoint.isEmpty() && !artist.isEmpty() && !title.isEmpty()
 									&& !path.isEmpty()) {
-								String msg = "Successfully added";
-								try {
-									Ice.ObjectPrx base = IceData.iceCommunicator.stringToProxy(srvEndpoint);
-									IMusicServerPrx srv = IMusicServerPrxHelper.checkedCast(base);
-									if (srv == null)
-										throw new Error("Invalid proxy");
+								new Thread(new Runnable()
+								{
+									@Override
+									public void run()
+									{
+										String msg = "Successfully added";
 
-									srv.add(new Song(artist, title, path));
+										try {
+											Ice.ObjectPrx base = IceData.iceCommunicator.stringToProxy(srvEndpoint);
+											IMusicServerPrx srv = IMusicServerPrxHelper.checkedCast(base);
+											if (srv == null)
+												throw new Error("Invalid proxy");
 
-								} catch (Ice.LocalException e) {
-									msg = "Error";
-									e.printStackTrace();
-								} catch (Exception e) {
-									msg = "Error";
-									System.err.println(e);
-								}
+											srv.add(new Song(artist, title, path));
 
-								Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+										} catch (Ice.LocalException e) {
+											msg = "Error";
+											e.printStackTrace();
+										} catch (Exception e) {
+											msg = "Error";
+											System.err.println(e);
+										}
+
+										final String _msg = msg;
+
+										MainActivity.this.runOnUiThread(new Runnable() {
+											@Override
+											public void run()
+											{
+												Toast.makeText(MainActivity.this, _msg, Toast.LENGTH_SHORT).show();
+											}
+										});
+									}
+								}).start();
 							}
 						}
+
 					})
-					.setNegativeButton(R.string.cancel, null).show();
+					.setNegativeButton(R.string.cancel, null)
+					.show();
 		}
 		catch (Ice.LocalException e) {
 			e.printStackTrace();
