@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.AudioRecord;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -44,7 +43,7 @@ public class MainActivity extends ActionBarActivity
 	private String metaServerPort = null;
 	private static String metaServerEndpointStr = null;
 
-    private AudioRecord recorder = null;
+    private AudioRecorder recorder = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -269,9 +268,13 @@ public class MainActivity extends ActionBarActivity
     {
         if (recorder != null) {
             System.out.println("STOP RECORDING");
+            recorder.stopRecording();
+            recorder = null;
         }
         else {
             System.out.println("START RECORDING");
+            recorder = new AudioRecorder();
+            recorder.startRecording();
         }
     }
 }
