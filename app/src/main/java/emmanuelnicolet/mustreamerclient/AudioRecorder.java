@@ -53,7 +53,7 @@ class AudioRecorder
 
 		while (isRecording) {
 			audioData = new short[BUFFER_SIZE];
-			int recorded = recorder.read(audioData, 0, BUFFER_SIZE/2);
+			int recorded = recorder.read(audioData, 0, BUFFER_SIZE);
 			track.write(audioData, 0, recorded);
 		}
 
