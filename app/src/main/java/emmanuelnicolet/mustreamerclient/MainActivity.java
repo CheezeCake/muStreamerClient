@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -267,13 +268,13 @@ public class MainActivity extends ActionBarActivity
     public void talk(View v)
     {
         if (AudioRecorder.isIsRecording()) {
-            System.out.println("STOP RECORDING");
+            Log.d("", "STOP RECORDING");
             AudioRecorder.stopRecording();
 			//getdata
 			//release
         }
         else {
-            System.out.println("START RECORDING");
+            Log.e("", "START RECORDING");
             AudioRecorder.startRecording();
         }
     }

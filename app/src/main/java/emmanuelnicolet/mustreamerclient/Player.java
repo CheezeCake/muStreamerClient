@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import Player.StreamToken;
 import Player.IMetaServerPrx;
@@ -37,6 +38,13 @@ public class Player extends ActionBarActivity
 
         Intent intent = getIntent();
         mediainfo = (MediaInfo)intent.getSerializableExtra(MainActivity.MEDIA);
+
+		TextView artistInfo = (TextView)findViewById(R.id.artist_info);
+		artistInfo.setText(mediainfo.media.artist);
+		TextView titleInfo = (TextView)findViewById(R.id.title_info);
+		titleInfo.setText(mediainfo.media.title);
+		TextView pathInfo = (TextView)findViewById(R.id.path_info);
+		pathInfo.setText(mediainfo.media.path);
 
         if (token == null) {
 			new Runnable() {
