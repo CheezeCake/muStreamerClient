@@ -43,8 +43,6 @@ public class MainActivity extends ActionBarActivity
 	private String metaServerPort = null;
 	private static String metaServerEndpointStr = null;
 
-    private AudioRecorder recorder = null;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -125,6 +123,8 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	public void onDestroy()
 	{
+		super.onDestroy();
+
 		if (IceData.iceCommunicator != null) {
 			try {
 				IceData.iceCommunicator.destroy();
@@ -266,15 +266,15 @@ public class MainActivity extends ActionBarActivity
 
     public void talk(View v)
     {
-        if (recorder != null) {
+        if (AudioRecorder.isIsRecording()) {
             System.out.println("STOP RECORDING");
-            recorder.stopRecording();
-            recorder = null;
+            AudioRecorder.stopRecording();
+			//getdata
+			//release
         }
         else {
             System.out.println("START RECORDING");
-            recorder = new AudioRecorder();
-            recorder.startRecording();
+            AudioRecorder.startRecording();
         }
     }
 }
