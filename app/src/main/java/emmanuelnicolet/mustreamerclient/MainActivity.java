@@ -274,7 +274,7 @@ public class MainActivity extends ActionBarActivity
 			//release
         }
         else {
-            Log.e("", "START RECORDING");
+            Log.d("", "START RECORDING");
             AudioRecorder.startRecording();
         }
     }
