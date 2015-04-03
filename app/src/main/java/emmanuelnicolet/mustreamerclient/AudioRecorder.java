@@ -19,6 +19,7 @@ class AudioRecorder
 	private static final int AUDIO_CHAN = AudioFormat.CHANNEL_OUT_MONO;
 	private static final int REC_ENC = AudioFormat.ENCODING_PCM_16BIT;
 	private static final int BUFFER_SIZE = 1024;
+	private static final int FULL_BUFFER_SIZE = BUFFER_SIZE * 150;
 
 	public static void startRecording()
 	{
@@ -46,15 +47,18 @@ class AudioRecorder
 
 	private static void saveAudioData()
 	{
-		System.out.println("saveAudioData");
 		track = new AudioTrack(AudioManager.STREAM_MUSIC, REC_SR,
 				AUDIO_CHAN, REC_ENC, BUFFER_SIZE, AudioTrack.MODE_STREAM);
 		track.play();
 
-		while (isRecording) {
-			audioData = new short[BUFFER_SIZE];
-			int recorded = recorder.read(audioData, 0, BUFFER_SIZE);
-			track.write(audioData, 0, recorded);
+		audioData = new short[FULL_BUFFER_SIZE];
+		int offset = 0;
+		int recorded;
+
+		while (isRecording && offset <= FULL_BUFFER_SIZE - BUFFER_SIZE) {
+			recorded = recorder.read(audioData, offset, BUFFER_SIZE);
+			track.write(audioData, offset, recorded);
+			offset += recorded;
 		}
 
 		recorder.stop();
