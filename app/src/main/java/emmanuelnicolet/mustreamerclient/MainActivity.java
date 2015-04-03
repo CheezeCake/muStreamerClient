@@ -26,6 +26,7 @@ import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
 import Player.IMusicServerPrx;
 import Player.IMusicServerPrxHelper;
+import speeral.Server;
 
 
 public class MainActivity extends ActionBarActivity
@@ -270,8 +271,28 @@ public class MainActivity extends ActionBarActivity
         if (AudioRecorder.isIsRecording()) {
             Log.d("", "STOP RECORDING");
             AudioRecorder.stopRecording();
-			//getdata
-			//release
+
+			/*
+			try {
+				Log.d("speeral", "connecting");
+				Ice.ObjectPrx base = IceData.iceCommunicator.stringToProxy(
+						"SpeeralServer:default -h 188.226.241.233 -p 10000");
+				 speeral.ServerPrx speer = speeral.ServerPrxHelper.checkedCast(base);
+				if (speer == null)
+					throw new Error("Invalid proxy");
+
+				Log.d("speeral", "proxy ok");
+
+				String response = speer.decode(AudioRecorder.getAudioData(), true);
+				Log.d("speeral", "response = " +  response);
+			} catch (Ice.LocalException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				System.err.println(e);
+			}
+			*/
+
+			AudioRecorder.release();
         }
         else {
             Log.d("", "START RECORDING");

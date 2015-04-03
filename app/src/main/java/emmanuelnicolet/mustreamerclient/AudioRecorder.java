@@ -13,6 +13,7 @@ class AudioRecorder
 	private static boolean isRecording = false;
     private static AudioTrack track = null;
 	private static short[] audioData = null;
+	private static int audioDataLength = 0;
 
 	private static final int REC_SR = 8000;
 	private static final int REC_CHAN = AudioFormat.CHANNEL_IN_MONO;
@@ -61,6 +62,8 @@ class AudioRecorder
 			offset += recorded;
 		}
 
+		audioDataLength = offset;
+
 		recorder.stop();
 		recorder.release();
 		recorder = null;
@@ -68,7 +71,11 @@ class AudioRecorder
 
 	public static short[] getAudioData()
 	{
-		return audioData;
+		short[] ret = new short[audioDataLength];
+		for (int i = 0; i < audioDataLength; i++)
+			ret[i] = audioData[i];
+
+		return ret;
 	}
 
 	public static void release()
