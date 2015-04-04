@@ -1,6 +1,8 @@
 package emmanuelnicolet.mustreamerclient;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +28,9 @@ import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
 import Player.IMusicServerPrx;
 import Player.IMusicServerPrxHelper;
+import PocketSphinxIce.IPocketSphinxServer;
+import PocketSphinxIce.IPocketSphinxServerPrx;
+import PocketSphinxIce.IPocketSphinxServerPrxHelper;
 import speeral.Server;
 
 
@@ -272,31 +277,33 @@ public class MainActivity extends ActionBarActivity
             Log.d("", "STOP RECORDING");
             AudioRecorder.stopRecording();
 
+			SpeechRecognition sr;
+
 			/*
-			try {
-				Log.d("speeral", "connecting");
-				Ice.ObjectPrx base = IceData.iceCommunicator.stringToProxy(
-						"SpeeralServer:default -h 188.226.241.233 -p 10000");
-				 speeral.ServerPrx speer = speeral.ServerPrxHelper.checkedCast(base);
-				if (speer == null)
-					throw new Error("Invalid proxy");
-
-				Log.d("speeral", "proxy ok");
-
-				String response = speer.decode(AudioRecorder.getAudioData(), true);
-				Log.d("speeral", "response = " +  response);
-			} catch (Ice.LocalException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				System.err.println(e);
-			}
+			sr = new SpeeralSpeechRecognition() {
+				@Override
+				protected Context getContext()
+				{
+					return MainActivity.this;
+				}
+			};
 			*/
 
+			sr = new PocketsphinxSpeechRecognition() {
+				@Override
+				protected Context getContext()
+				{
+					return MainActivity.this;
+				}
+			};
+
+			sr.execute(AudioRecorder.getAudioData());
+
 			AudioRecorder.release();
-        }
-        else {
-            Log.d("", "START RECORDING");
-            AudioRecorder.startRecording();
-        }
-    }
+		}
+		else {
+			Log.d("", "START RECORDING");
+			AudioRecorder.startRecording();
+		}
+	}
 }
