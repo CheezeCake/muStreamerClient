@@ -1,23 +1,20 @@
 package emmanuelnicolet.mustreamerclient;
 
 import android.media.AudioFormat;
-import android.media.AudioManager;
 import android.media.AudioRecord;
-import android.media.AudioTrack;
 import android.media.MediaRecorder;
-import android.util.Log;
+
+import java.util.Arrays;
 
 class AudioRecorder
 {
 	private static AudioRecord recorder = null;
 	private static boolean isRecording = false;
-    private static AudioTrack track = null;
 	private static short[] audioData = null;
 	private static int audioDataLength = 0;
 
 	private static final int REC_SR = 16000;
 	private static final int REC_CHAN = AudioFormat.CHANNEL_IN_MONO;
-	private static final int AUDIO_CHAN = AudioFormat.CHANNEL_OUT_MONO;
 	private static final int REC_ENC = AudioFormat.ENCODING_PCM_16BIT;
 	private static final int BUFFER_SIZE = 2048;
 	private static final int FULL_BUFFER_SIZE = BUFFER_SIZE * 50;
@@ -48,17 +45,12 @@ class AudioRecorder
 
 	private static void saveAudioData()
 	{
-		track = new AudioTrack(AudioManager.STREAM_MUSIC, REC_SR,
-				AUDIO_CHAN, REC_ENC, BUFFER_SIZE, AudioTrack.MODE_STREAM);
-		track.play();
-
 		audioData = new short[FULL_BUFFER_SIZE];
 		int offset = 0;
 		int recorded;
 
 		while (isRecording && offset <= FULL_BUFFER_SIZE - BUFFER_SIZE) {
 			recorded = recorder.read(audioData, offset, BUFFER_SIZE);
-			track.write(audioData, offset, recorded);
 			offset += recorded;
 		}
 
@@ -71,17 +63,12 @@ class AudioRecorder
 
 	public static short[] getAudioData()
 	{
-		short[] ret = new short[audioDataLength];
-		for (int i = 0; i < audioDataLength; i++)
-			ret[i] = audioData[i];
-
-		return ret;
+		return Arrays.copyOf(audioData, audioDataLength);
 	}
 
 	public static void release()
 	{
 		audioData = null;
-		track = null;
 	}
 
 	public static boolean isIsRecording()
