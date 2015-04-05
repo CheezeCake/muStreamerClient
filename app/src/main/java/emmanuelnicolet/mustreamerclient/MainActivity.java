@@ -54,7 +54,7 @@ public class MainActivity extends ActionBarActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		if (IceData.iceCommunicator == null)
-			IceData.iceCommunicator = Ice.Util.initialize(new String[]{""});
+			IceData.iceCommunicator = Ice.Util.initialize(new String[] { "" });
 
 		loadPreferences();
 	}

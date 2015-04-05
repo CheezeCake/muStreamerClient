@@ -20,7 +20,7 @@ public class DeleteListActivity extends AbstractResultActivity
 	{
 		super.onCreate(savedInstanceState);
 
-		new FetchResults().execute(new String[]{MainActivity.getMetaServerEndpointStr()});
+		new FetchResults().execute(new String[] { MainActivity.getMetaServerEndpointStr() });
 	}
 
 	@Override

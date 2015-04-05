@@ -37,8 +37,8 @@ public abstract class AbstractResultActivity extends ListActivity
 
 				SimpleAdapter adapter = new SimpleAdapter(AbstractResultActivity.this, data,
 						android.R.layout.simple_list_item_2,
-						new String[]{c1, c2},
-						new int[]{android.R.id.text1, android.R.id.text2});
+						new String[] { c1, c2 },
+						new int[] { android.R.id.text1, android.R.id.text2 });
 				setListAdapter(adapter);
 			}
 			else {
