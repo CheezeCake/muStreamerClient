@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import Player.MediaInfo;
 import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
+import Player.MediaInfo;
 
 public class ListSongsResults extends AbstractResultActivity
 {
@@ -16,7 +16,7 @@ public class ListSongsResults extends AbstractResultActivity
 	{
 		super.onCreate(savedInstanceState);
 
-		new FetchResults().execute(new String[] { MainActivity.getMetaServerEndpointStr() });
+		new FetchResults().execute(new String[]{MainActivity.getMetaServerEndpointStr()});
 	}
 
 	@Override

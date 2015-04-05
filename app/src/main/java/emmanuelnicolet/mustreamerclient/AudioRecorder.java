@@ -8,16 +8,15 @@ import java.util.Arrays;
 
 class AudioRecorder
 {
-	private static AudioRecord recorder = null;
-	private static boolean isRecording = false;
-	private static short[] audioData = null;
-	private static int audioDataLength = 0;
-
 	private static final int REC_SR = 16000;
 	private static final int REC_CHAN = AudioFormat.CHANNEL_IN_MONO;
 	private static final int REC_ENC = AudioFormat.ENCODING_PCM_16BIT;
 	private static final int BUFFER_SIZE = 2048;
 	private static final int FULL_BUFFER_SIZE = BUFFER_SIZE * 70;
+	private static AudioRecord recorder = null;
+	private static boolean isRecording = false;
+	private static short[] audioData = null;
+	private static int audioDataLength = 0;
 
 	public static void startRecording()
 	{
@@ -29,7 +28,8 @@ class AudioRecorder
 				REC_ENC, BUFFER_SIZE);
 		recorder.startRecording();
 		isRecording = true;
-		new Thread(new Runnable() {
+		new Thread(new Runnable()
+		{
 			@Override
 			public void run()
 			{

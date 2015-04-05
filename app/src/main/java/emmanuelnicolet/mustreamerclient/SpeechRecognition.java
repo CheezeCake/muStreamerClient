@@ -19,7 +19,8 @@ public abstract class SpeechRecognition extends AsyncTask<short[], Void, String>
 		dialog.setTitle("Veuillez patienter...");
 		dialog.setMessage("Signal audio en cours de traitement...");
 		dialog.setCancelable(true);
-		dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+		dialog.setOnCancelListener(new DialogInterface.OnCancelListener()
+		{
 			@Override
 			public void onCancel(DialogInterface dialog)
 			{

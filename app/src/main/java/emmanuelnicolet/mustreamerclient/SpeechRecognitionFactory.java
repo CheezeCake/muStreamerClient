@@ -4,12 +4,11 @@ import android.content.Context;
 
 public class SpeechRecognitionFactory
 {
-	public enum System { POCKETSPHINX, SPEERAL }
-
 	public static SpeechRecognition create(System s, final Context c)
 	{
 		if (s == System.POCKETSPHINX) {
-			return new PocketsphinxSpeechRecognition() {
+			return new PocketsphinxSpeechRecognition()
+			{
 				@Override
 				protected Context getContext()
 				{
@@ -18,7 +17,8 @@ public class SpeechRecognitionFactory
 			};
 		}
 		else if (s == System.SPEERAL) {
-			return new SpeeralSpeechRecognition() {
+			return new SpeeralSpeechRecognition()
+			{
 				@Override
 				protected Context getContext()
 				{
@@ -28,5 +28,10 @@ public class SpeechRecognitionFactory
 		}
 
 		return null;
+	}
+
+	public enum System
+	{
+		POCKETSPHINX, SPEERAL
 	}
 }

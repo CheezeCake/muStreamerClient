@@ -1,13 +1,11 @@
 package emmanuelnicolet.mustreamerclient;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,18 +18,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import Player.Error;
-import Player.Song;
-import Player.MusicServerInfo;
 import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
 import Player.IMusicServerPrx;
 import Player.IMusicServerPrxHelper;
-import PocketSphinxIce.IPocketSphinxServer;
-import PocketSphinxIce.IPocketSphinxServerPrx;
-import PocketSphinxIce.IPocketSphinxServerPrxHelper;
-import speeral.Server;
+import Player.MusicServerInfo;
+import Player.Song;
 
 
 public class MainActivity extends ActionBarActivity
@@ -44,11 +37,16 @@ public class MainActivity extends ActionBarActivity
 	private final static String PREFERENCES_NAME = "emmanuelnicolet.musicstreamer.PREFERENCES_NAME";
 	private final static String PREFERENCES_METASERVER_HOSTNAME =
 			"emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_HOSTNAME";
-	private String metaServerHostname = null;
 	private final static String PREFERENCES_METASERVER_PORT =
 			"emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_PORT";
-	private String metaServerPort = null;
 	private static String metaServerEndpointStr = null;
+	private String metaServerHostname = null;
+	private String metaServerPort = null;
+
+	public static String getMetaServerEndpointStr()
+	{
+		return metaServerEndpointStr;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -56,14 +54,9 @@ public class MainActivity extends ActionBarActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		if (IceData.iceCommunicator == null)
-			IceData.iceCommunicator = Ice.Util.initialize(new String[] {""});
+			IceData.iceCommunicator = Ice.Util.initialize(new String[]{""});
 
 		loadPreferences();
-	}
-
-	public static String getMetaServerEndpointStr()
-	{
-		return metaServerEndpointStr;
 	}
 
 	private void loadPreferences()
@@ -100,19 +93,20 @@ public class MainActivity extends ActionBarActivity
 			LayoutInflater inflater = getLayoutInflater();
 			final View v = inflater.inflate(R.layout.settings_dialog, null);
 
-			TextView tv = (TextView) v.findViewById(R.id.hostname);
+			TextView tv = (TextView)v.findViewById(R.id.hostname);
 			tv.setText(metaServerHostname);
-			tv = (TextView) v.findViewById(R.id.port);
+			tv = (TextView)v.findViewById(R.id.port);
 			tv.setText(metaServerPort);
 
 			builder.setView(v)
-					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+					{
 						@Override
 						public void onClick(DialogInterface dialog, int id)
 						{
-							TextView tv = (TextView) v.findViewById(R.id.hostname);
+							TextView tv = (TextView)v.findViewById(R.id.hostname);
 							String hn = tv.getText().toString();
-							tv = (TextView) v.findViewById(R.id.port);
+							tv = (TextView)v.findViewById(R.id.port);
 							String p = tv.getText().toString();
 
 							setPreferences(hn, p);
@@ -194,20 +188,21 @@ public class MainActivity extends ActionBarActivity
 				servers[i] = serversInfo[i].hostname + ":" + serversInfo[i].listeningPort;
 
 
-			final Spinner s = (Spinner) v.findViewById(R.id.server_spinner);
+			final Spinner s = (Spinner)v.findViewById(R.id.server_spinner);
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item, servers);
 			s.setAdapter(adapter);
 
 			builder.setView(v)
-					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+					{
 						@Override
 						public void onClick(DialogInterface dialog, int id)
 						{
 							final String srvEndpoint = serversInfo[s.getSelectedItemPosition()].endpointStr;
-							final String artist = ((TextView) v.findViewById(R.id.artist)).getText().toString();
-							final String title = ((TextView) v.findViewById(R.id.title)).getText().toString();
-							final String path = ((TextView) v.findViewById(R.id.path)).getText().toString();
+							final String artist = ((TextView)v.findViewById(R.id.artist)).getText().toString();
+							final String title = ((TextView)v.findViewById(R.id.title)).getText().toString();
+							final String path = ((TextView)v.findViewById(R.id.path)).getText().toString();
 
 							if (!srvEndpoint.isEmpty() && !artist.isEmpty() && !title.isEmpty()
 									&& !path.isEmpty()) {
@@ -226,22 +221,20 @@ public class MainActivity extends ActionBarActivity
 
 											srv.add(new Song(artist, title, path));
 
-										}
-										catch (Ice.LocalException e) {
+										} catch (Ice.LocalException e) {
 											msg = "Error";
 											e.printStackTrace();
-										}
-										catch (Error e) {
+										} catch (Error e) {
 											msg = e.what;
-										}
-										catch (Exception e) {
+										} catch (Exception e) {
 											msg = "Error";
 											System.err.println(e);
 										}
 
 										final String _msg = msg;
 
-										MainActivity.this.runOnUiThread(new Runnable() {
+										MainActivity.this.runOnUiThread(new Runnable()
+										{
 											@Override
 											public void run()
 											{
@@ -256,11 +249,9 @@ public class MainActivity extends ActionBarActivity
 					})
 					.setNegativeButton(R.string.cancel, null)
 					.show();
-		}
-		catch (Ice.LocalException e) {
+		} catch (Ice.LocalException e) {
 			e.printStackTrace();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.err.println(e);
 		}
 	}
@@ -271,11 +262,11 @@ public class MainActivity extends ActionBarActivity
 		startActivity(intent);
 	}
 
-    public void talk(View v)
-    {
-        if (AudioRecorder.isIsRecording()) {
-            Log.d("", "STOP RECORDING");
-            AudioRecorder.stopRecording();
+	public void talk(View v)
+	{
+		if (AudioRecorder.isIsRecording()) {
+			Log.d("", "STOP RECORDING");
+			AudioRecorder.stopRecording();
 
 			SpeechRecognition sr = SpeechRecognitionFactory.create(
 					SpeechRecognitionFactory.System.POCKETSPHINX,

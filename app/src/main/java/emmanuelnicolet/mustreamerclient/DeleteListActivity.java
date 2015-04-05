@@ -2,20 +2,16 @@ package emmanuelnicolet.mustreamerclient;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import Player.MediaInfo;
-import Player.IMusicServerPrx;
-import Player.IMusicServerPrxHelper;
 import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
+import Player.IMusicServerPrx;
+import Player.IMusicServerPrxHelper;
+import Player.MediaInfo;
 
 public class DeleteListActivity extends AbstractResultActivity
 {
@@ -24,7 +20,7 @@ public class DeleteListActivity extends AbstractResultActivity
 	{
 		super.onCreate(savedInstanceState);
 
-		new FetchResults().execute(new String[] { MainActivity.getMetaServerEndpointStr() });
+		new FetchResults().execute(new String[]{MainActivity.getMetaServerEndpointStr()});
 	}
 
 	@Override
@@ -36,7 +32,8 @@ public class DeleteListActivity extends AbstractResultActivity
 				.setTitle("Confirmation")
 				.setMessage("Supprimer " + m.media.path + " ?")
 				.setIcon(android.R.drawable.ic_dialog_alert)
-				.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+				.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
+				{
 					@Override
 					public void onClick(DialogInterface dialog, int whichButton)
 					{
@@ -60,7 +57,8 @@ public class DeleteListActivity extends AbstractResultActivity
 						}
 
 						Toast.makeText(DeleteListActivity.this, msg, Toast.LENGTH_SHORT).show();
-					}})
+					}
+				})
 				.setNegativeButton(android.R.string.no, null).show();
 	}
 
