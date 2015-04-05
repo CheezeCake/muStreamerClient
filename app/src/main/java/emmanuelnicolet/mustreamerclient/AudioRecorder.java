@@ -17,7 +17,7 @@ class AudioRecorder
 	private static final int REC_CHAN = AudioFormat.CHANNEL_IN_MONO;
 	private static final int REC_ENC = AudioFormat.ENCODING_PCM_16BIT;
 	private static final int BUFFER_SIZE = 2048;
-	private static final int FULL_BUFFER_SIZE = BUFFER_SIZE * 50;
+	private static final int FULL_BUFFER_SIZE = BUFFER_SIZE * 70;
 
 	public static void startRecording()
 	{
