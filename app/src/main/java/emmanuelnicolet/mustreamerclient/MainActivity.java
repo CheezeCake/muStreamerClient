@@ -277,26 +277,10 @@ public class MainActivity extends ActionBarActivity
             Log.d("", "STOP RECORDING");
             AudioRecorder.stopRecording();
 
-			SpeechRecognition sr;
-
-			/*
-			sr = new SpeeralSpeechRecognition() {
-				@Override
-				protected Context getContext()
-				{
-					return MainActivity.this;
-				}
-			};
-			*/
-
-			sr = new PocketsphinxSpeechRecognition() {
-				@Override
-				protected Context getContext()
-				{
-					return MainActivity.this;
-				}
-			};
-
+			SpeechRecognition sr = SpeechRecognitionFactory.create(
+					SpeechRecognitionFactory.System.POCKETSPHINX,
+					//SpeechRecognitionFactory.System.SPEERAL,
+					MainActivity.this);
 			sr.execute(AudioRecorder.getAudioData());
 
 			AudioRecorder.release();
