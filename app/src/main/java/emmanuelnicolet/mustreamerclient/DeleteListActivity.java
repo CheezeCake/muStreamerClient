@@ -3,6 +3,7 @@ package emmanuelnicolet.mustreamerclient;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -28,38 +29,33 @@ public class DeleteListActivity extends AbstractResultActivity
 	{
 		final MediaInfo m = mediainfos.get(position);
 
-		new AlertDialog.Builder(this)
-				.setTitle("Confirmation")
-				.setMessage("Supprimer " + m.media.path + " ?")
-				.setIcon(android.R.drawable.ic_dialog_alert)
-				.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
-				{
-					@Override
-					public void onClick(DialogInterface dialog, int whichButton)
-					{
-						String msg = "Successfully deleted";
-						Ice.Communicator ic = IceData.iceCommunicator;
+		new AlertDialog.Builder(this).setTitle("Confirm").setMessage("Delete " + m.media.path + " ?").setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int whichButton)
+			{
+				String msg = "Successfully deleted";
+				Ice.Communicator ic = IceData.iceCommunicator;
 
-						try {
-							Ice.ObjectPrx base = ic.stringToProxy(m.endpointStr);
-							IMusicServerPrx srv = IMusicServerPrxHelper.checkedCast(base);
-							if (srv == null)
-								throw new Error("Invalid proxy");
+				try {
+					Ice.ObjectPrx base = ic.stringToProxy(m.endpointStr);
+					IMusicServerPrx srv = IMusicServerPrxHelper.checkedCast(base);
+					if (srv == null)
+						throw new Exception("Invalid proxy");
 
-							srv.remove(m.media.path);
+					srv.remove(m.media.path);
 
-						} catch (Ice.LocalException e) {
-							msg = "Error";
-							e.printStackTrace();
-						} catch (Exception e) {
-							msg = "Error";
-							System.err.println(e);
-						}
+				}
+				catch (Exception e) {
+					Log.e("DeleteListActivity", e.toString());
+					msg = e.getMessage();
+					if (msg == null)
+						msg = "Error";
+				}
 
-						Toast.makeText(DeleteListActivity.this, msg, Toast.LENGTH_SHORT).show();
-					}
-				})
-				.setNegativeButton(android.R.string.no, null).show();
+				Toast.makeText(DeleteListActivity.this, msg, Toast.LENGTH_SHORT).show();
+			}
+		}).setNegativeButton(android.R.string.no, null).show();
 	}
 
 
@@ -74,14 +70,14 @@ public class DeleteListActivity extends AbstractResultActivity
 				Ice.ObjectPrx base = ic.stringToProxy(strs[0]);
 				IMetaServerPrx srv = IMetaServerPrxHelper.checkedCast(base);
 				if (srv == null)
-					throw new Error("Invalid proxy");
+					throw new Exception("Invalid proxy");
 
 				medias = srv.listSongs();
 
-			} catch (Ice.LocalException e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
-			} catch (Exception e) {
-				System.err.println(e);
+				setResultActivityError(strs[0], e);
 			}
 
 			return medias;

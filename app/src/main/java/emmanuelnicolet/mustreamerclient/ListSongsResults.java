@@ -40,14 +40,14 @@ public class ListSongsResults extends AbstractResultActivity
 				Ice.ObjectPrx base = ic.stringToProxy(strs[0]);
 				IMetaServerPrx srv = IMetaServerPrxHelper.checkedCast(base);
 				if (srv == null)
-					throw new Error("Invalid proxy");
+					throw new Exception("Invalid proxy");
 
 				medias = srv.listSongs();
 
-			} catch (Ice.LocalException e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
-			} catch (Exception e) {
-				System.err.println(e);
+				setResultActivityError(strs[0], e);
 			}
 
 			return medias;

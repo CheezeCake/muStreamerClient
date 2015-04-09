@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 public abstract class SpeechRecognition extends AsyncTask<short[], Void, String>
 {
+	protected String speechRecognitionError = null;
 	private ProgressDialog dialog;
 
 	protected abstract Context getContext();
@@ -35,10 +37,12 @@ public abstract class SpeechRecognition extends AsyncTask<short[], Void, String>
 	@Override
 	protected void onPostExecute(String result)
 	{
-		//called on ui thread
 		if (this.dialog != null) {
 			this.dialog.dismiss();
 		}
+
+		if (speechRecognitionError != null)
+			Toast.makeText(getContext(), speechRecognitionError, Toast.LENGTH_SHORT).show();
 
 		Log.d("speech", "response = " + result);
 	}
@@ -46,7 +50,6 @@ public abstract class SpeechRecognition extends AsyncTask<short[], Void, String>
 	@Override
 	protected void onCancelled()
 	{
-		//called on ui thread
 		if (dialog != null) {
 			dialog.dismiss();
 		}

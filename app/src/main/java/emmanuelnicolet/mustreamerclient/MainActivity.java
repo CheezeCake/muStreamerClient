@@ -35,10 +35,8 @@ public class MainActivity extends ActionBarActivity
 	public final static String MEDIA = "emmanuelnicolet.musicstreamerclient.MEDIA";
 
 	private final static String PREFERENCES_NAME = "emmanuelnicolet.musicstreamer.PREFERENCES_NAME";
-	private final static String PREFERENCES_METASERVER_HOSTNAME =
-			"emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_HOSTNAME";
-	private final static String PREFERENCES_METASERVER_PORT =
-			"emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_PORT";
+	private final static String PREFERENCES_METASERVER_HOSTNAME = "emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_HOSTNAME";
+	private final static String PREFERENCES_METASERVER_PORT = "emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_PORT";
 	private static String metaServerEndpointStr = null;
 	private String metaServerHostname = null;
 	private String metaServerPort = null;
@@ -98,22 +96,20 @@ public class MainActivity extends ActionBarActivity
 			tv = (TextView)v.findViewById(R.id.port);
 			tv.setText(metaServerPort);
 
-			builder.setView(v)
-					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int id)
-						{
-							TextView tv = (TextView)v.findViewById(R.id.hostname);
-							String hn = tv.getText().toString();
-							tv = (TextView)v.findViewById(R.id.port);
-							String p = tv.getText().toString();
+			builder.setView(v).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int id)
+				{
+					TextView tv = (TextView)v.findViewById(R.id.hostname);
+					String hn = tv.getText().toString();
+					tv = (TextView)v.findViewById(R.id.port);
+					String p = tv.getText().toString();
 
-							setPreferences(hn, p);
-						}
+					setPreferences(hn, p);
+				}
 
-					})
-					.setNegativeButton(R.string.cancel, null).show();
+			}).setNegativeButton(R.string.cancel, null).show();
 
 			return true;
 		}
@@ -129,7 +125,8 @@ public class MainActivity extends ActionBarActivity
 		if (IceData.iceCommunicator != null) {
 			try {
 				IceData.iceCommunicator.destroy();
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				System.err.println(e);
 			}
 		}
@@ -180,7 +177,7 @@ public class MainActivity extends ActionBarActivity
 			Ice.ObjectPrx base = IceData.iceCommunicator.stringToProxy(metaServerEndpointStr);
 			IMetaServerPrx srv = IMetaServerPrxHelper.checkedCast(base);
 			if (srv == null)
-				throw new Error("Invalid proxy");
+				throw new Exception("Invalid proxy");
 
 			final MusicServerInfo[] serversInfo = srv.listMusicServers();
 			String[] servers = new String[serversInfo.length];
@@ -189,70 +186,67 @@ public class MainActivity extends ActionBarActivity
 
 
 			final Spinner s = (Spinner)v.findViewById(R.id.server_spinner);
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_spinner_item, servers);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, servers);
 			s.setAdapter(adapter);
 
-			builder.setView(v)
-					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int id)
-						{
-							final String srvEndpoint = serversInfo[s.getSelectedItemPosition()].endpointStr;
-							final String artist = ((TextView)v.findViewById(R.id.artist)).getText().toString();
-							final String title = ((TextView)v.findViewById(R.id.title)).getText().toString();
-							final String path = ((TextView)v.findViewById(R.id.path)).getText().toString();
+			builder.setView(v).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int id)
+				{
+					final String srvEndpoint = serversInfo[s.getSelectedItemPosition()].endpointStr;
+					final String artist = ((TextView)v.findViewById(R.id.artist)).getText().toString();
+					final String title = ((TextView)v.findViewById(R.id.title)).getText().toString();
+					final String path = ((TextView)v.findViewById(R.id.path)).getText().toString();
 
-							if (!srvEndpoint.isEmpty() && !artist.isEmpty() && !title.isEmpty()
-									&& !path.isEmpty()) {
-								new Thread(new Runnable()
+					if (!srvEndpoint.isEmpty() && !artist.isEmpty() && !title.isEmpty() && !path.isEmpty()) {
+						new Thread(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								String msg = "Successfully added";
+
+								try {
+									Ice.ObjectPrx base = IceData.iceCommunicator.stringToProxy(srvEndpoint);
+									IMusicServerPrx srv = IMusicServerPrxHelper.checkedCast(base);
+									if (srv == null)
+										throw new Exception("Invalid proxy");
+
+									srv.add(new Song(artist, title, path));
+
+								}
+								catch (Ice.LocalException e) {
+									msg = "Error";
+									e.printStackTrace();
+								}
+								catch (Error e) {
+									msg = e.what;
+								}
+								catch (Exception e) {
+									msg = "Error";
+									System.err.println(e);
+								}
+
+								final String _msg = msg;
+
+								MainActivity.this.runOnUiThread(new Runnable()
 								{
 									@Override
 									public void run()
 									{
-										String msg = "Successfully added";
-
-										try {
-											Ice.ObjectPrx base = IceData.iceCommunicator.stringToProxy(srvEndpoint);
-											IMusicServerPrx srv = IMusicServerPrxHelper.checkedCast(base);
-											if (srv == null)
-												throw new Error("Invalid proxy");
-
-											srv.add(new Song(artist, title, path));
-
-										} catch (Ice.LocalException e) {
-											msg = "Error";
-											e.printStackTrace();
-										} catch (Error e) {
-											msg = e.what;
-										} catch (Exception e) {
-											msg = "Error";
-											System.err.println(e);
-										}
-
-										final String _msg = msg;
-
-										MainActivity.this.runOnUiThread(new Runnable()
-										{
-											@Override
-											public void run()
-											{
-												Toast.makeText(MainActivity.this, _msg, Toast.LENGTH_SHORT).show();
-											}
-										});
+										Toast.makeText(MainActivity.this, _msg, Toast.LENGTH_SHORT).show();
 									}
-								}).start();
+								});
 							}
-						}
+						}).start();
+					}
+				}
 
-					})
-					.setNegativeButton(R.string.cancel, null)
-					.show();
-		} catch (Ice.LocalException e) {
+			}).setNegativeButton(R.string.cancel, null).show();
+		}
+		catch (Exception e) {
 			e.printStackTrace();
-		} catch (Exception e) {
-			System.err.println(e);
 		}
 	}
 
@@ -265,11 +259,10 @@ public class MainActivity extends ActionBarActivity
 	public void talk(View v)
 	{
 		if (AudioRecorder.isIsRecording()) {
-			Log.d("", "STOP RECORDING");
+			Log.d("MainActivity.talk", "stop recording");
 			AudioRecorder.stopRecording();
 
-			SpeechRecognition sr = SpeechRecognitionFactory.create(
-					SpeechRecognitionFactory.System.POCKETSPHINX,
+			SpeechRecognition sr = SpeechRecognitionFactory.create(SpeechRecognitionFactory.System.POCKETSPHINX,
 					//SpeechRecognitionFactory.System.SPEERAL,
 					MainActivity.this);
 			sr.execute(AudioRecorder.getAudioData());
@@ -277,7 +270,7 @@ public class MainActivity extends ActionBarActivity
 			AudioRecorder.release();
 		}
 		else {
-			Log.d("", "START RECORDING");
+			Log.d("MainActivity.talk", "start recording");
 			AudioRecorder.startRecording();
 		}
 	}

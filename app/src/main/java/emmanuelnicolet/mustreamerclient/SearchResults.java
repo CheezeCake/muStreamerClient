@@ -24,8 +24,7 @@ public class SearchResults extends AbstractResultActivity
 		searchText = intent.getStringExtra(MainActivity.SEARCH_STRING);
 		searchType = intent.getStringExtra(MainActivity.SEARCH_TYPE);
 
-		new FetchResults().execute(new String[] {
-				MainActivity.getMetaServerEndpointStr(), searchText });
+		new FetchResults().execute(new String[] { MainActivity.getMetaServerEndpointStr(), searchText });
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class SearchResults extends AbstractResultActivity
 				Ice.ObjectPrx base = ic.stringToProxy(strs[0]);
 				IMetaServerPrx srv = IMetaServerPrxHelper.checkedCast(base);
 				if (srv == null)
-					throw new Error("Invalid proxy");
+					throw new Exception("Invalid proxy");
 
 				if (searchType.equals("everything"))
 					medias = srv.find(strs[1]);
@@ -58,10 +57,10 @@ public class SearchResults extends AbstractResultActivity
 				else
 					medias = srv.findByTitle(strs[1]);
 
-			} catch (Ice.LocalException e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
-			} catch (Exception e) {
-				System.err.println(e);
+				setResultActivityError(strs[0], e);
 			}
 
 			return medias;

@@ -23,9 +23,7 @@ class AudioRecorder
 		if (isRecording)
 			stopRecording();
 
-		recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
-				REC_SR, REC_CHAN,
-				REC_ENC, BUFFER_SIZE);
+		recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, REC_SR, REC_CHAN, REC_ENC, BUFFER_SIZE);
 		recorder.startRecording();
 		isRecording = true;
 		new Thread(new Runnable()

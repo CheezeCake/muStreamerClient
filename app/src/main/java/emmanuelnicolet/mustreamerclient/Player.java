@@ -5,12 +5,16 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
+import Player.IMusicServerPrx;
+import Player.IMusicServerPrxHelper;
 import Player.MediaInfo;
 import Player.StreamToken;
 
@@ -22,7 +26,7 @@ public class Player extends ActionBarActivity
 	Button playButton;
 	Button stopButton;
 	private StreamToken token = null;
-	private IMetaServerPrx srv = null;
+	private IMusicServerPrx srv = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -60,7 +64,7 @@ public class Player extends ActionBarActivity
 	public void onDestroy()
 	{
 		super.onDestroy();
-		System.out.println("STOP");
+		Log.d("Player", "stop");
 		stopStream();
 	}
 
@@ -71,7 +75,8 @@ public class Player extends ActionBarActivity
 		if (mediaPlayer != null) {
 			try {
 				mediaPlayer.pause();
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 			}
 		}
 	}
@@ -87,7 +92,7 @@ public class Player extends ActionBarActivity
 
 	public void play(View v)
 	{
-		System.out.println("PLAY");
+		Log.d("Player", "play");
 
 		if (srv == null || token == null)
 			return;
@@ -102,6 +107,7 @@ public class Player extends ActionBarActivity
 				{
 					boolean playEnabled = false;
 					boolean pauseEnabled = false;
+					Exception ex = null;
 
 					try {
 						srv.play(token);
@@ -116,17 +122,24 @@ public class Player extends ActionBarActivity
 
 							mediaPlayer.start();
 							pauseEnabled = true;
-						} catch (Exception e) {
+						}
+						catch (Exception e) {
 							mediaPlayer.release();
 							mediaPlayer = null;
 							e.printStackTrace();
 							playEnabled = true;
+							ex = e;
 						}
-					} catch (Exception e) {
+					}
+					catch (Exception e) {
 						mediaPlayer = null;
 						e.printStackTrace();
 						playEnabled = true;
+						ex = e;
 					}
+
+					if (ex != null)
+						Toast.makeText(Player.this, ex.getClass().getName() + " : " + ex.getMessage(), Toast.LENGTH_SHORT).show();
 
 					setPlayPause(playEnabled, pauseEnabled);
 				}
@@ -154,7 +167,7 @@ public class Player extends ActionBarActivity
 
 	public void pause(View v)
 	{
-		System.out.println("PAUSE");
+		Log.d("Player", "pause");
 		if (mediaPlayer != null) {
 			v.setEnabled(false);
 			playButton.setEnabled(true);
@@ -173,7 +186,8 @@ public class Player extends ActionBarActivity
 			try {
 				mediaPlayer.stop();
 				mediaPlayer.release();
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				System.err.print(e);
 			}
 
@@ -182,7 +196,8 @@ public class Player extends ActionBarActivity
 
 			try {
 				srv.stop(token);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -194,16 +209,24 @@ public class Player extends ActionBarActivity
 
 		try {
 			Ice.ObjectPrx base = ic.stringToProxy(MainActivity.getMetaServerEndpointStr());
-			srv = IMetaServerPrxHelper.checkedCast(base);
-			if (srv == null)
-				throw new Error("Invalid proxy");
+			IMetaServerPrx meta = IMetaServerPrxHelper.checkedCast(base);
+			if (meta == null)
+				throw new Exception("Invalid proxy: " + MainActivity.getMetaServerEndpointStr());
 
-			token = srv.setupStreaming(mediainfo);
-			System.out.println("STREAM URL: " + token.streamingURL);
-		} catch (Ice.LocalException e) {
+			token = meta.setupStreaming(mediainfo);
+			Log.d("Player.setupStream", "streaming URL: " + token.streamingURL);
+
+			base = ic.stringToProxy(token.endpointStr);
+			srv = IMusicServerPrxHelper.checkedCast(base);
+			if (meta == null)
+				throw new Exception("Invalid proxy: " + token.endpointStr);
+
+		}
+		catch (Exception e) {
 			e.printStackTrace();
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
+
+			String message = e.getMessage();
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
 		}
 
 		playButton.setEnabled(true);
