@@ -50,7 +50,8 @@ public abstract class AbstractResultActivity extends ListActivity
 			}
 			else {
 				if (resultActivityError != null)
-					Toast.makeText(AbstractResultActivity.this, resultActivityError, Toast.LENGTH_SHORT).show();
+					Toast.makeText(AbstractResultActivity.this, resultActivityError, Toast.LENGTH_SHORT)
+							.show();
 
 				AbstractResultActivity.this.finish();
 			}

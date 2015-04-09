@@ -14,7 +14,8 @@ public abstract class PocketsphinxSpeechRecognition extends SpeechRecognition
 
 		try {
 			Log.d("pocketsphinx", "connecting");
-			Ice.ObjectPrx base = IceData.iceCommunicator.stringToProxy("PocketSphinxServer:default -h 188.226.241.233 -p 20000");
+			Ice.ObjectPrx base = IceData.iceCommunicator
+					.stringToProxy("PocketSphinxServer:default -h 188.226.241.233 -p 20000");
 			IPocketSphinxServerPrx ps = IPocketSphinxServerPrxHelper.checkedCast(base);
 			if (ps == null)
 				throw new Exception("Invalid proxy");

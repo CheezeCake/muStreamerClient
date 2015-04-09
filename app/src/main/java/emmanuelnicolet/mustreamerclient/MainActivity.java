@@ -195,11 +195,14 @@ public class MainActivity extends ActionBarActivity
 				public void onClick(DialogInterface dialog, int id)
 				{
 					final String srvEndpoint = serversInfo[s.getSelectedItemPosition()].endpointStr;
-					final String artist = ((TextView)v.findViewById(R.id.artist)).getText().toString();
-					final String title = ((TextView)v.findViewById(R.id.title)).getText().toString();
+					final String artist = ((TextView)v.findViewById(R.id.artist)).getText()
+							.toString();
+					final String title = ((TextView)v.findViewById(R.id.title)).getText()
+							.toString();
 					final String path = ((TextView)v.findViewById(R.id.path)).getText().toString();
 
-					if (!srvEndpoint.isEmpty() && !artist.isEmpty() && !title.isEmpty() && !path.isEmpty()) {
+					if (!srvEndpoint.isEmpty() && !artist.isEmpty() && !title.isEmpty() && !path
+							.isEmpty()) {
 						new Thread(new Runnable()
 						{
 							@Override
@@ -208,7 +211,8 @@ public class MainActivity extends ActionBarActivity
 								String msg = "Successfully added";
 
 								try {
-									Ice.ObjectPrx base = IceData.iceCommunicator.stringToProxy(srvEndpoint);
+									Ice.ObjectPrx base = IceData.iceCommunicator
+											.stringToProxy(srvEndpoint);
 									IMusicServerPrx srv = IMusicServerPrxHelper.checkedCast(base);
 									if (srv == null)
 										throw new Exception("Invalid proxy");
@@ -235,7 +239,8 @@ public class MainActivity extends ActionBarActivity
 									@Override
 									public void run()
 									{
-										Toast.makeText(MainActivity.this, _msg, Toast.LENGTH_SHORT).show();
+										Toast.makeText(MainActivity.this, _msg, Toast.LENGTH_SHORT)
+												.show();
 									}
 								});
 							}
@@ -262,9 +267,10 @@ public class MainActivity extends ActionBarActivity
 			Log.d("MainActivity.talk", "stop recording");
 			AudioRecorder.stopRecording();
 
-			SpeechRecognition sr = SpeechRecognitionFactory.create(SpeechRecognitionFactory.System.POCKETSPHINX,
-					//SpeechRecognitionFactory.System.SPEERAL,
-					MainActivity.this);
+			SpeechRecognition sr = SpeechRecognitionFactory
+					.create(SpeechRecognitionFactory.System.POCKETSPHINX,
+							//SpeechRecognitionFactory.System.SPEERAL,
+							MainActivity.this);
 			sr.execute(AudioRecorder.getAudioData());
 
 			AudioRecorder.release();
