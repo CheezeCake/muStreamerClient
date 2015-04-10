@@ -14,6 +14,13 @@ public abstract class SpeechRecognition extends AsyncTask<short[], Void, String>
 
 	protected abstract Context getContext();
 
+	protected void setSpeechRecognitionError(Exception e, String msg)
+	{
+		speechRecognitionError = e.getClass().getName();
+		if (msg != null)
+			speechRecognitionError = speechRecognitionError + " : " + msg;
+	}
+
 	@Override
 	protected void onPreExecute()
 	{

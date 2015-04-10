@@ -2,6 +2,8 @@ package emmanuelnicolet.mustreamerclient;
 
 import android.util.Log;
 
+import speeral.SpeeralError;
+
 public abstract class SpeeralSpeechRecognition extends SpeechRecognition
 {
 	@Override
@@ -19,10 +21,14 @@ public abstract class SpeeralSpeechRecognition extends SpeechRecognition
 
 			Log.d("speeral", "proxy ok");
 
-			//response = speer.decode(AudioRecorder.getAudioData(), true);
 			response = speer.decode(params[0], true);
 		}
+		catch (SpeeralError e) {
+			setSpeechRecognitionError(e, e.reason);
+			e.printStackTrace();
+		}
 		catch (Exception e) {
+			setSpeechRecognitionError(e, e.getMessage());
 			e.printStackTrace();
 		}
 

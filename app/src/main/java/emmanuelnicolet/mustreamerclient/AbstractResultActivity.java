@@ -21,7 +21,7 @@ public abstract class AbstractResultActivity extends ListActivity
 		resultActivityError = e.getClass().getName() + " : Cannot connect to " + srvStr;
 		String msg = e.getMessage();
 		if (msg != null)
-			resultActivityError.concat(" : " + e.getMessage());
+			resultActivityError = resultActivityError + " : " + e.getMessage();
 	}
 
 	protected abstract class AbstractFetchResults extends AsyncTask<String, Void, MediaInfo[]>

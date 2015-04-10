@@ -22,10 +22,15 @@ public abstract class PocketsphinxSpeechRecognition extends SpeechRecognition
 
 			Log.d("pocketsphinx", "proxy ok");
 
-			//response = ps.decode(AudioRecorder.getAudioData());
 			response = ps.decode(params[0]);
 		}
+		catch (PocketSphinxIce.Error e) {
+			Log.d("ERROR", "e.what = " + e.what);
+			setSpeechRecognitionError(e, e.what);
+			e.printStackTrace();
+		}
 		catch (Exception e) {
+			setSpeechRecognitionError(e, e.getMessage());
 			e.printStackTrace();
 		}
 
