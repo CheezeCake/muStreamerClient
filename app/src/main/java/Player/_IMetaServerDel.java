@@ -39,10 +39,4 @@ public interface _IMetaServerDel extends Ice._ObjectDel
 
     StreamToken setupStreaming(MediaInfo media, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
         throws IceInternal.LocalExceptionWrapper;
-
-    void play(StreamToken token, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
-        throws IceInternal.LocalExceptionWrapper;
-
-    void stop(StreamToken token, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
-        throws IceInternal.LocalExceptionWrapper;
 }

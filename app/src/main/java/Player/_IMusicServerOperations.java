@@ -41,4 +41,7 @@ public interface _IMusicServerOperations
     void play(StreamToken token, Ice.Current __current);
 
     void stop(StreamToken token, Ice.Current __current);
+
+    void uploadFile(String path, int offset, byte[] data, Ice.Current __current)
+        throws Error;
 }

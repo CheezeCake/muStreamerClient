@@ -20,17 +20,19 @@
 
 package Player;
 
-public interface _IMetaServerOperations
+public final class ByteSeqHelper
 {
-    MediaInfo[] find(String s, Ice.Current __current);
+    public static void
+    write(IceInternal.BasicStream __os, byte[] __v)
+    {
+        __os.writeByteSeq(__v);
+    }
 
-    MediaInfo[] findByArtist(String s, Ice.Current __current);
-
-    MediaInfo[] findByTitle(String s, Ice.Current __current);
-
-    MediaInfo[] listSongs(Ice.Current __current);
-
-    MusicServerInfo[] listMusicServers(Ice.Current __current);
-
-    StreamToken setupStreaming(MediaInfo media, Ice.Current __current);
+    public static byte[]
+    read(IceInternal.BasicStream __is)
+    {
+        byte[] __v;
+        __v = __is.readByteSeq();
+        return __v;
+    }
 }

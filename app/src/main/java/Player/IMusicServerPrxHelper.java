@@ -1179,6 +1179,147 @@ public final class IMusicServerPrxHelper extends Ice.ObjectPrxHelperBase impleme
         __end(__result, __stop_name);
     }
 
+    private static final String __uploadFile_name = "uploadFile";
+
+    public void uploadFile(String path, int offset, byte[] data)
+        throws Error
+    {
+        uploadFile(path, offset, data, null, false);
+    }
+
+    public void uploadFile(String path, int offset, byte[] data, java.util.Map<String, String> __ctx)
+        throws Error
+    {
+        uploadFile(path, offset, data, __ctx, true);
+    }
+
+    private void uploadFile(String path, int offset, byte[] data, java.util.Map<String, String> __ctx, boolean __explicitCtx)
+        throws Error
+    {
+        if(__explicitCtx && __ctx == null)
+        {
+            __ctx = _emptyContext;
+        }
+        final Ice.Instrumentation.InvocationObserver __observer = IceInternal.ObserverHelper.get(this, "uploadFile", __ctx);
+        int __cnt = 0;
+        try
+        {
+            while(true)
+            {
+                Ice._ObjectDel __delBase = null;
+                try
+                {
+                    __checkTwowayOnly("uploadFile");
+                    __delBase = __getDelegate(false);
+                    _IMusicServerDel __del = (_IMusicServerDel)__delBase;
+                    __del.uploadFile(path, offset, data, __ctx, __observer);
+                    return;
+                }
+                catch(IceInternal.LocalExceptionWrapper __ex)
+                {
+                    __handleExceptionWrapper(__delBase, __ex, __observer);
+                }
+                catch(Ice.LocalException __ex)
+                {
+                    __cnt = __handleException(__delBase, __ex, null, __cnt, __observer);
+                }
+            }
+        }
+        finally
+        {
+            if(__observer != null)
+            {
+                __observer.detach();
+            }
+        }
+    }
+
+    public Ice.AsyncResult begin_uploadFile(String path, int offset, byte[] data)
+    {
+        return begin_uploadFile(path, offset, data, null, false, null);
+    }
+
+    public Ice.AsyncResult begin_uploadFile(String path, int offset, byte[] data, java.util.Map<String, String> __ctx)
+    {
+        return begin_uploadFile(path, offset, data, __ctx, true, null);
+    }
+
+    public Ice.AsyncResult begin_uploadFile(String path, int offset, byte[] data, Ice.Callback __cb)
+    {
+        return begin_uploadFile(path, offset, data, null, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_uploadFile(String path, int offset, byte[] data, java.util.Map<String, String> __ctx, Ice.Callback __cb)
+    {
+        return begin_uploadFile(path, offset, data, __ctx, true, __cb);
+    }
+
+    public Ice.AsyncResult begin_uploadFile(String path, int offset, byte[] data, Callback_IMusicServer_uploadFile __cb)
+    {
+        return begin_uploadFile(path, offset, data, null, false, __cb);
+    }
+
+    public Ice.AsyncResult begin_uploadFile(String path, int offset, byte[] data, java.util.Map<String, String> __ctx, Callback_IMusicServer_uploadFile __cb)
+    {
+        return begin_uploadFile(path, offset, data, __ctx, true, __cb);
+    }
+
+    private Ice.AsyncResult begin_uploadFile(String path, int offset, byte[] data, java.util.Map<String, String> __ctx, boolean __explicitCtx, IceInternal.CallbackBase __cb)
+    {
+        __checkAsyncTwowayOnly(__uploadFile_name);
+        IceInternal.OutgoingAsync __result = new IceInternal.OutgoingAsync(this, __uploadFile_name, __cb);
+        try
+        {
+            __result.__prepare(__uploadFile_name, Ice.OperationMode.Normal, __ctx, __explicitCtx);
+            IceInternal.BasicStream __os = __result.__startWriteParams(Ice.FormatType.DefaultFormat);
+            __os.writeString(path);
+            __os.writeInt(offset);
+            ByteSeqHelper.write(__os, data);
+            __result.__endWriteParams();
+            __result.__send(true);
+        }
+        catch(Ice.LocalException __ex)
+        {
+            __result.__exceptionAsync(__ex);
+        }
+        return __result;
+    }
+
+    public void end_uploadFile(Ice.AsyncResult __result)
+        throws Error
+    {
+        Ice.AsyncResult.__check(__result, this, __uploadFile_name);
+        boolean __ok = __result.__wait();
+        try
+        {
+            if(!__ok)
+            {
+                try
+                {
+                    __result.__throwUserException();
+                }
+                catch(Error __ex)
+                {
+                    throw __ex;
+                }
+                catch(Ice.UserException __ex)
+                {
+                    throw new Ice.UnknownUserException(__ex.ice_name(), __ex);
+                }
+            }
+            __result.__readEmptyParams();
+        }
+        catch(Ice.LocalException ex)
+        {
+            Ice.Instrumentation.InvocationObserver __obsv = __result.__getObserver();
+            if(__obsv != null)
+            {
+                __obsv.failed(ex.ice_name());
+            }
+            throw ex;
+        }
+    }
+
     public static IMusicServerPrx checkedCast(Ice.ObjectPrx __obj)
     {
         IMusicServerPrx __d = null;

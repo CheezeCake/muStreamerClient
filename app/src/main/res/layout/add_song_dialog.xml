@@ -35,6 +35,16 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/path"
-        android:hint="Path"/>
+        android:id="@+id/File_name"
+        android:hint="File name"
+        android:enabled="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose file"
+        android:id="@+id/file_chooser"
+        android:layout_gravity="center_horizontal"
+        android:onClick="chooseFile"/>
+
 </LinearLayout>

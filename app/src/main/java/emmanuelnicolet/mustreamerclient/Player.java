@@ -139,8 +139,8 @@ public class Player extends ActionBarActivity
 					}
 
 					if (ex != null)
-						Toast.makeText(Player.this, ex.getClass().getName() + " : " + ex
-								.getMessage(), Toast.LENGTH_SHORT).show();
+						Toast.makeText(Player.this.getBaseContext(), ex.getClass()
+								.getName() + " : " + ex.getMessage(), Toast.LENGTH_SHORT).show();
 
 					setPlayPause(playEnabled, pauseEnabled);
 				}

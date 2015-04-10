@@ -189,4 +189,25 @@ public interface IMusicServerPrx extends Ice.ObjectPrx
     public Ice.AsyncResult begin_stop(StreamToken token, java.util.Map<String, String> __ctx, Callback_IMusicServer_stop __cb);
 
     public void end_stop(Ice.AsyncResult __result);
+
+    public void uploadFile(String path, int offset, byte[] data)
+        throws Error;
+
+    public void uploadFile(String path, int offset, byte[] data, java.util.Map<String, String> __ctx)
+        throws Error;
+
+    public Ice.AsyncResult begin_uploadFile(String path, int offset, byte[] data);
+
+    public Ice.AsyncResult begin_uploadFile(String path, int offset, byte[] data, java.util.Map<String, String> __ctx);
+
+    public Ice.AsyncResult begin_uploadFile(String path, int offset, byte[] data, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_uploadFile(String path, int offset, byte[] data, java.util.Map<String, String> __ctx, Ice.Callback __cb);
+
+    public Ice.AsyncResult begin_uploadFile(String path, int offset, byte[] data, Callback_IMusicServer_uploadFile __cb);
+
+    public Ice.AsyncResult begin_uploadFile(String path, int offset, byte[] data, java.util.Map<String, String> __ctx, Callback_IMusicServer_uploadFile __cb);
+
+    public void end_uploadFile(Ice.AsyncResult __result)
+        throws Error;
 }

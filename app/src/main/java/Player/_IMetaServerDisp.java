@@ -95,19 +95,9 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
         return listSongs(null);
     }
 
-    public final void play(StreamToken token)
-    {
-        play(token, null);
-    }
-
     public final StreamToken setupStreaming(MediaInfo media)
     {
         return setupStreaming(media, null);
-    }
-
-    public final void stop(StreamToken token)
-    {
-        stop(token, null);
     }
 
     public static Ice.DispatchStatus ___find(IMetaServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
@@ -189,32 +179,6 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
         return Ice.DispatchStatus.DispatchOK;
     }
 
-    public static Ice.DispatchStatus ___play(IMetaServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
-    {
-        __checkMode(Ice.OperationMode.Normal, __current.mode);
-        IceInternal.BasicStream __is = __inS.startReadParams();
-        StreamToken token;
-        token = new StreamToken();
-        token.__read(__is);
-        __inS.endReadParams();
-        __obj.play(token, __current);
-        __inS.__writeEmptyParams();
-        return Ice.DispatchStatus.DispatchOK;
-    }
-
-    public static Ice.DispatchStatus ___stop(IMetaServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
-    {
-        __checkMode(Ice.OperationMode.Normal, __current.mode);
-        IceInternal.BasicStream __is = __inS.startReadParams();
-        StreamToken token;
-        token = new StreamToken();
-        token.__read(__is);
-        __inS.endReadParams();
-        __obj.stop(token, __current);
-        __inS.__writeEmptyParams();
-        return Ice.DispatchStatus.DispatchOK;
-    }
-
     private final static String[] __all =
     {
         "find",
@@ -226,9 +190,7 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
         "ice_ping",
         "listMusicServers",
         "listSongs",
-        "play",
-        "setupStreaming",
-        "stop"
+        "setupStreaming"
     };
 
     public Ice.DispatchStatus __dispatch(IceInternal.Incoming in, Ice.Current __current)
@@ -279,15 +241,7 @@ public abstract class _IMetaServerDisp extends Ice.ObjectImpl implements IMetaSe
             }
             case 9:
             {
-                return ___play(this, in, __current);
-            }
-            case 10:
-            {
                 return ___setupStreaming(this, in, __current);
-            }
-            case 11:
-            {
-                return ___stop(this, in, __current);
             }
         }
 

@@ -129,40 +129,4 @@ public interface IMetaServerPrx extends Ice.ObjectPrx
     public Ice.AsyncResult begin_setupStreaming(MediaInfo media, java.util.Map<String, String> __ctx, Callback_IMetaServer_setupStreaming __cb);
 
     public StreamToken end_setupStreaming(Ice.AsyncResult __result);
-
-    public void play(StreamToken token);
-
-    public void play(StreamToken token, java.util.Map<String, String> __ctx);
-
-    public Ice.AsyncResult begin_play(StreamToken token);
-
-    public Ice.AsyncResult begin_play(StreamToken token, java.util.Map<String, String> __ctx);
-
-    public Ice.AsyncResult begin_play(StreamToken token, Ice.Callback __cb);
-
-    public Ice.AsyncResult begin_play(StreamToken token, java.util.Map<String, String> __ctx, Ice.Callback __cb);
-
-    public Ice.AsyncResult begin_play(StreamToken token, Callback_IMetaServer_play __cb);
-
-    public Ice.AsyncResult begin_play(StreamToken token, java.util.Map<String, String> __ctx, Callback_IMetaServer_play __cb);
-
-    public void end_play(Ice.AsyncResult __result);
-
-    public void stop(StreamToken token);
-
-    public void stop(StreamToken token, java.util.Map<String, String> __ctx);
-
-    public Ice.AsyncResult begin_stop(StreamToken token);
-
-    public Ice.AsyncResult begin_stop(StreamToken token, java.util.Map<String, String> __ctx);
-
-    public Ice.AsyncResult begin_stop(StreamToken token, Ice.Callback __cb);
-
-    public Ice.AsyncResult begin_stop(StreamToken token, java.util.Map<String, String> __ctx, Ice.Callback __cb);
-
-    public Ice.AsyncResult begin_stop(StreamToken token, Callback_IMetaServer_stop __cb);
-
-    public Ice.AsyncResult begin_stop(StreamToken token, java.util.Map<String, String> __ctx, Callback_IMetaServer_stop __cb);
-
-    public void end_stop(Ice.AsyncResult __result);
 }

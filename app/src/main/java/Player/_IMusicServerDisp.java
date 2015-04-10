@@ -117,6 +117,12 @@ public abstract class _IMusicServerDisp extends Ice.ObjectImpl implements IMusic
         stop(token, null);
     }
 
+    public final void uploadFile(String path, int offset, byte[] data)
+        throws Error
+    {
+        uploadFile(path, offset, data, null);
+    }
+
     public static Ice.DispatchStatus ___add(IMusicServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
     {
         __checkMode(Ice.OperationMode.Normal, __current.mode);
@@ -255,6 +261,30 @@ public abstract class _IMusicServerDisp extends Ice.ObjectImpl implements IMusic
         return Ice.DispatchStatus.DispatchOK;
     }
 
+    public static Ice.DispatchStatus ___uploadFile(IMusicServer __obj, IceInternal.Incoming __inS, Ice.Current __current)
+    {
+        __checkMode(Ice.OperationMode.Normal, __current.mode);
+        IceInternal.BasicStream __is = __inS.startReadParams();
+        String path;
+        int offset;
+        byte[] data;
+        path = __is.readString();
+        offset = __is.readInt();
+        data = ByteSeqHelper.read(__is);
+        __inS.endReadParams();
+        try
+        {
+            __obj.uploadFile(path, offset, data, __current);
+            __inS.__writeEmptyParams();
+            return Ice.DispatchStatus.DispatchOK;
+        }
+        catch(Error ex)
+        {
+            __inS.__writeUserException(ex, Ice.FormatType.DefaultFormat);
+            return Ice.DispatchStatus.DispatchUserException;
+        }
+    }
+
     private final static String[] __all =
     {
         "add",
@@ -269,7 +299,8 @@ public abstract class _IMusicServerDisp extends Ice.ObjectImpl implements IMusic
         "play",
         "remove",
         "setupStreaming",
-        "stop"
+        "stop",
+        "uploadFile"
     };
 
     public Ice.DispatchStatus __dispatch(IceInternal.Incoming in, Ice.Current __current)
@@ -333,6 +364,10 @@ public abstract class _IMusicServerDisp extends Ice.ObjectImpl implements IMusic
             case 12:
             {
                 return ___stop(this, in, __current);
+            }
+            case 13:
+            {
+                return ___uploadFile(this, in, __current);
             }
         }
 

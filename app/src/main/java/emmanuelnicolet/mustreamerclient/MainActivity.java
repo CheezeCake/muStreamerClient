@@ -1,10 +1,12 @@
 package emmanuelnicolet.mustreamerclient;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,13 +20,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import Player.Error;
+import java.io.File;
+
 import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
-import Player.IMusicServerPrx;
-import Player.IMusicServerPrxHelper;
 import Player.MusicServerInfo;
-import Player.Song;
 
 
 public class MainActivity extends ActionBarActivity
@@ -33,6 +33,7 @@ public class MainActivity extends ActionBarActivity
 	public final static String SEARCH_TYPE = "emmanuelnicolet.mustreamerclient.SEARCH_TYPE";
 
 	public final static String MEDIA = "emmanuelnicolet.musicstreamerclient.MEDIA";
+	public final static int CHOOSE_FILE_REQUEST = 1;
 
 	private final static String PREFERENCES_NAME = "emmanuelnicolet.musicstreamer.PREFERENCES_NAME";
 	private final static String PREFERENCES_METASERVER_HOSTNAME = "emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_HOSTNAME";
@@ -40,6 +41,9 @@ public class MainActivity extends ActionBarActivity
 	private static String metaServerEndpointStr = null;
 	private String metaServerHostname = null;
 	private String metaServerPort = null;
+
+	private String chosenFile = null;
+	private View addDialogView = null;
 
 	public static String getMetaServerEndpointStr()
 	{
@@ -172,6 +176,7 @@ public class MainActivity extends ActionBarActivity
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		LayoutInflater inflater = getLayoutInflater();
 		final View v = inflater.inflate(R.layout.add_song_dialog, null);
+		addDialogView = v;
 
 		try {
 			Ice.ObjectPrx base = IceData.iceCommunicator.stringToProxy(metaServerEndpointStr);
@@ -199,59 +204,58 @@ public class MainActivity extends ActionBarActivity
 							.toString();
 					final String title = ((TextView)v.findViewById(R.id.title)).getText()
 							.toString();
-					final String path = ((TextView)v.findViewById(R.id.path)).getText().toString();
 
-					if (!srvEndpoint.isEmpty() && !artist.isEmpty() && !title.isEmpty() && !path
-							.isEmpty()) {
-						new Thread(new Runnable()
+					if (!srvEndpoint.isEmpty() && !artist.isEmpty() && !title.isEmpty() &&
+							chosenFile != null) {
+						new FileUploadTask()
 						{
 							@Override
-							public void run()
+							protected Context getContext()
 							{
-								String msg = "Successfully added";
-
-								try {
-									Ice.ObjectPrx base = IceData.iceCommunicator
-											.stringToProxy(srvEndpoint);
-									IMusicServerPrx srv = IMusicServerPrxHelper.checkedCast(base);
-									if (srv == null)
-										throw new Exception("Invalid proxy");
-
-									srv.add(new Song(artist, title, path));
-
-								}
-								catch (Ice.LocalException e) {
-									msg = "Error";
-									e.printStackTrace();
-								}
-								catch (Error e) {
-									msg = e.what;
-								}
-								catch (Exception e) {
-									msg = "Error";
-									System.err.println(e);
-								}
-
-								final String _msg = msg;
-
-								MainActivity.this.runOnUiThread(new Runnable()
-								{
-									@Override
-									public void run()
-									{
-										Toast.makeText(MainActivity.this, _msg, Toast.LENGTH_SHORT)
-												.show();
-									}
-								});
+								return MainActivity.this;
 							}
-						}).start();
+						}.execute(chosenFile, artist, title, srvEndpoint);
 					}
 				}
 
-			}).setNegativeButton(R.string.cancel, null).show();
+			}).setNegativeButton(R.string.cancel, null)
+					.setOnDismissListener(new DialogInterface.OnDismissListener()
+					{
+						public void onDismiss(DialogInterface dialog)
+						{
+							addDialogView = null;
+						}
+					}).show();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void chooseFile(View v)
+	{
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY
+				.equals(state)) {
+
+			Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+			startActivityForResult(intent, CHOOSE_FILE_REQUEST);
+		}
+		else {
+			Toast.makeText(this, "Error: cannot read on external storage", Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (resultCode == RESULT_OK && requestCode == CHOOSE_FILE_REQUEST) {
+			android.net.Uri uri = data.getData();
+			chosenFile = uri.getPath();
+			Log.d("filechooser", "file: " + chosenFile);
+			TextView fileNameText = (TextView)addDialogView.findViewById(R.id.File_name);
+			fileNameText.setText(new File(chosenFile).getName());
 		}
 	}
 

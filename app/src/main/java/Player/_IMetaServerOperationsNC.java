@@ -33,8 +33,4 @@ public interface _IMetaServerOperationsNC
     MusicServerInfo[] listMusicServers();
 
     StreamToken setupStreaming(MediaInfo media);
-
-    void play(StreamToken token);
-
-    void stop(StreamToken token);
 }

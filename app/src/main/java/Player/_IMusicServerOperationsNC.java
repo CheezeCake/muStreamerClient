@@ -41,4 +41,7 @@ public interface _IMusicServerOperationsNC
     void play(StreamToken token);
 
     void stop(StreamToken token);
+
+    void uploadFile(String path, int offset, byte[] data)
+        throws Error;
 }

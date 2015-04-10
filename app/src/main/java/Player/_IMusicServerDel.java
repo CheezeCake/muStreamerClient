@@ -50,4 +50,8 @@ public interface _IMusicServerDel extends Ice._ObjectDel
 
     void stop(StreamToken token, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
         throws IceInternal.LocalExceptionWrapper;
+
+    void uploadFile(String path, int offset, byte[] data, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
+        throws IceInternal.LocalExceptionWrapper,
+               Error;
 }

@@ -244,53 +244,6 @@ public final class _IMetaServerDelM extends Ice._ObjectDelM implements _IMetaSer
         }
     }
 
-    public void
-    play(StreamToken token, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
-        throws IceInternal.LocalExceptionWrapper
-    {
-        IceInternal.Outgoing __og = __handler.getOutgoing("play", Ice.OperationMode.Normal, __ctx, __observer);
-        try
-        {
-            try
-            {
-                IceInternal.BasicStream __os = __og.startWriteParams(Ice.FormatType.DefaultFormat);
-                token.__write(__os);
-                __og.endWriteParams();
-            }
-            catch(Ice.LocalException __ex)
-            {
-                __og.abort(__ex);
-            }
-            boolean __ok = __og.invoke();
-            if(__og.hasResponse())
-            {
-                try
-                {
-                    if(!__ok)
-                    {
-                        try
-                        {
-                            __og.throwUserException();
-                        }
-                        catch(Ice.UserException __ex)
-                        {
-                            throw new Ice.UnknownUserException(__ex.ice_name(), __ex);
-                        }
-                    }
-                    __og.readEmptyParams();
-                }
-                catch(Ice.LocalException __ex)
-                {
-                    throw new IceInternal.LocalExceptionWrapper(__ex, false);
-                }
-            }
-        }
-        finally
-        {
-            __handler.reclaimOutgoing(__og);
-        }
-    }
-
     public StreamToken
     setupStreaming(MediaInfo media, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
         throws IceInternal.LocalExceptionWrapper
@@ -332,53 +285,6 @@ public final class _IMetaServerDelM extends Ice._ObjectDelM implements _IMetaSer
             catch(Ice.LocalException __ex)
             {
                 throw new IceInternal.LocalExceptionWrapper(__ex, false);
-            }
-        }
-        finally
-        {
-            __handler.reclaimOutgoing(__og);
-        }
-    }
-
-    public void
-    stop(StreamToken token, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __observer)
-        throws IceInternal.LocalExceptionWrapper
-    {
-        IceInternal.Outgoing __og = __handler.getOutgoing("stop", Ice.OperationMode.Normal, __ctx, __observer);
-        try
-        {
-            try
-            {
-                IceInternal.BasicStream __os = __og.startWriteParams(Ice.FormatType.DefaultFormat);
-                token.__write(__os);
-                __og.endWriteParams();
-            }
-            catch(Ice.LocalException __ex)
-            {
-                __og.abort(__ex);
-            }
-            boolean __ok = __og.invoke();
-            if(__og.hasResponse())
-            {
-                try
-                {
-                    if(!__ok)
-                    {
-                        try
-                        {
-                            __og.throwUserException();
-                        }
-                        catch(Ice.UserException __ex)
-                        {
-                            throw new Ice.UnknownUserException(__ex.ice_name(), __ex);
-                        }
-                    }
-                    __og.readEmptyParams();
-                }
-                catch(Ice.LocalException __ex)
-                {
-                    throw new IceInternal.LocalExceptionWrapper(__ex, false);
-                }
             }
         }
         finally
