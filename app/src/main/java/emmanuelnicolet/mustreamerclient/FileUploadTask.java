@@ -120,7 +120,7 @@ public abstract class FileUploadTask extends AsyncTask<String, Integer, Void>
 			this.dialog.dismiss();
 
 		if (message != null)
-			Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+			Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -130,6 +130,6 @@ public abstract class FileUploadTask extends AsyncTask<String, Integer, Void>
 			dialog.dismiss();
 
 		if (message != null)
-			Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+			Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
 	}
 }
