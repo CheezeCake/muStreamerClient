@@ -33,7 +33,7 @@ public abstract class AbstractResultActivity extends ListActivity
 			final String c2 = "artist";
 
 			if (medias != null) {
-				List data = new ArrayList<HashMap<String, String>>();
+				List<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
 
 				for (MediaInfo m : medias) {
 					HashMap<String, String> e = new HashMap<String, String>();
