@@ -57,27 +57,29 @@ public abstract class FileUploadTask extends AsyncTask<String, Integer, Void> {
             if (srv == null)
                 throw new Exception("Invalid proxy");
 
-            int messageSizeMax = Integer.parseInt(srv.ice_getCommunicator().getProperties().getProperty("Ice.MessageSizeMax"));
             BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
-            final int bufferSizeLimit = 1024 * 512;
-            int bufferSize = (messageSizeMax < bufferSizeLimit) ? messageSizeMax : bufferSizeLimit;
-            byte[] buffer = new byte[bufferSize]; // 512KB
+            final int bufferSizeLimit = 1024 * 512; // 512KB
+            int bufferSize;
+
+            try {
+                int messageSizeMax = Integer.parseInt(srv.ice_getCommunicator().getProperties()
+                        .getProperty("Ice.MessageSizeMax"));
+                bufferSize = (messageSizeMax < bufferSizeLimit) ? messageSizeMax : bufferSizeLimit;
+            }
+            catch (NumberFormatException e) {
+                bufferSize = bufferSizeLimit;
+            }
+
+            Log.d("upload", "bufferSize = " + bufferSize);
+            byte[] buffer = new byte[bufferSize];
             int bytesRead;
             int offset = 0;
-
-            char[] characters = {'!', '*', '\'', '(', ')', ';', ':', '@', '&', '=', '+', '$', ',',
-                    '/', '?', '#', '[', ']', ' ', '"', '%', '-', '.', '<', '>',
-                    '\\', '^', '_', '`',
-                    '{', '|', '}', '~'};
-            String name = file.getName();
-            for (char c : characters)
-                name = name.replace(c, '_');
 
             Log.d("upload", "upload start");
             while ((bytesRead = in.read(buffer)) != -1) {
                 byte[] data = Arrays.copyOf(buffer, bytesRead);
                 Log.d("upload", "bytes read = " + bytesRead + ", data.length = " + data.length);
-                srv.uploadFile(name, offset, data);
+                srv.uploadFile(file.getName(), offset, data);
                 offset += bytesRead;
                 publishProgress(offset / 1024);
             }
