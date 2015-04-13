@@ -107,7 +107,6 @@ public class Player extends ActionBarActivity
 				{
 					boolean playEnabled = false;
 					boolean pauseEnabled = false;
-					Exception ex = null;
 
 					try {
 						srv.play(token);
@@ -123,24 +122,32 @@ public class Player extends ActionBarActivity
 							mediaPlayer.start();
 							pauseEnabled = true;
 						}
-						catch (Exception e) {
+						catch (final Exception e) {
 							mediaPlayer.release();
 							mediaPlayer = null;
 							e.printStackTrace();
 							playEnabled = true;
-							ex = e;
+                            Player.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(Player.this, e.getClass()
+                                            .getName() + " : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
 						}
 					}
-					catch (Exception e) {
+					catch (final Exception e) {
 						mediaPlayer = null;
 						e.printStackTrace();
 						playEnabled = true;
-						ex = e;
+                        Player.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(Player.this, e.getClass()
+                                        .getName() + " : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
 					}
-
-					if (ex != null)
-						Toast.makeText(Player.this.getBaseContext(), ex.getClass()
-								.getName() + " : " + ex.getMessage(), Toast.LENGTH_SHORT).show();
 
 					setPlayPause(playEnabled, pauseEnabled);
 				}
@@ -219,7 +226,7 @@ public class Player extends ActionBarActivity
 
 			base = ic.stringToProxy(token.endpointStr);
 			srv = IMusicServerPrxHelper.checkedCast(base);
-			if (meta == null)
+			if (srv == null)
 				throw new Exception("Invalid proxy: " + token.endpointStr);
 
 		}
