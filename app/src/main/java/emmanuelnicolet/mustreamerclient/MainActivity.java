@@ -75,7 +75,7 @@ public class MainActivity extends ActionBarActivity
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString(PREFERENCES_METASERVER_HOSTNAME, hostname);
 		editor.putString(PREFERENCES_METASERVER_PORT, port);
-		editor.commit();
+		editor.apply();
 	}
 
 	@Override

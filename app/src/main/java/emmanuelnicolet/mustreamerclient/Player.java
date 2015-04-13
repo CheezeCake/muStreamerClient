@@ -234,7 +234,9 @@ public class Player extends ActionBarActivity
 			e.printStackTrace();
 
 			String message = e.getMessage();
-			Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
+			if (message == null)
+				message = e.getClass().getName();
+			Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 		}
 
 		playButton.setEnabled(true);
