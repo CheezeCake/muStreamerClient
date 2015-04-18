@@ -77,6 +77,7 @@ public class Player extends ActionBarActivity
 				mediaPlayer.pause();
 			}
 			catch (Exception e) {
+				Log.e("Player", "mediaPlayer.pause error");
 			}
 		}
 	}

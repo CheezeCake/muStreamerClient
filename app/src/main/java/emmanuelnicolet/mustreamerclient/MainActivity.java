@@ -70,9 +70,9 @@ public class MainActivity extends ActionBarActivity
 		Settings.metaServerPort = settings
 				.getString(SettingsActivity.PREFERENCES_METASERVER_PORT, "10000");
 
-		Settings.speechRecognitionSystem = SpeechRecognitionFactory.System
-				.get(settings.getInt(SettingsActivity.PREFERENCES_SPEECH_RECOGNITION, SpeechRecognitionFactory.System.POCKETSPHINX
-								.getCode()));
+		Settings.speechRecognitionSystem = SpeechRecognitionFactory.System.get(settings
+				.getInt(SettingsActivity.PREFERENCES_SPEECH_RECOGNITION, SpeechRecognitionFactory.System.POCKETSPHINX
+						.getCode()));
 
 		Settings.pocketSphinxHostname = settings
 				.getString(SettingsActivity.PREFERENCES_POCKETSPHINX_HOSTNAME, "");
@@ -181,7 +181,7 @@ public class MainActivity extends ActionBarActivity
 
 
 			final Spinner s = (Spinner)v.findViewById(R.id.server_spinner);
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, servers);
+			ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, servers);
 			s.setAdapter(adapter);
 
 			builder.setView(v).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
@@ -265,7 +265,9 @@ public class MainActivity extends ActionBarActivity
 					.create(SpeechRecognitionFactory.System.POCKETSPHINX,
 							//SpeechRecognitionFactory.System.SPEERAL,
 							MainActivity.this);
-			sr.execute(AudioRecorder.getAudioData());
+
+			if (sr != null)
+				sr.execute(AudioRecorder.getAudioData());
 
 			AudioRecorder.release();
 		}

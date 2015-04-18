@@ -3,6 +3,7 @@ package emmanuelnicolet.mustreamerclient;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.support.annotation.NonNull;
 
 import java.util.Arrays;
 
@@ -59,6 +60,7 @@ class AudioRecorder
 		recorder = null;
 	}
 
+	@NonNull
 	public static short[] getAudioData()
 	{
 		return Arrays.copyOf(audioData, audioDataLength);

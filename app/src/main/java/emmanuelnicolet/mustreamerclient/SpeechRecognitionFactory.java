@@ -40,7 +40,7 @@ public class SpeechRecognitionFactory
 	{
 		POCKETSPHINX(0), SPEERAL(1);
 
-		private static final Map<Integer, System> lookup = new HashMap<Integer, System>();
+		private static final Map<Integer, System> lookup = new HashMap<>();
 
 		static {
 			for (System w : EnumSet.allOf(System.class))

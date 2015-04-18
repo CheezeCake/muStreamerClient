@@ -13,7 +13,7 @@ import Player.MediaInfo;
 
 public abstract class AbstractResultActivity extends ListActivity
 {
-	protected List<MediaInfo> mediainfos = new ArrayList<MediaInfo>();
+	protected final List<MediaInfo> mediainfos = new ArrayList<>();
 	protected String resultActivityError = null;
 
 	protected void setResultActivityError(String srvStr, Exception e)
@@ -33,10 +33,10 @@ public abstract class AbstractResultActivity extends ListActivity
 			final String c2 = "artist";
 
 			if (medias != null) {
-				List<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+				List<HashMap<String, String>> data = new ArrayList<>();
 
 				for (MediaInfo m : medias) {
-					HashMap<String, String> e = new HashMap<String, String>();
+					HashMap<String, String> e = new HashMap<>();
 
 					e.put(c1, m.media.title);
 					e.put(c2, m.media.artist);
