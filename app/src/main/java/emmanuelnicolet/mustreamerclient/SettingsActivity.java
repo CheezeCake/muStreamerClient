@@ -37,7 +37,18 @@ public class SettingsActivity extends Activity
 		tv = (TextView)findViewById(R.id.metaserver_port);
 		tv.setText(Settings.metaServerPort);
 
-		int id = (Settings.speechRecognitionSystem == SpeechRecognitionFactory.System.POCKETSPHINX) ? R.id.pocketsphinx_radio_button : R.id.speeral_radio_button;
+		int id = R.id.android_radio_button;
+		switch (Settings.speechRecognitionSystem) {
+			case ANDROID:
+				id = R.id.android_radio_button;
+				break;
+			case POCKETSPHINX:
+				id = R.id.pocketsphinx_radio_button;
+				break;
+			case SPEERAL:
+				id = R.id.speeral_radio_button;
+				break;
+		}
 		RadioButton speechRecognitionSystemRadioButton = (RadioButton)findViewById(id);
 		speechRecognitionSystemRadioButton.setChecked(true);
 
@@ -66,9 +77,12 @@ public class SettingsActivity extends Activity
 		editor.putString(PREFERENCES_METASERVER_PORT, tv.getText().toString());
 
 		RadioButton pocketSphinxRadioButton = (RadioButton)findViewById(R.id.pocketsphinx_radio_button);
-		editor.putInt(PREFERENCES_SPEECH_RECOGNITION, (pocketSphinxRadioButton
-				.isChecked()) ? SpeechRecognitionFactory.System.POCKETSPHINX
-				.getCode() : SpeechRecognitionFactory.System.SPEERAL.getCode());
+		RadioButton androidRadioButton = (RadioButton)findViewById(R.id.android_radio_button);
+		editor.putInt(PREFERENCES_SPEECH_RECOGNITION, (pocketSphinxRadioButton.isChecked())
+				? SpeechRecognitionFactory.System.POCKETSPHINX.getCode()
+				: (androidRadioButton.isChecked())
+				? SpeechRecognitionFactory.System.ANDROID.getCode()
+				: SpeechRecognitionFactory.System.SPEERAL.getCode());
 
 		tv = (TextView)findViewById(R.id.pocketsphinx_hostname);
 		editor.putString(PREFERENCES_POCKETSPHINX_HOSTNAME, tv.getText().toString());

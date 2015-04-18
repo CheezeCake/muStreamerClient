@@ -38,7 +38,7 @@ public class SpeechRecognitionFactory
 
 	public enum System
 	{
-		POCKETSPHINX(0), SPEERAL(1);
+		POCKETSPHINX(0), SPEERAL(1), ANDROID(2);
 
 		private static final Map<Integer, System> lookup = new HashMap<>();
 

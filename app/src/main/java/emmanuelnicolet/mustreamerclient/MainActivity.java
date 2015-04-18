@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.speech.RecognitionListener;
+import android.speech.SpeechRecognizer;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
@@ -37,6 +41,8 @@ public class MainActivity extends ActionBarActivity
 	public final static int SETTINGS_ACTIVITY = 2;
 
 	private static String metaServerEndpointStr = null;
+
+	private SpeechRecognizer recognizer = null;
 
 	private String chosenFile = null;
 	private View addDialogView = null;
@@ -72,8 +78,8 @@ public class MainActivity extends ActionBarActivity
 				.getString(SettingsActivity.PREFERENCES_METASERVER_PORT, "");
 
 		Settings.speechRecognitionSystem = SpeechRecognitionFactory.System.get(settings
-				.getInt(SettingsActivity.PREFERENCES_SPEECH_RECOGNITION, SpeechRecognitionFactory.System.POCKETSPHINX
-						.getCode()));
+				.getInt(SettingsActivity.PREFERENCES_SPEECH_RECOGNITION,
+				SpeechRecognitionFactory.System.ANDROID.getCode()));
 
 		Settings.pocketSphinxHostname = settings
 				.getString(SettingsActivity.PREFERENCES_POCKETSPHINX_HOSTNAME, "");
@@ -263,8 +269,11 @@ public class MainActivity extends ActionBarActivity
 
 	public void talk(View v)
 	{
+		Button b = (Button)v;
+
 		if (AudioRecorder.isRecording()) {
 			Log.d("MainActivity.talk", "stop recording");
+			b.setText("Talk");
 			AudioRecorder.stopRecording();
 
 			SpeechRecognition sr = SpeechRecognitionFactory
@@ -275,9 +284,127 @@ public class MainActivity extends ActionBarActivity
 
 			AudioRecorder.release();
 		}
-		else {
+		else if (Settings.speechRecognitionSystem != SpeechRecognitionFactory.System.ANDROID) {
 			Log.d("MainActivity.talk", "start recording");
+			b.setText("Stop talking");
 			AudioRecorder.startRecording();
+		}
+		else {
+			createRecognizer(v);
+			Intent intent = new Intent();
+			recognizer.startListening(intent);
+			v.setEnabled(false);
+		}
+	}
+
+	public void createRecognizer(final View v)
+	{
+		if (recognizer == null) {
+			recognizer = SpeechRecognizer.createSpeechRecognizer(this);
+			recognizer.setRecognitionListener(new RecognitionListener()
+			{
+				@Override
+				public void onReadyForSpeech(Bundle params)
+				{
+					Log.d("android speech", "ready for speech");
+				}
+
+				@Override
+				public void onBeginningOfSpeech()
+				{
+					Log.d("android speech", "on beginning of speech");
+				}
+
+				@Override
+				public void onRmsChanged(float rmsdB)
+				{}
+
+				@Override
+				public void onBufferReceived(byte[] buffer)
+				{}
+
+				@Override
+				public void onEndOfSpeech()
+				{
+					Log.d("android speech", "on end of speech");
+					MainActivity.this.runOnUiThread(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							v.setEnabled(true);
+						}
+					});
+				}
+
+				@Override
+				public void onError(int error)
+				{
+					Log.d("android speech", "on error");
+					final String message;
+
+					switch (error) {
+						case SpeechRecognizer.ERROR_AUDIO:
+							message = "Audio recording error.";
+							break;
+						case SpeechRecognizer.ERROR_CLIENT:
+							message = "Other client side errors.";
+							break;
+						case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+							message = "Insufficient permissions";
+							break;
+						case SpeechRecognizer.ERROR_NETWORK:
+							message = "Other network related errors.";
+							break;
+						case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+							message = "Network operation timed out.";
+							break;
+						case SpeechRecognizer.ERROR_NO_MATCH:
+							message = "No recognition result matched.";
+							break;
+						case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
+							message = "RecognitionService busy.";
+							break;
+						case SpeechRecognizer.ERROR_SERVER:
+							message = "Server sends error status.";
+							break;
+						case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+							message = "No speech input";
+							break;
+						default:
+							message = "Error";
+					}
+
+					MainActivity.this.runOnUiThread(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+						}
+					});
+				}
+
+				@Override
+				public void onResults(Bundle results)
+				{
+					Log.d("android speech", "on results");
+					ArrayList<String> r = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+					if (r != null) {
+						for (String s : r) {
+							System.out.println(s);
+						}
+					}
+				}
+
+				@Override
+				public void onPartialResults(Bundle partialResults)
+				{}
+
+				@Override
+				public void onEvent(int eventType, Bundle params)
+				{}
+			});
 		}
 	}
 }
