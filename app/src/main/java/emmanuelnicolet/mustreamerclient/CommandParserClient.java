@@ -10,7 +10,7 @@ public class CommandParserClient
 {
 	public static final String commandParserServiceURL = "http://onche.ovh:8080/parse_command";
 
-	public static void parse(String command)
+	public static void parse(String command) throws IOException
 	{
 		URL url;
 		InputStream is = null;
@@ -26,16 +26,9 @@ public class CommandParserClient
 			while ((line = br.readLine()) != null)
 				json = json + line;
 		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
 		finally {
-			try {
-				if (is != null)
-					is.close();
-			}
-			catch (IOException ioe) {
-			}
+			if (is != null)
+				is.close();
 		}
 	}
 }

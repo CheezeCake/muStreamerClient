@@ -24,8 +24,7 @@ public class SearchResults extends AbstractResultActivity
 		searchText = intent.getStringExtra(MainActivity.SEARCH_STRING);
 		searchType = intent.getStringExtra(MainActivity.SEARCH_TYPE);
 
-		new FetchResults()
-				.execute(MainActivity.getMetaServerEndpointStr(), searchText);
+		new FetchResults().execute(MainActivity.getMetaServerEndpointStr(), searchText);
 	}
 
 	@Override

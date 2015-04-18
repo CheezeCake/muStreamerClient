@@ -35,12 +35,7 @@ public class MainActivity extends ActionBarActivity
 	public final static String MEDIA = "emmanuelnicolet.musicstreamerclient.MEDIA";
 	public final static int CHOOSE_FILE_REQUEST = 1;
 
-	private final static String PREFERENCES_NAME = "emmanuelnicolet.musicstreamer.PREFERENCES_NAME";
-	private final static String PREFERENCES_METASERVER_HOSTNAME = "emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_HOSTNAME";
-	private final static String PREFERENCES_METASERVER_PORT = "emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_PORT";
 	private static String metaServerEndpointStr = null;
-	private String metaServerHostname = null;
-	private String metaServerPort = null;
 
 	private String chosenFile = null;
 	private View addDialogView = null;
@@ -48,6 +43,11 @@ public class MainActivity extends ActionBarActivity
 	public static String getMetaServerEndpointStr()
 	{
 		return metaServerEndpointStr;
+	}
+
+	private static void setMetaServerEndpointStr()
+	{
+		metaServerEndpointStr = "MetaServer:default -h " + Settings.metaServerHostname + " -p " + Settings.metaServerPort;
 	}
 
 	@Override
@@ -58,24 +58,35 @@ public class MainActivity extends ActionBarActivity
 		if (IceData.iceCommunicator == null)
 			IceData.iceCommunicator = Ice.Util.initialize(new String[] { "" });
 
-		loadPreferences();
+		loadSettings();
 	}
 
-	private void loadPreferences()
+	private void loadSettings()
 	{
-		SharedPreferences settings = getSharedPreferences(PREFERENCES_NAME, 0);
-		metaServerHostname = settings.getString(PREFERENCES_METASERVER_HOSTNAME, "onche.ovh");
-		metaServerPort = settings.getString(PREFERENCES_METASERVER_PORT, "10000");
-		metaServerEndpointStr = "MetaServer:default -h " + metaServerHostname + " -p " + metaServerPort;
-	}
+		SharedPreferences settings = getSharedPreferences(SettingsActivity.PREFERENCES_NAME, 0);
 
-	public void setPreferences(String hostname, String port)
-	{
-		SharedPreferences settings = getSharedPreferences(PREFERENCES_NAME, 0);
-		SharedPreferences.Editor editor = settings.edit();
-		editor.putString(PREFERENCES_METASERVER_HOSTNAME, hostname);
-		editor.putString(PREFERENCES_METASERVER_PORT, port);
-		editor.apply();
+		Settings.metaServerHostname = settings
+				.getString(SettingsActivity.PREFERENCES_METASERVER_HOSTNAME, "onche.ovh");
+		Settings.metaServerPort = settings
+				.getString(SettingsActivity.PREFERENCES_METASERVER_PORT, "10000");
+
+		Settings.speechRecognitionSystem = SpeechRecognitionFactory.System
+				.get(settings.getInt(SettingsActivity.PREFERENCES_SPEECH_RECOGNITION, SpeechRecognitionFactory.System.POCKETSPHINX
+								.getCode()));
+
+		Settings.pocketSphinxHostname = settings
+				.getString(SettingsActivity.PREFERENCES_POCKETSPHINX_HOSTNAME, "");
+		Settings.pocketSphinxPort = settings
+				.getString(SettingsActivity.PREFERENCES_POCKETSPHINX_PORT, "");
+
+		Settings.speeralHostname = settings
+				.getString(SettingsActivity.PREFERENCES_SPEERAL_HOSTNAME, "");
+		Settings.speeralPort = settings.getString(SettingsActivity.PREFERENCES_SPEERAL_PORT, "");
+
+		Settings.commmandParserWebServiceURL = settings
+				.getString(SettingsActivity.PREFERENCES_COMMAND_PARSER_WEB_SERVICE_URL, "");
+
+		setMetaServerEndpointStr();
 	}
 
 	@Override
@@ -91,30 +102,9 @@ public class MainActivity extends ActionBarActivity
 		int id = item.getItemId();
 
 		if (id == R.id.action_settings) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			LayoutInflater inflater = getLayoutInflater();
-			final View v = inflater.inflate(R.layout.settings_dialog, null);
-
-			TextView tv = (TextView)v.findViewById(R.id.hostname);
-			tv.setText(metaServerHostname);
-			tv = (TextView)v.findViewById(R.id.port);
-			tv.setText(metaServerPort);
-
-			builder.setView(v).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int id)
-				{
-					TextView tv = (TextView)v.findViewById(R.id.hostname);
-					String hn = tv.getText().toString();
-					tv = (TextView)v.findViewById(R.id.port);
-					String p = tv.getText().toString();
-
-					setPreferences(hn, p);
-				}
-
-			}).setNegativeButton(R.string.cancel, null).show();
-
+			Intent intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
+			loadSettings(); // reload settings
 			return true;
 		}
 

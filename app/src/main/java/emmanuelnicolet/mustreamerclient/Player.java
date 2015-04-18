@@ -127,26 +127,30 @@ public class Player extends ActionBarActivity
 							mediaPlayer = null;
 							e.printStackTrace();
 							playEnabled = true;
-                            Player.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(Player.this, e.getClass()
-                                            .getName() + " : " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
+							Player.this.runOnUiThread(new Runnable()
+							{
+								@Override
+								public void run()
+								{
+									Toast.makeText(Player.this, e.getClass().getName() + " : " + e
+											.getMessage(), Toast.LENGTH_SHORT).show();
+								}
+							});
 						}
 					}
 					catch (final Exception e) {
 						mediaPlayer = null;
 						e.printStackTrace();
 						playEnabled = true;
-                        Player.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(Player.this, e.getClass()
-                                        .getName() + " : " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+						Player.this.runOnUiThread(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								Toast.makeText(Player.this, e.getClass().getName() + " : " + e
+										.getMessage(), Toast.LENGTH_SHORT).show();
+							}
+						});
 					}
 
 					setPlayPause(playEnabled, pauseEnabled);
