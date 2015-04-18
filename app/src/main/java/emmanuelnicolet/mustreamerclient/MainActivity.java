@@ -263,7 +263,7 @@ public class MainActivity extends ActionBarActivity
 
 	public void talk(View v)
 	{
-		if (AudioRecorder.isIsRecording()) {
+		if (AudioRecorder.isRecording()) {
 			Log.d("MainActivity.talk", "stop recording");
 			AudioRecorder.stopRecording();
 

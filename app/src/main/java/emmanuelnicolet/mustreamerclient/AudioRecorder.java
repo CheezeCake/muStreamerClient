@@ -15,18 +15,18 @@ class AudioRecorder
 	private static final int BUFFER_SIZE = 2048;
 	private static final int FULL_BUFFER_SIZE = BUFFER_SIZE * 70;
 	private static AudioRecord recorder = null;
-	private static boolean isRecording = false;
+	private static boolean recording = false;
 	private static short[] audioData = null;
 	private static int audioDataLength = 0;
 
 	public static void startRecording()
 	{
-		if (isRecording)
+		if (recording)
 			stopRecording();
 
 		recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, REC_SR, REC_CHAN, REC_ENC, BUFFER_SIZE);
 		recorder.startRecording();
-		isRecording = true;
+		recording = true;
 		new Thread(new Runnable()
 		{
 			@Override
@@ -39,7 +39,7 @@ class AudioRecorder
 
 	public static void stopRecording()
 	{
-		isRecording = false;
+		recording = false;
 	}
 
 	private static void saveAudioData()
@@ -48,7 +48,7 @@ class AudioRecorder
 		int offset = 0;
 		int recorded;
 
-		while (isRecording && offset <= FULL_BUFFER_SIZE - BUFFER_SIZE) {
+		while (recording && offset <= FULL_BUFFER_SIZE - BUFFER_SIZE) {
 			recorded = recorder.read(audioData, offset, BUFFER_SIZE);
 			offset += recorded;
 		}
@@ -71,8 +71,8 @@ class AudioRecorder
 		audioData = null;
 	}
 
-	public static boolean isIsRecording()
+	public static boolean isRecording()
 	{
-		return isRecording;
+		return recording;
 	}
 }
