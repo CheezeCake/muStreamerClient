@@ -14,7 +14,7 @@ public abstract class SpeeralSpeechRecognition extends SpeechRecognition
 		try {
 			Log.d("speeral", "connecting");
 			Ice.ObjectPrx base = IceData.iceCommunicator
-					.stringToProxy("SpeeralServer:default -h 188.226.241.233 -p 10000");
+					.stringToProxy("SpeeralServer:default -h " + Settings.speeralHostname + " -p " + Settings.speeralPort);
 			speeral.ServerPrx speer = speeral.ServerPrxHelper.checkedCast(base);
 			if (speer == null)
 				throw new Exception("Invalid proxy");

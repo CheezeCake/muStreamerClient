@@ -34,6 +34,7 @@ public class MainActivity extends ActionBarActivity
 
 	public final static String MEDIA = "emmanuelnicolet.musicstreamerclient.MEDIA";
 	public final static int CHOOSE_FILE_REQUEST = 1;
+	public final static int SETTINGS_ACTIVITY = 2;
 
 	private static String metaServerEndpointStr = null;
 
@@ -66,9 +67,9 @@ public class MainActivity extends ActionBarActivity
 		SharedPreferences settings = getSharedPreferences(SettingsActivity.PREFERENCES_NAME, 0);
 
 		Settings.metaServerHostname = settings
-				.getString(SettingsActivity.PREFERENCES_METASERVER_HOSTNAME, "onche.ovh");
+				.getString(SettingsActivity.PREFERENCES_METASERVER_HOSTNAME, "");
 		Settings.metaServerPort = settings
-				.getString(SettingsActivity.PREFERENCES_METASERVER_PORT, "10000");
+				.getString(SettingsActivity.PREFERENCES_METASERVER_PORT, "");
 
 		Settings.speechRecognitionSystem = SpeechRecognitionFactory.System.get(settings
 				.getInt(SettingsActivity.PREFERENCES_SPEECH_RECOGNITION, SpeechRecognitionFactory.System.POCKETSPHINX
@@ -103,8 +104,7 @@ public class MainActivity extends ActionBarActivity
 
 		if (id == R.id.action_settings) {
 			Intent intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
-			loadSettings(); // reload settings
+			startActivityForResult(intent, SETTINGS_ACTIVITY);
 			return true;
 		}
 
@@ -219,6 +219,7 @@ public class MainActivity extends ActionBarActivity
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -240,12 +241,17 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		if (resultCode == RESULT_OK && requestCode == CHOOSE_FILE_REQUEST) {
-			android.net.Uri uri = data.getData();
-			chosenFile = uri.getPath();
-			Log.d("filechooser", "file: " + chosenFile);
-			TextView fileNameText = (TextView)addDialogView.findViewById(R.id.File_name);
-			fileNameText.setText(new File(chosenFile).getName());
+		if (resultCode == RESULT_OK) {
+			if (requestCode == CHOOSE_FILE_REQUEST) {
+				android.net.Uri uri = data.getData();
+				chosenFile = uri.getPath();
+				Log.d("filechooser", "file: " + chosenFile);
+				TextView fileNameText = (TextView)addDialogView.findViewById(R.id.File_name);
+				fileNameText.setText(new File(chosenFile).getName());
+			}
+			else if (requestCode == SETTINGS_ACTIVITY) {
+				loadSettings(); // reload settings
+			}
 		}
 	}
 
@@ -262,9 +268,7 @@ public class MainActivity extends ActionBarActivity
 			AudioRecorder.stopRecording();
 
 			SpeechRecognition sr = SpeechRecognitionFactory
-					.create(SpeechRecognitionFactory.System.POCKETSPHINX,
-							//SpeechRecognitionFactory.System.SPEERAL,
-							MainActivity.this);
+					.create(Settings.speechRecognitionSystem, MainActivity.this);
 
 			if (sr != null)
 				sr.execute(AudioRecorder.getAudioData());

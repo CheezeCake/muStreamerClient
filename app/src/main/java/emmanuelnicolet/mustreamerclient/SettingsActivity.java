@@ -1,6 +1,7 @@
 package emmanuelnicolet.mustreamerclient;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -12,18 +13,20 @@ public class SettingsActivity extends Activity
 {
 	public final static String PREFERENCES_NAME = "emmanuelnicolet.musicstreamer.PREFERENCES_NAME";
 
-	public final static String PREFERENCES_METASERVER_HOSTNAME = "emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_HOSTNAME";
-	public final static String PREFERENCES_METASERVER_PORT = "emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_PORT";
+	public static final String PREFERENCES_METASERVER_HOSTNAME = "emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_HOSTNAME";
+	public static final String PREFERENCES_METASERVER_PORT = "emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_PORT";
 
-	public final static String PREFERENCES_SPEECH_RECOGNITION = "emmanuelnicolet.musicstreamer.PREFERENCES_SPEECH_RECOGNITION";
+	public static final String PREFERENCES_SPEECH_RECOGNITION = "emmanuelnicolet.musicstreamer.PREFERENCES_SPEECH_RECOGNITION";
 
-	public final static String PREFERENCES_POCKETSPHINX_HOSTNAME = "emmanuelnicolet.musicstreamer.PREFERENCES_POCKETSPHINX_HOSTNAME";
-	public final static String PREFERENCES_POCKETSPHINX_PORT = "emmanuelnicolet.musicstreamer.PREFERENCES_POCKETSPHINX_PORT";
+	public static final String PREFERENCES_POCKETSPHINX_HOSTNAME = "emmanuelnicolet.musicstreamer.PREFERENCES_POCKETSPHINX_HOSTNAME";
+	public static final String PREFERENCES_POCKETSPHINX_PORT = "emmanuelnicolet.musicstreamer.PREFERENCES_POCKETSPHINX_PORT";
 
-	public final static String PREFERENCES_SPEERAL_HOSTNAME = "emmanuelnicolet.musicstreamer.PREFERENCES_SPEERAL_HOSTNAME";
-	public final static String PREFERENCES_SPEERAL_PORT = "emmanuelnicolet.musicstreamer.PREFERENCES_SPEERAL_PORT";
+	public static final String PREFERENCES_SPEERAL_HOSTNAME = "emmanuelnicolet.musicstreamer.PREFERENCES_SPEERAL_HOSTNAME";
+	public static final String PREFERENCES_SPEERAL_PORT = "emmanuelnicolet.musicstreamer.PREFERENCES_SPEERAL_PORT";
 
-	public final static String PREFERENCES_COMMAND_PARSER_WEB_SERVICE_URL = "emmanuelnicolet.musicstreamer.PREFERENCES_COMMAND_PARSER_WEB_SERVICE_URL";
+	public static final String PREFERENCES_COMMAND_PARSER_WEB_SERVICE_URL = "emmanuelnicolet.musicstreamer.PREFERENCES_COMMAND_PARSER_WEB_SERVICE_URL";
+
+	public static final String SAVED = "emmanuelnicolet.musicstreamer.SAVED";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -82,8 +85,10 @@ public class SettingsActivity extends Activity
 		tv = (TextView)findViewById(R.id.command_parser_web_service_url);
 		editor.putString(PREFERENCES_COMMAND_PARSER_WEB_SERVICE_URL, tv.getText().toString());
 
-		editor.apply();
+		editor.commit();
 
+		Intent intent = new Intent();
+		setResult(RESULT_OK, intent);
 		finish();
 	}
 }
