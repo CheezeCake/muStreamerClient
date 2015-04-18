@@ -8,18 +8,16 @@ import java.net.URL;
 
 public class CommandParserClient
 {
-	public static final String commandParserServiceURL = "http://onche.ovh:8080/parse_command";
-
 	public static void parse(String command) throws IOException
 	{
 		URL url;
 		InputStream is = null;
 		BufferedReader br;
 		String line;
-		String json = new String();
+		String json = "";
 
 		try {
-			url = new URL(commandParserServiceURL);
+			url = new URL(Settings.commmandParserWebServiceURL);
 			is = url.openStream();
 			br = new BufferedReader(new InputStreamReader(is));
 
