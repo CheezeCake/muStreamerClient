@@ -26,8 +26,6 @@ public class SettingsActivity extends Activity
 
 	public static final String PREFERENCES_COMMAND_PARSER_WEB_SERVICE_URL = "emmanuelnicolet.musicstreamer.PREFERENCES_COMMAND_PARSER_WEB_SERVICE_URL";
 
-	public static final String SAVED = "emmanuelnicolet.musicstreamer.SAVED";
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
