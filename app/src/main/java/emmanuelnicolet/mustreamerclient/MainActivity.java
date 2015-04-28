@@ -25,10 +25,18 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import Ice.Communicator;
+import Ice.Current;
+import Ice.Identity;
+import Ice.InitializationData;
 import Player.IMetaServerPrx;
 import Player.IMetaServerPrxHelper;
 import Player.MusicServerInfo;
+import Player.Song;
+import Player._ISongMonitorDisp;
 
 
 public class MainActivity extends ActionBarActivity
@@ -55,6 +63,7 @@ public class MainActivity extends ActionBarActivity
 	private static void setMetaServerEndpointStr()
 	{
 		metaServerEndpointStr = "MetaServer:default -h " + Settings.metaServerHostname + " -p " + Settings.metaServerPort;
+		Log.d("MainActivity", "setMetaSeverEndpointStr = " + metaServerEndpointStr);
 	}
 
 	@Override
@@ -62,24 +71,159 @@ public class MainActivity extends ActionBarActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		if (IceData.iceCommunicator == null)
-			IceData.iceCommunicator = Ice.Util.initialize(new String[] { "" });
 
 		loadSettings();
+
+		if (IceData.iceCommunicator == null)
+			IceData.iceCommunicator = Ice.Util.initialize();
+	}
+
+	private void unsubscribe()
+	{
+		if (IceData.topic != null && IceData.songMonitorProxy != null) {
+			IceData.topic.unsubscribe(IceData.songMonitorProxy);
+			runOnUiThread(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					Toast.makeText(MainActivity.this, "Successfully unsubscribed to \"SongEvents\"", Toast.LENGTH_SHORT)
+							.show();
+				}
+			});
+		}
+	}
+
+	private void initIceStorm()
+	{
+		new Thread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try {
+					unsubscribe();
+
+					InitializationData initData = new InitializationData();
+					initData.properties = Ice.Util.createProperties();
+					initData.properties
+							.setProperty("Ice.Default.Router", "Glacier2/router:tcp -h " + Settings.glacier2Hostname + " -p " + Settings.glacier2Port);
+					initData.properties.setProperty("Ice.ACM.Client", "0");
+					initData.properties.setProperty("Ice.RetryIntervals", "-1");
+					initData.properties
+							.setProperty("CallbackAdapter.Router", "Glacier2/router:tcp -h " + Settings.glacier2Hostname + " -p " + Settings.glacier2Port);
+
+					Communicator communicator = Ice.Util.initialize(initData);
+
+					Ice.RouterPrx defaultRouter = communicator.getDefaultRouter();
+					Glacier2.RouterPrx router = Glacier2.RouterPrxHelper.checkedCast(defaultRouter);
+					router.createSession(Settings.glacier2User, Settings.glacier2Password);
+
+					Ice.ObjectPrx obj = communicator
+							.stringToProxy("IceStorm/TopicManager:tcp -h " + Settings.iceStormHostname + " -p " + Settings.iceStormPort);
+					IceStorm.TopicManagerPrx topicManager = IceStorm.TopicManagerPrxHelper
+							.checkedCast(obj);
+					Ice.ObjectAdapter adapter = communicator
+							.createObjectAdapterWithRouter("SongMonitorAdapter", router);
+					SongMonitor songMonitor = new SongMonitor();
+					IceData.songMonitorProxy = adapter
+							.add(songMonitor, new Identity("default", router
+									.getCategoryForClient())).ice_twoway();
+					adapter.activate();
+
+					IceData.topic = topicManager.retrieve("SongEvents");
+					Map<String, String> qos = new HashMap<>();
+					qos.put("reliability", "ordered");
+					IceData.topic.subscribeAndGetPublisher(qos, IceData.songMonitorProxy);
+
+					MainActivity.this.runOnUiThread(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							Toast.makeText(MainActivity.this, "Icestorm : monitoring topic \"SongEvents\"", Toast.LENGTH_LONG)
+									.show();
+						}
+					});
+				}
+				catch (final Exception e) {
+					MainActivity.this.runOnUiThread(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							Toast.makeText(MainActivity.this, e.getClass().getName() + " : " + e
+									.toString(), Toast.LENGTH_LONG).show();
+						}
+					});
+
+					Log.e("IceStorm", e.getClass().getName() + " : " + e.toString());
+					IceData.songMonitorProxy = null;
+					IceData.topic = null;
+				}
+			}
+		}).start();
 	}
 
 	private void loadSettings()
 	{
 		SharedPreferences settings = getSharedPreferences(SettingsActivity.PREFERENCES_NAME, 0);
 
+		String oldMetaServerHostname = Settings.metaServerHostname;
+		String oldMetaServerPort = Settings.metaServerPort;
+
 		Settings.metaServerHostname = settings
 				.getString(SettingsActivity.PREFERENCES_METASERVER_HOSTNAME, "");
 		Settings.metaServerPort = settings
 				.getString(SettingsActivity.PREFERENCES_METASERVER_PORT, "");
 
+		if (!Settings.metaServerHostname.equals(oldMetaServerHostname) || !Settings.metaServerPort
+				.equals(oldMetaServerPort))
+			setMetaServerEndpointStr();
+
+
+		// Glacier2, IceStorm
+		String[] oldGlacier2Settings = { Settings.glacier2Hostname, Settings.glacier2Port, Settings.glacier2User, Settings.glacier2Password };
+
+		Settings.glacier2Hostname = settings
+				.getString(SettingsActivity.PREFERENCES_GLACIER2_HOSTNAME, "");
+		Settings.glacier2Port = settings.getString(SettingsActivity.PREFERENCES_GLACIER2_PORT, "");
+		Settings.glacier2User = settings.getString(SettingsActivity.PREFERENCES_GLACIER2_USER, "");
+		Settings.glacier2Password = settings
+				.getString(SettingsActivity.PREFERENCES_GLACIER2_PASSWORD, "");
+
+		String[] glacier2Settings = { Settings.glacier2Hostname, Settings.glacier2Port, Settings.glacier2User, Settings.glacier2Password };
+
+		String oldIceStormHostname = Settings.iceStormHostname;
+		String oldIceStormPort = Settings.iceStormPort;
+
+		Settings.iceStormHostname = settings
+				.getString(SettingsActivity.PREFERENCES_ICESTORM_HOSTNAME, "");
+		Settings.iceStormPort = settings.getString(SettingsActivity.PREFERENCES_ICESTORM_PORT, "");
+
+		boolean iceStormReInit = false;
+		for (int i = 0; i < glacier2Settings.length && !iceStormReInit; i++) {
+			if (!glacier2Settings[i].equals(oldGlacier2Settings[i])) {
+				initIceStorm();
+				iceStormReInit = true;
+			}
+		}
+
+		if (!iceStormReInit && (!oldIceStormHostname
+				.equals(Settings.iceStormHostname) || !oldIceStormPort
+				.equals(Settings.iceStormPort))) {
+			initIceStorm();
+			iceStormReInit = true;
+		}
+
+		if (!iceStormReInit && (IceData.songMonitorProxy == null || IceData.topic == null))
+			initIceStorm();
+		// Glacier2, IceStorm
+
+
 		Settings.speechRecognitionSystem = SpeechRecognitionFactory.System.get(settings
-				.getInt(SettingsActivity.PREFERENCES_SPEECH_RECOGNITION,
-				SpeechRecognitionFactory.System.ANDROID.getCode()));
+				.getInt(SettingsActivity.PREFERENCES_SPEECH_RECOGNITION, SpeechRecognitionFactory.System.ANDROID
+						.getCode()));
 
 		Settings.pocketSphinxHostname = settings
 				.getString(SettingsActivity.PREFERENCES_POCKETSPHINX_HOSTNAME, "");
@@ -92,8 +236,6 @@ public class MainActivity extends ActionBarActivity
 
 		Settings.commmandParserWebServiceURL = settings
 				.getString(SettingsActivity.PREFERENCES_COMMAND_PARSER_WEB_SERVICE_URL, "");
-
-		setMetaServerEndpointStr();
 	}
 
 	@Override
@@ -113,6 +255,9 @@ public class MainActivity extends ActionBarActivity
 			startActivityForResult(intent, SETTINGS_ACTIVITY);
 			return true;
 		}
+		else if (id == R.id.action_icestorm_reconnect && (IceData.topic == null || IceData.songMonitorProxy == null)) {
+			initIceStorm();
+		}
 
 		return super.onOptionsItemSelected(item);
 	}
@@ -130,6 +275,8 @@ public class MainActivity extends ActionBarActivity
 				System.err.println(e);
 			}
 		}
+
+		unsubscribe();
 	}
 
 	public void search(View v)
@@ -317,11 +464,13 @@ public class MainActivity extends ActionBarActivity
 
 				@Override
 				public void onRmsChanged(float rmsdB)
-				{}
+				{
+				}
 
 				@Override
 				public void onBufferReceived(byte[] buffer)
-				{}
+				{
+				}
 
 				@Override
 				public void onEndOfSpeech()
@@ -389,7 +538,8 @@ public class MainActivity extends ActionBarActivity
 				public void onResults(Bundle results)
 				{
 					Log.d("android speech", "on results");
-					ArrayList<String> r = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+					ArrayList<String> r = results
+							.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 					if (r != null) {
 						for (String s : r) {
 							System.out.println(s);
@@ -399,11 +549,31 @@ public class MainActivity extends ActionBarActivity
 
 				@Override
 				public void onPartialResults(Bundle partialResults)
-				{}
+				{
+				}
 
 				@Override
 				public void onEvent(int eventType, Bundle params)
-				{}
+				{
+				}
+			});
+		}
+	}
+
+	private class SongMonitor extends _ISongMonitorDisp
+	{
+		@Override
+		public void newSong(final Song s, Current __current)
+		{
+			Log.d("SongMonitor", "new song : " + s);
+			MainActivity.this.runOnUiThread(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					Toast.makeText(MainActivity.this, "New song !\n" + s.artist + " - " + s.title, Toast.LENGTH_LONG)
+							.show();
+				}
 			});
 		}
 	}

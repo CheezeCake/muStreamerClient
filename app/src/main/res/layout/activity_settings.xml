@@ -164,15 +164,93 @@
                 android:layout_alignEnd="@+id/speeral_port"
                 android:hint="URL"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="IceStorm"
+                android:layout_below="@+id/command_parser_web_service_url"
+                android:id="@+id/icestorm_text_view"
+                android:layout_marginTop="25dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/icestorm_hostname"
+                android:layout_below="@+id/icestorm_text_view"
+                android:layout_alignParentStart="true"
+                android:layout_alignEnd="@+id/command_parser_web_service_url"
+                android:hint="hostname"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/icestorm_port"
+                android:layout_below="@+id/icestorm_hostname"
+                android:layout_alignParentStart="true"
+                android:layout_alignEnd="@+id/icestorm_hostname"
+                android:hint="port"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Glacier2"
+                android:layout_below="@+id/icestorm_port"
+                android:id="@+id/glacier2_text_view"
+                android:layout_marginTop="25dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/glacier2_hostname"
+                android:layout_below="@+id/glacier2_text_view"
+                android:layout_alignParentStart="true"
+                android:layout_alignEnd="@+id/icestorm_port"
+                android:hint="hostname"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/glacier2_port"
+                android:layout_below="@+id/glacier2_hostname"
+                android:layout_alignParentStart="true"
+                android:layout_alignEnd="@+id/glacier2_hostname"
+                android:hint="port"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/glacier2_user"
+                android:layout_below="@+id/glacier2_port"
+                android:layout_alignParentStart="true"
+                android:layout_alignEnd="@+id/glacier2_port"
+                android:hint="user"/>
+
+            <EditText
+                android:password="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/glacier2_password"
+                android:layout_below="@+id/glacier2_user"
+                android:layout_alignParentStart="true"
+                android:layout_alignEnd="@+id/glacier2_user"
+                android:hint="password"/>
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Save"
                 android:id="@+id/save_settings_button"
-                android:layout_below="@+id/command_parser_web_service_url"
+                android:layout_below="@+id/glacier2_password"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentBottom="true"
                 android:layout_alignEnd="@+id/command_parser_web_service_url"
+                android:layout_marginTop="25dp"
                 android:onClick="save"/>
         </RelativeLayout>
     </ScrollView>

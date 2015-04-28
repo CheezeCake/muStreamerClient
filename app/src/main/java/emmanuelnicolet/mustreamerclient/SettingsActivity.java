@@ -16,6 +16,14 @@ public class SettingsActivity extends Activity
 	public static final String PREFERENCES_METASERVER_HOSTNAME = "emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_HOSTNAME";
 	public static final String PREFERENCES_METASERVER_PORT = "emmanuelnicolet.musicstreamer.PREFERENCES_METASERVER_PORT";
 
+	public static final String PREFERENCES_GLACIER2_HOSTNAME = "emmanuelnicolet.musicstreamer.PREFERENCES_GLACIER2_HOSTANME";
+	public static final String PREFERENCES_GLACIER2_PORT = "emmanuelnicolet.musicstreamer.PREFERENCES_GLACIER2_PORT";
+	public static final String PREFERENCES_GLACIER2_USER = "emmanuelnicolet.musicstreamer.PREFERENCES_GLACIER2_USER";
+	public static final String PREFERENCES_GLACIER2_PASSWORD = "emmanuelnicolet.musicstreamer.PREFERENCES_GLACIER2_PASSWORD";
+
+	public static final String PREFERENCES_ICESTORM_HOSTNAME = "emmanuelnicolet.musicstreamer.PREFERENCES_ICESTORM_HOSTANME";
+	public static final String PREFERENCES_ICESTORM_PORT = "emmanuelnicolet.musicstreamer.PREFERENCES_ICESTORM_PORT";
+
 	public static final String PREFERENCES_SPEECH_RECOGNITION = "emmanuelnicolet.musicstreamer.PREFERENCES_SPEECH_RECOGNITION";
 
 	public static final String PREFERENCES_POCKETSPHINX_HOSTNAME = "emmanuelnicolet.musicstreamer.PREFERENCES_POCKETSPHINX_HOSTNAME";
@@ -64,6 +72,20 @@ public class SettingsActivity extends Activity
 
 		tv = (TextView)findViewById(R.id.command_parser_web_service_url);
 		tv.setText(Settings.commmandParserWebServiceURL);
+
+		tv = (TextView)findViewById(R.id.icestorm_hostname);
+		tv.setText(Settings.iceStormHostname);
+		tv = (TextView)findViewById(R.id.icestorm_port);
+		tv.setText(Settings.iceStormPort);
+
+		tv = (TextView)findViewById(R.id.glacier2_hostname);
+		tv.setText(Settings.glacier2Hostname);
+		tv = (TextView)findViewById(R.id.glacier2_port);
+		tv.setText(Settings.glacier2Port);
+		tv = (TextView)findViewById(R.id.glacier2_user);
+		tv.setText(Settings.glacier2User);
+		tv = (TextView)findViewById(R.id.glacier2_password);
+		tv.setText(Settings.glacier2Password);
 	}
 
 	public void save(View v)
@@ -78,11 +100,11 @@ public class SettingsActivity extends Activity
 
 		RadioButton pocketSphinxRadioButton = (RadioButton)findViewById(R.id.pocketsphinx_radio_button);
 		RadioButton androidRadioButton = (RadioButton)findViewById(R.id.android_radio_button);
-		editor.putInt(PREFERENCES_SPEECH_RECOGNITION, (pocketSphinxRadioButton.isChecked())
-				? SpeechRecognitionFactory.System.POCKETSPHINX.getCode()
-				: (androidRadioButton.isChecked())
-				? SpeechRecognitionFactory.System.ANDROID.getCode()
-				: SpeechRecognitionFactory.System.SPEERAL.getCode());
+		editor.putInt(PREFERENCES_SPEECH_RECOGNITION, (pocketSphinxRadioButton
+				.isChecked()) ? SpeechRecognitionFactory.System.POCKETSPHINX
+				.getCode() : (androidRadioButton
+				.isChecked()) ? SpeechRecognitionFactory.System.ANDROID
+				.getCode() : SpeechRecognitionFactory.System.SPEERAL.getCode());
 
 		tv = (TextView)findViewById(R.id.pocketsphinx_hostname);
 		editor.putString(PREFERENCES_POCKETSPHINX_HOSTNAME, tv.getText().toString());
@@ -96,6 +118,20 @@ public class SettingsActivity extends Activity
 
 		tv = (TextView)findViewById(R.id.command_parser_web_service_url);
 		editor.putString(PREFERENCES_COMMAND_PARSER_WEB_SERVICE_URL, tv.getText().toString());
+
+		tv = (TextView)findViewById(R.id.icestorm_hostname);
+		editor.putString(PREFERENCES_ICESTORM_HOSTNAME, tv.getText().toString());
+		tv = (TextView)findViewById(R.id.icestorm_port);
+		editor.putString(PREFERENCES_ICESTORM_PORT, tv.getText().toString());
+
+		tv = (TextView)findViewById(R.id.glacier2_hostname);
+		editor.putString(PREFERENCES_GLACIER2_HOSTNAME, tv.getText().toString());
+		tv = (TextView)findViewById(R.id.glacier2_port);
+		editor.putString(PREFERENCES_GLACIER2_PORT, tv.getText().toString());
+		tv = (TextView)findViewById(R.id.glacier2_user);
+		editor.putString(PREFERENCES_GLACIER2_USER, tv.getText().toString());
+		tv = (TextView)findViewById(R.id.glacier2_password);
+		editor.putString(PREFERENCES_GLACIER2_PASSWORD, tv.getText().toString());
 
 		editor.commit();
 
