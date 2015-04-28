@@ -20,6 +20,11 @@
 
 package Player;
 
-public abstract class Callback_IMetaServer_play extends Ice.OnewayCallback
+public interface _IMusicServerMonitorDel extends Ice._ObjectDel
 {
+    void newMusicServer(String hostname, String listeningPort, String streamingPort, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
+        throws IceInternal.LocalExceptionWrapper;
+
+    void musicServerDown(String hostname, String listeningPort, String streamingPort, java.util.Map<String, String> __ctx, Ice.Instrumentation.InvocationObserver __obsv)
+        throws IceInternal.LocalExceptionWrapper;
 }

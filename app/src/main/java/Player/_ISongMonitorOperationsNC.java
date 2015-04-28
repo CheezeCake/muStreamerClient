@@ -20,6 +20,7 @@
 
 package Player;
 
-public abstract class Callback_IMetaServer_stop extends Ice.OnewayCallback
+public interface _ISongMonitorOperationsNC
 {
+    void newSong(Song s);
 }
