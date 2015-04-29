@@ -540,10 +540,10 @@ public class MainActivity extends ActionBarActivity
 					Log.d("android speech", "on results");
 					ArrayList<String> r = results
 							.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-					if (r != null) {
-						for (String s : r) {
-							System.out.println(s);
-						}
+					if (r != null && r.size() > 0) {
+						String result = r.get(0);
+						Log.d("speech", "result = " + result);
+						new CommandParserClient().execute(result);
 					}
 				}
 

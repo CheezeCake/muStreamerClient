@@ -11,15 +11,15 @@ import java.util.Map;
 public class SpeechRecognitionFactory
 {
 	@Nullable
-	public static SpeechRecognition create(System s, final Activity a)
+	public static SpeechRecognition create(System s, final Context c)
 	{
 		if (s == System.POCKETSPHINX) {
 			return new PocketsphinxSpeechRecognition()
 			{
 				@Override
-				protected Activity getActivity()
+				protected Context getContext()
 				{
-					return a;
+					return c;
 				}
 			};
 		}
@@ -27,9 +27,9 @@ public class SpeechRecognitionFactory
 			return new SpeeralSpeechRecognition()
 			{
 				@Override
-				protected Activity getActivity()
+				protected Context getContext()
 				{
-					return a;
+					return c;
 				}
 			};
 		}

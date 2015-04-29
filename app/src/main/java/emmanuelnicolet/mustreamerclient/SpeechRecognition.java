@@ -14,7 +14,7 @@ public abstract class SpeechRecognition extends AsyncTask<short[], Void, String>
 	protected String speechRecognitionError = null;
 	private ProgressDialog dialog;
 
-	protected abstract Activity getActivity();
+	protected abstract Context getContext();
 
 	protected void setSpeechRecognitionError(Exception e, String msg)
 	{
@@ -26,7 +26,7 @@ public abstract class SpeechRecognition extends AsyncTask<short[], Void, String>
 	@Override
 	protected void onPreExecute()
 	{
-		dialog = new ProgressDialog(getActivity());
+		dialog = new ProgressDialog(getContext());
 		dialog.setTitle("Veuillez patienter...");
 		dialog.setMessage("Signal audio en cours de traitement...");
 		dialog.setCancelable(true);
@@ -51,9 +51,10 @@ public abstract class SpeechRecognition extends AsyncTask<short[], Void, String>
 		}
 
 		if (speechRecognitionError != null)
-			Toast.makeText(getActivity(), speechRecognitionError, Toast.LENGTH_SHORT).show();
+			Toast.makeText(getContext(), speechRecognitionError, Toast.LENGTH_SHORT).show();
 
-		Log.d("speech", "response = " + result);
+		Log.d("speech", "result = " + result);
+		new CommandParserClient().execute(result);
 	}
 
 	@Override
