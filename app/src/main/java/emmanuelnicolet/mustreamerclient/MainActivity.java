@@ -23,8 +23,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -582,9 +580,8 @@ public class MainActivity extends ActionBarActivity
 		Log.d("MainActivity", "handleSpeechRecognitionResults");
 
 		if (result == null || result.length() == 0) {
-			Toast.makeText(this,
-					"The speech recognition system returned an empty string !\nTry again.",
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "The speech recognition system returned an empty string !\nTry again.", Toast.LENGTH_LONG)
+					.show();
 		}
 		else {
 			Toast.makeText(this, "Recognized :\n" + result, Toast.LENGTH_LONG).show();

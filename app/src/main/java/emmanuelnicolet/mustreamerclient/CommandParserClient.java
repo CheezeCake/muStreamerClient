@@ -12,7 +12,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -41,8 +40,7 @@ public class CommandParserClient extends AsyncTask<String, Void, String>
 
 		try {
 			String param = URLEncoder.encode(command[0], "UTF-8");
-			String urlString =
-					"http://" + Settings.commmandParserWebServiceURL + "?command=" + param;
+			String urlString = "http://" + Settings.commmandParserWebServiceURL + "?command=" + param;
 			Log.d("cmdParseClient", "url = " + urlString);
 			url = new URL(urlString);
 			con = url.openConnection();
@@ -89,7 +87,8 @@ public class CommandParserClient extends AsyncTask<String, Void, String>
 				else if (type.equals("list"))
 					listener.list();
 				else
-					Toast.makeText(context, "Unknown command type : " + type, Toast.LENGTH_LONG).show();
+					Toast.makeText(context, "Unknown command type : " + type, Toast.LENGTH_LONG)
+							.show();
 			}
 			else {
 				Toast.makeText(context, "No type in JSON data", Toast.LENGTH_LONG).show();
@@ -148,7 +147,9 @@ public class CommandParserClient extends AsyncTask<String, Void, String>
 	public interface CommandParserClientResultListener
 	{
 		void add(String artist, String title);
+
 		void search(String search, String searchBy);
+
 		void list();
 	}
 }

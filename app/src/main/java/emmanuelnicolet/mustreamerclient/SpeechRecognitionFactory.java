@@ -1,6 +1,5 @@
 package emmanuelnicolet.mustreamerclient;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
 
@@ -11,8 +10,7 @@ import java.util.Map;
 public class SpeechRecognitionFactory
 {
 	@Nullable
-	public static SpeechRecognition create(System s, final Context context,
-										   SpeechRecognition.SpeechRecognitionListener listener)
+	public static SpeechRecognition create(System s, final Context context, SpeechRecognition.SpeechRecognitionListener listener)
 	{
 		if (s == System.POCKETSPHINX)
 			return new PocketsphinxSpeechRecognition(context, listener);

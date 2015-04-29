@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.speech.RecognitionListener;
 import android.util.Log;
 import android.widget.Toast;
 
