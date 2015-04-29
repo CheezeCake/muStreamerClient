@@ -1,12 +1,18 @@
 package emmanuelnicolet.mustreamerclient;
 
+import android.content.Context;
 import android.util.Log;
 
 import PocketSphinxIce.IPocketSphinxServerPrx;
 import PocketSphinxIce.IPocketSphinxServerPrxHelper;
 
-public abstract class PocketsphinxSpeechRecognition extends SpeechRecognition
+public class PocketsphinxSpeechRecognition extends SpeechRecognition
 {
+	PocketsphinxSpeechRecognition(Context context, SpeechRecognitionListener listener)
+	{
+		super(context, listener);
+	}
+
 	@Override
 	protected String doInBackground(short[]... params)
 	{

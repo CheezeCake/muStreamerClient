@@ -23,6 +23,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -316,10 +318,20 @@ public class MainActivity extends ActionBarActivity
 
 	public void add(View view)
 	{
+		realAdd(view, "", "");
+	}
+
+	public void realAdd(View view, String artist, String title)
+	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		LayoutInflater inflater = getLayoutInflater();
 		final View v = inflater.inflate(R.layout.add_song_dialog, null);
 		addDialogView = v;
+
+		final TextView artistTextView = (TextView)v.findViewById(R.id.artist);
+		artistTextView.setText(artist);
+		final TextView titleTextView = (TextView)v.findViewById(R.id.title);
+		titleTextView.setText(title);
 
 		try {
 			Ice.ObjectPrx base = IceData.iceCommunicator.stringToProxy(metaServerEndpointStr);
@@ -343,10 +355,8 @@ public class MainActivity extends ActionBarActivity
 				public void onClick(DialogInterface dialog, int id)
 				{
 					final String srvEndpoint = serversInfo[s.getSelectedItemPosition()].endpointStr;
-					final String artist = ((TextView)v.findViewById(R.id.artist)).getText()
-							.toString();
-					final String title = ((TextView)v.findViewById(R.id.title)).getText()
-							.toString();
+					final String artist = artistTextView.getText().toString();
+					final String title = titleTextView.getText().toString();
 
 					if (!srvEndpoint.isEmpty() && !artist.isEmpty() && !title.isEmpty() &&
 							chosenFile != null) {
@@ -424,7 +434,14 @@ public class MainActivity extends ActionBarActivity
 			AudioRecorder.stopRecording();
 
 			SpeechRecognition sr = SpeechRecognitionFactory
-					.create(Settings.speechRecognitionSystem, MainActivity.this);
+					.create(Settings.speechRecognitionSystem, MainActivity.this, new SpeechRecognition.SpeechRecognitionListener()
+					{
+						@Override
+						public void onResults(String result)
+						{
+							MainActivity.this.handleSpeechRecognitionResult(result);
+						}
+					});
 
 			if (sr != null)
 				sr.execute(AudioRecorder.getAudioData());
@@ -543,7 +560,7 @@ public class MainActivity extends ActionBarActivity
 					if (r != null && r.size() > 0) {
 						String result = r.get(0);
 						Log.d("speech", "result = " + result);
-						new CommandParserClient().execute(result);
+						MainActivity.this.handleSpeechRecognitionResult(result);
 					}
 				}
 
@@ -557,6 +574,52 @@ public class MainActivity extends ActionBarActivity
 				{
 				}
 			});
+		}
+	}
+
+	public void handleSpeechRecognitionResult(String result)
+	{
+		Log.d("MainActivity", "handleSpeechRecognitionResults");
+
+		if (result == null || result.length() == 0) {
+			Toast.makeText(this,
+					"The speech recognition system returned an empty string !\nTry again.",
+					Toast.LENGTH_LONG).show();
+		}
+		else {
+			Toast.makeText(this, "Recognized :\n" + result, Toast.LENGTH_LONG).show();
+
+			new CommandParserClient(this, new CommandParserClient.CommandParserClientResultListener()
+			{
+				@Override
+				public void add(String artist, String title)
+				{
+					realAdd(findViewById(R.id.add), artist, title);
+				}
+
+				@Override
+				public void search(String search, String searchBy)
+				{
+					boolean artist = true;
+					boolean title = true;
+
+					if (searchBy.equals("artist"))
+						title = false;
+					else if (searchBy.equals("title"))
+						artist = false;
+
+					((CheckBox)findViewById(R.id.artist)).setChecked(artist);
+					((CheckBox)findViewById(R.id.title)).setChecked(title);
+
+					((TextView)findViewById(R.id.searchText)).setText(search);
+				}
+
+				@Override
+				public void list()
+				{
+					listSongs(findViewById(R.id.list_songs));
+				}
+			}).execute(result);
 		}
 	}
 

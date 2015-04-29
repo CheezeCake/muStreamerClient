@@ -1,20 +1,25 @@
 package emmanuelnicolet.mustreamerclient;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.speech.RecognitionListener;
 import android.util.Log;
-import android.widget.ActionMenuView;
 import android.widget.Toast;
 
 public abstract class SpeechRecognition extends AsyncTask<short[], Void, String>
 {
 	protected String speechRecognitionError = null;
+	private Context context;
+	private SpeechRecognitionListener listener;
 	private ProgressDialog dialog;
 
-	protected abstract Context getContext();
+	SpeechRecognition(Context context, SpeechRecognitionListener listener)
+	{
+		this.context = context;
+		this.listener = listener;
+	}
 
 	protected void setSpeechRecognitionError(Exception e, String msg)
 	{
@@ -26,7 +31,7 @@ public abstract class SpeechRecognition extends AsyncTask<short[], Void, String>
 	@Override
 	protected void onPreExecute()
 	{
-		dialog = new ProgressDialog(getContext());
+		dialog = new ProgressDialog(context);
 		dialog.setTitle("Veuillez patienter...");
 		dialog.setMessage("Signal audio en cours de traitement...");
 		dialog.setCancelable(true);
@@ -51,10 +56,10 @@ public abstract class SpeechRecognition extends AsyncTask<short[], Void, String>
 		}
 
 		if (speechRecognitionError != null)
-			Toast.makeText(getContext(), speechRecognitionError, Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, speechRecognitionError, Toast.LENGTH_SHORT).show();
 
 		Log.d("speech", "result = " + result);
-		new CommandParserClient().execute(result);
+		listener.onResults(result);
 	}
 
 	@Override
@@ -63,5 +68,10 @@ public abstract class SpeechRecognition extends AsyncTask<short[], Void, String>
 		if (dialog != null) {
 			dialog.dismiss();
 		}
+	}
+
+	public interface SpeechRecognitionListener
+	{
+		void onResults(String result);
 	}
 }

@@ -1,11 +1,17 @@
 package emmanuelnicolet.mustreamerclient;
 
+import android.content.Context;
 import android.util.Log;
 
 import speeral.SpeeralError;
 
-public abstract class SpeeralSpeechRecognition extends SpeechRecognition
+public class SpeeralSpeechRecognition extends SpeechRecognition
 {
+	SpeeralSpeechRecognition(Context context, SpeechRecognitionListener listener)
+	{
+		super(context, listener);
+	}
+
 	@Override
 	protected String doInBackground(short[]... params)
 	{

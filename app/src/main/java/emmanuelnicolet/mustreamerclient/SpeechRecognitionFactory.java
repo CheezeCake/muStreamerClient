@@ -11,28 +11,13 @@ import java.util.Map;
 public class SpeechRecognitionFactory
 {
 	@Nullable
-	public static SpeechRecognition create(System s, final Context c)
+	public static SpeechRecognition create(System s, final Context context,
+										   SpeechRecognition.SpeechRecognitionListener listener)
 	{
-		if (s == System.POCKETSPHINX) {
-			return new PocketsphinxSpeechRecognition()
-			{
-				@Override
-				protected Context getContext()
-				{
-					return c;
-				}
-			};
-		}
-		else if (s == System.SPEERAL) {
-			return new SpeeralSpeechRecognition()
-			{
-				@Override
-				protected Context getContext()
-				{
-					return c;
-				}
-			};
-		}
+		if (s == System.POCKETSPHINX)
+			return new PocketsphinxSpeechRecognition(context, listener);
+		else if (s == System.SPEERAL)
+			return new SpeeralSpeechRecognition(context, listener);
 
 		return null;
 	}
