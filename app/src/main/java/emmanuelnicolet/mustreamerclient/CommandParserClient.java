@@ -1,5 +1,10 @@
 package emmanuelnicolet.mustreamerclient;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,13 +13,14 @@ import java.net.URL;
 
 public class CommandParserClient
 {
-	public static void parse(String command) throws IOException
+	public static JSONObject fetchJSON(String command) throws IOException, JSONException
 	{
 		URL url;
 		InputStream is = null;
 		BufferedReader br;
 		String line;
-		String json = "";
+		String json;
+		StringBuffer jsonBuffer = new StringBuffer();
 
 		try {
 			url = new URL(Settings.commmandParserWebServiceURL);
@@ -22,11 +28,17 @@ public class CommandParserClient
 			br = new BufferedReader(new InputStreamReader(is));
 
 			while ((line = br.readLine()) != null)
-				json = json + line;
+				jsonBuffer.append(line);
 		}
 		finally {
 			if (is != null)
 				is.close();
+
+			json = jsonBuffer.toString();
 		}
+
+		Log.d("fetchJSON", json);
+
+		return new JSONObject(json);
 	}
 }
