@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,9 +22,9 @@ public class Player extends ActionBarActivity
 {
 	private static MediaInfo mediainfo = null;
 	private static MediaPlayer mediaPlayer = null;
-	Button pauseButton;
-	Button playButton;
-	Button stopButton;
+	private ImageButton pauseButton;
+	private ImageButton playButton;
+	private ImageButton stopButton;
 	private StreamToken token = null;
 	private IMusicServerPrx srv = null;
 
@@ -34,9 +34,9 @@ public class Player extends ActionBarActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_player);
 
-		pauseButton = (Button)findViewById(R.id.pause);
-		playButton = (Button)findViewById(R.id.play);
-		stopButton = (Button)findViewById(R.id.stop);
+		pauseButton = (ImageButton)findViewById(R.id.pause);
+		playButton = (ImageButton)findViewById(R.id.play);
+		stopButton = (ImageButton)findViewById(R.id.stop);
 
 		Intent intent = getIntent();
 		mediainfo = (MediaInfo)intent.getSerializableExtra(MainActivity.MEDIA);
@@ -86,7 +86,7 @@ public class Player extends ActionBarActivity
 	public void onResume()
 	{
 		super.onResume();
-		Button p = (Button)findViewById(R.id.pause);
+		ImageButton p = (ImageButton)findViewById(R.id.pause);
 		if (mediaPlayer != null && p != null && p.isEnabled())
 			play(findViewById(R.id.play));
 	}

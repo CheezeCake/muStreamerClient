@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -424,11 +425,11 @@ public class MainActivity extends ActionBarActivity
 
 	public void talk(View v)
 	{
-		Button b = (Button)v;
+		ImageButton b = (ImageButton)v;
 
 		if (AudioRecorder.isRecording()) {
 			Log.d("MainActivity.talk", "stop recording");
-			b.setText("Talk");
+			b.setImageResource(android.R.drawable.ic_btn_speak_now);
 			AudioRecorder.stopRecording();
 
 			SpeechRecognition sr = SpeechRecognitionFactory
@@ -448,7 +449,7 @@ public class MainActivity extends ActionBarActivity
 		}
 		else if (Settings.speechRecognitionSystem != SpeechRecognitionFactory.System.ANDROID) {
 			Log.d("MainActivity.talk", "start recording");
-			b.setText("Stop talking");
+			b.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
 			AudioRecorder.startRecording();
 		}
 		else {
