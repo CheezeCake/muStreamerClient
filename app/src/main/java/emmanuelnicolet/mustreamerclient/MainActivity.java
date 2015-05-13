@@ -1,6 +1,7 @@
 package emmanuelnicolet.mustreamerclient;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -623,17 +625,26 @@ public class MainActivity extends ActionBarActivity
 
 	private class SongMonitor extends _ISongMonitorDisp
 	{
+		private int id = 0;
+
 		@Override
 		public void newSong(final Song s, Current __current)
 		{
-			Log.d("SongMonitor", "new song : " + s);
+			Log.d("SongMonitor", "new song : " + s.artist + " - " + s.title);
 			MainActivity.this.runOnUiThread(new Runnable()
 			{
 				@Override
 				public void run()
 				{
-					Toast.makeText(MainActivity.this, "New song !\n" + s.artist + " - " + s.title, Toast.LENGTH_LONG)
-							.show();
+					NotificationCompat.Builder builder =
+							new NotificationCompat.Builder(MainActivity.this)
+									.setSmallIcon(android.R.drawable.sym_def_app_icon)
+									.setContentTitle("New song !\n")
+									.setContentText(s.artist + " - " + s.title);
+
+					NotificationManager mNotificationManager =
+							(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+					mNotificationManager.notify(id++, builder.build());
 				}
 			});
 		}
