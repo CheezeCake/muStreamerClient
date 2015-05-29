@@ -29,7 +29,11 @@
                 android:layout_below="@+id/metaserver_text_view"
                 android:layout_alignParentStart="true"
                 android:layout_alignEnd="@+id/metaserver_text_view"
-                android:hint="hostname"/>
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:focusable="true"
+                android:inputType="text"
+                android:hint="hostname" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -40,6 +44,9 @@
                 android:layout_below="@+id/metaserver_hostname"
                 android:layout_alignParentStart="true"
                 android:layout_alignEnd="@+id/metaserver_hostname"
+                android:maxLines="1"
+                android:focusable="true"
+                android:imeOptions="actionNext"
                 android:hint="port"/>
 
             <TextView
@@ -93,6 +100,8 @@
                 android:id="@+id/pocketsphinx_text_view"
                 android:layout_below="@+id/radioGroup"
                 android:layout_alignParentStart="true"
+                android:inputType="text"
+                android:imeOptions="actionNext"
                 android:layout_marginTop="5dp"/>
 
             <EditText
@@ -102,6 +111,10 @@
                 android:layout_below="@+id/pocketsphinx_text_view"
                 android:layout_alignParentStart="true"
                 android:layout_alignEnd="@+id/radioGroup"
+                android:maxLines="1"
+                android:inputType="text"
+                android:focusable="true"
+                android:imeOptions="actionNext"
                 android:hint="hostname"/>
 
             <EditText
@@ -113,6 +126,9 @@
                 android:layout_below="@+id/pocketsphinx_hostname"
                 android:layout_alignParentStart="true"
                 android:layout_alignEnd="@+id/pocketsphinx_hostname"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:focusable="true"
                 android:hint="port"/>
 
             <TextView
@@ -132,6 +148,10 @@
                 android:layout_below="@+id/speeral_text_view"
                 android:layout_alignParentStart="true"
                 android:layout_alignEnd="@+id/pocketsphinx_port"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:focusable="true"
+                android:inputType="text"
                 android:hint="hostname"/>
 
             <EditText
@@ -143,6 +163,9 @@
                 android:layout_below="@+id/speeral_hostname"
                 android:layout_alignParentStart="true"
                 android:layout_alignEnd="@+id/speeral_hostname"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:focusable="true"
                 android:hint="port"/>
 
             <TextView
@@ -162,6 +185,10 @@
                 android:layout_below="@+id/command_parser_web_service_text_view"
                 android:layout_alignParentStart="true"
                 android:layout_alignEnd="@+id/speeral_port"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:focusable="true"
+                android:inputType="text"
                 android:hint="URL"/>
 
             <TextView
@@ -180,6 +207,10 @@
                 android:layout_below="@+id/icestorm_text_view"
                 android:layout_alignParentStart="true"
                 android:layout_alignEnd="@+id/command_parser_web_service_url"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:focusable="true"
+                android:inputType="text"
                 android:hint="hostname"/>
 
             <EditText
@@ -191,6 +222,9 @@
                 android:layout_below="@+id/icestorm_hostname"
                 android:layout_alignParentStart="true"
                 android:layout_alignEnd="@+id/icestorm_hostname"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:focusable="true"
                 android:hint="port"/>
 
             <TextView
@@ -209,6 +243,10 @@
                 android:layout_below="@+id/glacier2_text_view"
                 android:layout_alignParentStart="true"
                 android:layout_alignEnd="@+id/icestorm_port"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:focusable="true"
+                android:inputType="text"
                 android:hint="hostname"/>
 
             <EditText
@@ -220,6 +258,9 @@
                 android:layout_below="@+id/glacier2_hostname"
                 android:layout_alignParentStart="true"
                 android:layout_alignEnd="@+id/glacier2_hostname"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:focusable="true"
                 android:hint="port"/>
 
             <EditText
@@ -229,6 +270,10 @@
                 android:layout_below="@+id/glacier2_port"
                 android:layout_alignParentStart="true"
                 android:layout_alignEnd="@+id/glacier2_port"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:focusable="true"
+                android:inputType="text"
                 android:hint="user"/>
 
             <EditText
@@ -239,6 +284,8 @@
                 android:layout_below="@+id/glacier2_user"
                 android:layout_alignParentStart="true"
                 android:layout_alignEnd="@+id/glacier2_user"
+                android:focusable="true"
+                android:inputType="text"
                 android:hint="password"/>
 
             <Button
