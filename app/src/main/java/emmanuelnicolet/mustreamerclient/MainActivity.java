@@ -40,6 +40,7 @@ import Player.IMetaServerPrxHelper;
 import Player.MusicServerInfo;
 import Player.Song;
 import Player._ISongMonitorDisp;
+import emmanuelnicolet.mustreamerclient.filechooser.FileChooser;
 
 
 public class MainActivity extends ActionBarActivity
@@ -392,8 +393,7 @@ public class MainActivity extends ActionBarActivity
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY
 				.equals(state)) {
-
-			Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+			Intent intent = new Intent(MainActivity.this, FileChooser.class);
 			startActivityForResult(intent, CHOOSE_FILE_REQUEST);
 		}
 		else {
@@ -407,8 +407,7 @@ public class MainActivity extends ActionBarActivity
 	{
 		if (resultCode == RESULT_OK) {
 			if (requestCode == CHOOSE_FILE_REQUEST) {
-				android.net.Uri uri = data.getData();
-				chosenFile = uri.getPath();
+				chosenFile = data.getStringExtra(FileChooser.FILE_SELECTED);
 				Log.d("filechooser", "file: " + chosenFile);
 				TextView fileNameText = (TextView)addDialogView.findViewById(R.id.File_name);
 				fileNameText.setText(new File(chosenFile).getName());

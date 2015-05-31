@@ -41,6 +41,10 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity
+            android:name=".filechooser.FileChooser"
+            android:label="@string/title_activity_file_chooser" >
+        </activity>
     </application>
 
 </manifest>
