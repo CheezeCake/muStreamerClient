@@ -32,7 +32,7 @@ public abstract class FileUploadTask extends AsyncTask<String, Integer, Void>
 		dialog = new ProgressDialog(getContext());
 		dialog.setTitle("Uploading file");
 		dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		dialog.setCancelable(true);
+		dialog.setCancelable(false);
 		dialog.setProgressNumberFormat("%1d/%2dKB");
 		dialog.setOnCancelListener(new DialogInterface.OnCancelListener()
 		{
